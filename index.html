@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="preconnect" href="https://www.youtube.com">
 <title>Sobres Pokémon - Xatframe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +13,28 @@
 try{var _a=JSON.parse(localStorage.getItem('pkframe-appearance')||'null');if(_a){if(_a.theme&&_a.theme!=='dark')document.documentElement.setAttribute('data-theme',_a.theme);if(_a.glass)document.documentElement.style.setProperty('--g',String(_a.glass/100))}}catch(e){}
 </script>
 <style>
+/* ============================================================================
+   MAPA DE ICONOS Y RECURSOS GRÁFICOS  (cómo cambiar tamaño / reemplazar)
+   ----------------------------------------------------------------------------
+   TAMAÑOS (variables CSS en :root, ya conectadas a las reglas de abajo; si no
+   defines una, se usa el valor por defecto que aparece entre paréntesis):
+     --ic-btn      (14px)  iconos de los botones .btn de la barra superior
+     --ic-opt      (11px)  iconos Claro/Oscuro en el selector de tema
+     --ic-tv       (22px)  icono grande del encabezado "Pokémon TV"
+     --ic-tvclose  (13px)  icono ✕ del encabezado de Pokémon TV
+     --ic-lptoggle (14px)  flecha "Ocultar/Mostrar información"
+     --ic-card     (83px)  ALTO del CARD SVG (alto; el ancho se ajusta solo)
+     --ic-dot      (12px)  círculos de color de los temas
+   Ejemplo:  :root{--ic-btn:16px}  -> agranda todos los iconos de botón sin
+   mover la alineación (los botones son inline-flex centrados).
+   REEMPLAZAR UN ICONO INLINE: cada icono es un <svg viewBox="0 0 24 24"> dentro
+   de su botón. Sustituye todo el <svg>…</svg> por otro SVG 24x24 con
+   stroke="currentColor" (hereda color) o por <img src="URL"> con la misma
+   clase de tamaño. Cada botón del HTML lleva un comentario <!-- ICON: … -->.
+   IMÁGENES EXTERNAS (logo, sobres, insignias): ver APP_ASSETS y CARD_SVG en el
+   script (sección "CONFIGURACIÓN DE RECURSOS").
+   ============================================================================ */
+
 /* ===== Tema (inspirado en el UI oscuro minimalista de la referencia) ===== */
 :root{--g:1;
 --accent:#ff9436;--accent-soft:#ffb067;
@@ -105,7 +129,7 @@ header{position:absolute;top:14px;left:0;width:1303px;height:91px;padding:62px 2
 .btn:hover:not(:disabled){filter:brightness(1.18);border-color:rgba(255,255,255,.2)}
 .btn:active:not(:disabled){transform:translateY(1px) scale(.98)}
 .btn:disabled{cursor:not-allowed;opacity:.65}
-.btn svg{width:14px;height:14px}
+.btn svg{width:var(--ic-btn,14px);height:var(--ic-btn,14px)}
 .btn.gold{border-radius:999px;background:linear-gradient(180deg,var(--btn-gold-top),var(--btn-gold-bot));border:1px solid var(--btn-blue-line);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);box-shadow:0 0 16px color-mix(in srgb,var(--accent) 32%,transparent),inset 0 1px 0 rgba(255,255,255,.35)}
 .btn.gold:disabled{background:rgba(255,148,54,.08);border-color:rgba(255,148,54,.22);color:#d99b66;text-shadow:none;box-shadow:none}
 html[data-theme="light"] .btn.gold:disabled{color:#9a5216}
@@ -147,8 +171,8 @@ html[data-theme="light"] .btn.slate{border-color:var(--btn-navy-line)}
 .opt{display:flex;align-items:center;gap:4px;height:14px;padding:0 7px;border-radius:999px;border:1px solid transparent;font:600 10.5px 'Poppins',sans-serif;line-height:1;color:var(--txt-muted);cursor:pointer;background:transparent}
 .opt:hover{color:var(--txt-main)}
 .opt.is-active{background:linear-gradient(180deg,var(--btn-blue-top),var(--btn-blue-bot));border-color:var(--btn-blue-line);color:#fff}
-.opt svg{width:11px;height:11px}
-.sw-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;box-shadow:0 0 4px rgba(0,0,0,.4)}
+.opt svg{width:var(--ic-opt,11px);height:var(--ic-opt,11px)}
+.sw-dot{width:var(--ic-dot,8px);height:var(--ic-dot,8px);border-radius:50%;display:inline-block;flex-shrink:0;box-shadow:0 0 4px rgba(0,0,0,.4)}
 #gv{min-width:30px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--accent)}
 #glass{-webkit-appearance:none;appearance:none;width:82px;height:16px;margin:0;background:transparent;outline:none;cursor:pointer}
 #glass::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.12),var(--accent))}
@@ -184,8 +208,8 @@ html[data-theme="light"] #user-name:focus{background:rgba(0,0,0,.06)}
 /* Icono SVG (≈50px visibles tras la escala del panel) con selector de color donde decía ABIERTO */
 .card-svg-wrap{position:relative;display:flex;align-items:center;pointer-events:auto}
 #card-svg-btn{background:transparent;border:none;padding:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:10px;transition:transform .2s cubic-bezier(.22,1,.36,1),filter .2s ease}
-#card-svg-btn:hover{transform:scale(1.1)}
-#card-svg-img{height:83px;width:auto;object-fit:contain;display:block;transition:filter .25s ease}
+#card-svg-btn:hover{transform:none}
+#card-svg-img{height:var(--ic-card,83px);width:auto;object-fit:contain;display:block;transition:filter .25s ease}
 #card-color-pop{display:none;position:absolute;top:calc(100% + 8px);right:0;padding:7px 9px;border-radius:999px;background:linear-gradient(180deg,rgb(var(--hd-top)),rgb(var(--hd-bot)));border:1px solid var(--pnl-line);box-shadow:var(--shadow-bar);gap:7px;align-items:center;z-index:190}
 #card-color-pop.open{display:flex}
 .c-swatch{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.28);cursor:pointer;padding:0;transition:transform .15s,border-color .15s}
@@ -273,7 +297,7 @@ html[data-theme="light"] .rp-head-icon{filter:invert(1) brightness(0.15)}
 #cheat-msg.ok{color:#4ade80}
 #cheat-msg.err{color:#ff7b7b}
 #cheat-msg.warn{color:#fbbf24}
-@keyframes specialBadgeUnlock{0%{transform:scale(.5) rotate(-12deg);opacity:0}55%{transform:scale(1.18) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes specialBadgeUnlock{0%{transform:scale(.82);opacity:0}60%{transform:scale(1.05);opacity:1}100%{transform:scale(1);opacity:1}}
 .badge-unlock-fx{animation:specialBadgeUnlock .85s cubic-bezier(.22,1,.36,1)}
 
 /* Pokébola dorada para cartas de 500 USD o más */
@@ -374,7 +398,7 @@ html[data-theme="light"] .rp-head-icon{filter:invert(1) brightness(0.15)}
 #sec-left.lp-collapsed:not(.has-pack):not(:has(#av-drawer.open)) #lp-body{grid-template-rows:0fr}
 #lp-toggle{display:none;align-items:center;justify-content:center;gap:8px;width:100%;height:30px;padding:0;border:0;border-top:1px solid var(--pnl-line);background:rgba(var(--strip),calc(.03*var(--g)));color:var(--txt-muted);font:600 10px 'Poppins',ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;pointer-events:auto;transition:color .2s,background .2s}
 #lp-toggle:hover{color:var(--accent);background:rgba(var(--strip),calc(.06*var(--g)))}
-#lp-toggle svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+#lp-toggle svg{width:var(--ic-lptoggle,14px);height:var(--ic-lptoggle,14px);stroke:currentColor;fill:none;stroke-width:2.4;transition:transform .4s cubic-bezier(.22,1,.36,1)}
 #sec-left.has-cards #lp-toggle{display:flex}
 #sec-left.lp-collapsed #lp-toggle svg{transform:rotate(180deg)}
 .lp-t-show{display:none}
@@ -394,7 +418,7 @@ html[data-theme="light"] .rp-head-icon{filter:invert(1) brightness(0.15)}
 #sec-left.tv-on #tv-menu{display:flex;animation:tvIn .45s cubic-bezier(.22,1,.36,1) backwards}
 #sec-left.tv-on #lp-body,#sec-left.tv-on #lp-toggle{display:none}
 .tv-mhead{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.tv-mhead svg,.tv-head svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:2;flex-shrink:0}
+.tv-mhead svg,.tv-head svg{width:var(--ic-tv,22px);height:var(--ic-tv,22px);stroke:var(--accent);fill:none;stroke-width:2;flex-shrink:0}
 .tv-mhead b,.tv-head b{font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--txt-main)}
 .tv-mhead span{margin-left:auto;font-size:11px;font-weight:600;color:var(--txt-muted)}
 #tv-list{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow-y:auto;padding:2px 3px 2px 1px;scrollbar-width:thin;scrollbar-color:var(--accent) transparent}
@@ -417,7 +441,7 @@ html[data-theme="light"] .rp-head-icon{filter:invert(1) brightness(0.15)}
 #tv.open{display:flex;animation:tvIn .45s cubic-bezier(.22,1,.36,1) backwards}
 .tv-head{display:flex;align-items:center;gap:10px;flex-shrink:0;padding-bottom:10px;border-bottom:1px solid var(--pnl-line)}
 .tv-head .btn{margin-left:auto;width:28px;padding:0}
-.tv-head .btn svg{width:13px;height:13px}
+.tv-head .btn svg{width:var(--ic-tvclose,13px);height:var(--ic-tvclose,13px)}
 #tv-badge{font-size:11px;font-weight:700;color:var(--accent);white-space:nowrap}
 #tv-screen{position:relative;flex-shrink:0;width:100%;aspect-ratio:16/9;margin-top:12px;border-radius:14px;overflow:hidden;background:#000;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);box-shadow:0 12px 28px -12px rgba(0,0,0,.85),0 0 24px -8px color-mix(in srgb,var(--accent) 55%,transparent)}
 #tv-screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
@@ -643,7 +667,7 @@ filter:brightness(calc((var(--hyp)*.35) + .65)) contrast(2.6) saturate(.6)}
 
 /* ===== Ajustes: temas solo círculo, popups al frente, contador sin saltos ===== */
 .opt.opt-dot{padding:0 4px;gap:0;justify-content:center;min-width:18px}
-.opt.opt-dot .sw-dot{width:12px;height:12px}
+.opt.opt-dot .sw-dot{width:var(--ic-dot,12px);height:var(--ic-dot,12px)}
 .opt.opt-dot.is-active{background:transparent;border-color:transparent}
 .opt.opt-dot.is-active .sw-dot{box-shadow:0 0 0 2px #fff,0 0 6px rgba(0,0,0,.5)}
 header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:2147483647}
@@ -653,6 +677,80 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
 .hp-pill{flex-shrink:0}
 #hp-val{display:inline-block;min-width:5.5ch;text-align:left;font-variant-numeric:tabular-nums}
 #card-color-pop{z-index:2147483000}
+
+/* ===== Ajuste automático a pantallas pequeñas (solo escala si no cabe) ===== */
+#frame{flex:none;transform-origin:50% 0}
+
+/* ===== CARD SVG: inclinación 3D + película holográfica (v2) =====
+   Estructura:  #card-svg-btn (perspectiva) > .cs-tilt (inclina, aislado) > img + .card-holo
+   - El <img> NO se toca: ni opacidad, ni filtros nuevos, ni máscaras. Los reflejos son capas HERMANAS encima.
+   - Cada capa (.hl) se recorta con la silueta del propio SVG (mask) y se mezcla solo con la tarjeta
+     (isolation:isolate en .cs-tilt: nunca mezcla con el panel que hay detrás).
+   - Modos de fusión por variante: en CARD_HOLO (script). cardblack usa modos que no levantan el negro
+     (color-dodge / soft-light) y reposo = 0, así que en reposo es el SVG original sin ningún velo.
+   - Solo se animan transform y opacity (compositor). Sin filter dinámico en la tarjeta. */
+#card-svg-btn{position:relative;padding:10px;margin:-8px;perspective:420px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#card-svg-btn:hover,#card-svg-btn:active{transform:none}
+.cs-tilt{position:relative;display:flex;isolation:isolate;--rx:0deg;--ry:0deg;--mx:50%;--my:32%;--posx:50%;--posy:50%;--o:0;--sc:1;
+ transform:translateZ(0) rotateY(var(--rx)) rotateX(var(--ry)) scale(var(--sc));transform-origin:50% 50%;
+ transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.cs-tilt.is-tilt{transition:transform .09s linear;will-change:transform}
+.card-holo{display:none;position:absolute;inset:0;pointer-events:none;contain:paint}
+.card-holo.on{display:block}
+.card-holo .hl{position:absolute;inset:0;pointer-events:none;overflow:hidden;
+ -webkit-mask-image:var(--holo-mask);mask-image:var(--holo-mask);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+/* Foil iridiscente: banda prismática que se desplaza con el cursor y se concentra bajo la luz */
+.card-holo .h-foil{
+ background:repeating-linear-gradient(115deg,var(--hc1) 0%,var(--hc2) 7%,var(--hc3) 14%,var(--hc4) 21%,var(--hc1) 28%);
+ background-size:260% 260%;background-position:var(--posx) var(--posy);
+ opacity:calc((var(--hrest,.08) + var(--o)*var(--hpeak,.5)) * var(--hint,1) * var(--hholo,1));
+ transition:opacity .45s ease;
+ -webkit-mask-image:var(--holo-mask),radial-gradient(circle at var(--mx) var(--my),#000 0%,rgba(0,0,0,.55) 32%,rgba(0,0,0,.14) 68%,transparent 100%);
+ mask-image:var(--holo-mask),radial-gradient(circle at var(--mx) var(--my),#000 0%,rgba(0,0,0,.55) 32%,rgba(0,0,0,.14) 68%,transparent 100%);
+ -webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+ -webkit-mask-composite:source-in;mask-composite:intersect}
+/* Luz especular que sigue al cursor */
+.card-holo .h-glare{background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,var(--hglare,.5)) 0%,rgba(255,255,255,0) 52%);
+ opacity:calc(var(--o) * var(--hint,1));transition:opacity .45s ease}
+/* Destello metálico que recorre la tarjeta de vez en cuando */
+.card-holo .h-sheen{opacity:calc(.9 * var(--hint,1))}
+.card-holo .h-sheen::before{content:"";position:absolute;top:-12%;bottom:-12%;left:0;width:24%;
+ background:linear-gradient(105deg,transparent 0,rgba(var(--hsheen,255,255,255),var(--hsheena,.7)) 50%,transparent 100%);
+ transform:translate3d(-160%,0,0) skewX(-16deg);opacity:0;animation:holoSweep calc(8s / var(--hspeed,1)) ease-in-out infinite}
+.card-holo .h-spark{opacity:calc(.9 * var(--hint,1))}
+.card-holo .h-spark b{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;opacity:0;transform:scale(0) rotate(0deg);
+ background:linear-gradient(90deg,transparent 30%,var(--hspark,#fff) 50%,transparent 70%) center/100% 1px no-repeat,linear-gradient(0deg,transparent 30%,var(--hspark,#fff) 50%,transparent 70%) center/1px 100% no-repeat,radial-gradient(circle,var(--hspark,#fff) 0 1px,transparent 2.2px);
+ animation:holoStar calc(var(--dur,7s) / var(--hspeed,1)) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes holoSweep{0%{transform:translate3d(-160%,0,0) skewX(-16deg);opacity:0}5%{opacity:1}24%{transform:translate3d(520%,0,0) skewX(-16deg);opacity:0}100%{transform:translate3d(520%,0,0) skewX(-16deg);opacity:0}}
+@keyframes holoStar{0%,72%,100%{opacity:0;transform:scale(0) rotate(0deg)}82%{opacity:1;transform:scale(1) rotate(45deg)}91%{opacity:.7;transform:scale(.6) rotate(80deg)}}
+/* Equipos lentos: se mantiene el foil estático y se apagan los efectos animados secundarios */
+html.fx-lite .card-holo .h-sheen::before,html.fx-lite .card-holo .h-spark{display:none}
+html.fx-reduced .card-holo .h-sheen::before,html.fx-reduced .card-holo .h-spark{display:none}
+@media (prefers-reduced-motion:reduce){.card-holo .h-sheen::before,.card-holo .h-spark{display:none}.cs-tilt,.cs-tilt.is-tilt{transition:none}}
+/* Al elegir un color: aparición suave sin sobrepasar su caja (antes escalaba a 1.05 y se recortaba) */
+@keyframes specialBadgeUnlock{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+
+/* ===== MULTI / HP en la capa superior (Popover API) ===== */
+#lg-pop[popover],#hp-pop[popover]{inset:auto;margin:0;overflow:visible;transform-origin:0 0}
+#lg-pop.tl,#hp-pop.tl{position:fixed}
+
+/* ===== Pokémon TV: ventana ampliada (POP-UP) ===== */
+#tv-pop{width:20px;height:20px;padding:0;border-radius:50%;border:1px solid var(--pnl-line);background:rgba(var(--strip),calc(.05*var(--g)));color:var(--txt-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s,transform .2s}
+#tv-pop svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#tv-pop:hover{color:var(--accent);border-color:var(--accent);transform:scale(1.12)}
+#tvp{position:fixed;inset:0;z-index:2147483600;display:none;align-items:center;justify-content:center;padding:10px;background:rgba(5,6,10,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .25s ease;font-family:'Poppins',ui-sans-serif,system-ui,sans-serif}
+#tvp.open{display:flex}
+#tvp.show{opacity:1}
+#tvp-win{width:min(96vw,calc((100vh - 96px) * 16 / 9));max-width:1280px;display:flex;flex-direction:column;gap:10px;padding:12px 14px 12px;border-radius:20px;border:1px solid var(--pnl-line);background:linear-gradient(180deg,rgb(var(--pnl-top)),rgb(var(--pnl-bot)));box-shadow:var(--shadow-pnl);color:var(--txt-main);transform:translateY(14px) scale(.97);transition:transform .3s cubic-bezier(.22,1,.36,1)}
+#tvp.show #tvp-win{transform:none}
+#tvp-head{display:flex;align-items:center;gap:8px;min-width:0}
+#tvp-head svg.tvp-ico{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:2;flex-shrink:0}
+#tvp-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700;letter-spacing:.04em}
+#tvp-head .btn{height:26px;width:30px;padding:0;flex-shrink:0}
+#tvp-screen{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);box-shadow:0 12px 28px -12px rgba(0,0,0,.85),0 0 24px -8px color-mix(in srgb,var(--accent) 55%,transparent)}
+#tvp-screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+#tvp-tip{font-size:10.5px;line-height:1.4;color:var(--txt-muted);text-align:center}
+@media (prefers-reduced-motion:reduce){#tvp,#tvp-win{transition:none}}
 </style>
 <style id="holoGen"></style>
 </head>
@@ -670,26 +768,32 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
 
     <!-- Logos libres en PNG sin barra ni botón de fondo -->
     <div class="brand-wrap">
-      <img class="brand-logo" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/logo2.png" alt="Logo 2">
+      <!-- ICON: LOGO de marca · barra superior · URL: APP_ASSETS.brandLogo (script). Alto: .brand-logo{height:22px} en CSS. -->
+      <img class="brand-logo" data-asset="brandLogo" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/logo2.png" alt="Logo 2">
     </div>
 
     <div class="bar" style="gap:10px">
+      <!-- ICON: Flecha ‹ · barra superior (paginador, anterior) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
       <button class="btn arrow" onclick="movePage(-1)" aria-label="‹"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg></button>
       <span id="page-ind">1/1</span>
+      <!-- ICON: Flecha › · barra superior (paginador, siguiente) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
       <button class="btn arrow" onclick="movePage(1)" aria-label="›"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/></svg></button>
     </div>
 
+    <!-- ICON: Ojo · barra superior (ocultar/mostrar interfaz) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
     <button id="btn-hide" class="btn slate" onclick="toggleUI()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg><span id="hide-txt"></span></button>
 
+    <!-- ICON: Traducir · barra superior (idioma UI ES/EN) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
     <button class="btn" style="width:60px" onclick="toggleLang()" title="UI ES/EN"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg><span id="lang-ind">EN</span></button>
 
     <!-- Selector Multilingüe de Cartas (18 idiomas de TCGdex con verificación real) -->
     <div class="lgw">
+      <!-- ICON: Globo · barra superior (botón MULTI, idiomas de cartas) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
       <button id="btn-card-langs" class="btn" style="padding:0 10px" onclick="toggleCardLangsMenu(event)" aria-expanded="false" title="Idiomas de cartas (TCGdex & APIs)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.6 9h16.8M3.6 15h16.8M12 3a14.5 14.5 0 010 18M12 3a14.5 14.5 0 000 18"/></svg>
         <span id="card-langs-ind">MULTI</span>
       </button>
-      <div id="lg-pop" onclick="event.stopPropagation()">
+      <div id="lg-pop" popover="manual" onclick="event.stopPropagation()">
         <div class="lg-head">
           <b data-i18n="cl_title">Idiomas de cartas</b>
           <div class="lg-actions">
@@ -706,11 +810,15 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
 
     <!-- Selector de Apariencia (Claro, Oscuro, Orange Pokémon, Pink, Purple, Blue Cyan) -->
     <div class="apw">
+      <!-- ICON: Paleta · barra superior (apariencia/temas) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
       <button id="btn-ap" class="btn" style="width:34px;padding:0" onclick="toggleAp(event)" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a9 9 0 100 18 2.25 2.25 0 002.25-2.25c0-.62-.25-1.19-.66-1.6a2.25 2.25 0 011.6-3.84H17a4 4 0 004-4C21 5.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="14.5" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg></button>
       <div id="ap" onclick="event.stopPropagation()">
         <div class="seg">
+          <!-- ICON: Sol · selector de tema (Claro) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-opt. -->
           <button class="opt" data-th="light" onclick="setTheme('light')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg><span data-i18n="light">Claro</span></button>
+          <!-- ICON: Luna · selector de tema (Oscuro) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-opt. -->
           <button class="opt is-active" data-th="dark" onclick="setTheme('dark')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg><span data-i18n="dark">Oscuro</span></button>
+          <!-- ICON: Círculos de color de los temas (solo color, sin texto). Color: style="background:#hex" de cada .sw-dot. Tamaño: --ic-dot. -->
           <button class="opt opt-dot" data-th="orange" onclick="setTheme('orange')" title="Orange Pokémon" aria-label="Orange Pokémon"><span class="sw-dot" style="background:#ff9436"></span></button>
           <button class="opt opt-dot" data-th="pink" onclick="setTheme('pink')" title="Pink" aria-label="Pink"><span class="sw-dot" style="background:#ff5ca8"></span></button>
           <button class="opt opt-dot" data-th="purple" onclick="setTheme('purple')" title="Purple" aria-label="Purple"><span class="sw-dot" style="background:#a855f7"></span></button>
@@ -725,6 +833,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
 
     <!-- Selector de Wallpaper (Estático / Animado / Sin fondo) -->
     <div class="wpw">
+      <!-- ICON: Imagen · barra superior (wallpaper) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
       <button id="btn-wp" class="btn" style="width:34px;padding:0" onclick="toggleWp(event)" aria-expanded="false" title="Wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="3" stroke-width="2"/><circle cx="8.5" cy="9.5" r="1.5" fill="currentColor"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15l-5-5L5 20"/></svg></button>
       <div id="wp" onclick="event.stopPropagation()">
         <div class="seg">
@@ -736,9 +845,11 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
     </div>
 
     <!-- Binder de coleccionista -->
+    <!-- ICON: Carpeta · barra superior (Binder) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
     <button id="btn-binder" class="btn" onclick="openBinder(event)" title="Binder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg><span data-i18n="binder">Binder</span><span id="bd-count" class="bd-badge">0</span></button>
 
     <!-- Pokémon TV -->
+    <!-- ICON: TV · barra superior (Pokémon TV) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
     <button id="btn-tv" class="btn" style="width:34px;padding:0" onclick="openTV(event)" title="Pokémon TV" aria-label="Pokémon TV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="6" width="18" height="12" rx="2.5" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3l4 3 4-3M10 10.5v3l3-1.5-3-1.5z"/></svg></button>
 
     <!-- Contador de HP (Pokémon Points) permanentemente visible al lado de Pokémon TV -->
@@ -748,7 +859,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
         <span class="hp-lbl">HP</span>
         <span id="hp-val">0</span>
       </button>
-      <div id="hp-pop" onclick="event.stopPropagation()">
+      <div id="hp-pop" popover="manual" onclick="event.stopPropagation()">
         <div class="hp-pop-head">
           <b id="hp-pop-title">Pokémon Points (HP)</b>
           <span id="hp-streak-lbl" style="font-size:10px;color:var(--accent-soft);font-weight:700">Racha: 1d</span>
@@ -773,6 +884,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
             <h2>
               <!-- Botón de Avatar circular de 80x80 píxeles -->
               <button id="av-btn" onclick="toggleAvatarDrawer(event)" title="Cambiar avatar">
+                <!-- ICON: AVATAR activo · panel izquierdo · la URL cambia con la lista de avatares (ver AVATARS en el script). Tamaño: #av-btn en CSS. -->
                 <img id="av-active" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/all-pokemon-tcg-pocket-icons-pikachu-1.avif" alt="Avatar">
               </button>
               <span id="user-name" contenteditable="true" spellcheck="false" title="Haz clic para editar tu nombre">Entrenador</span>
@@ -780,7 +892,8 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
             </h2>
             <div class="card-svg-wrap">
               <button id="card-svg-btn" onclick="toggleCardColorMenu(event)" title="Cambiar color de insignia">
-                <img id="card-svg-img" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg" alt="Card SVG">
+                <!-- ICON: CARD SVG de color · panel izquierdo · URLs: objeto CARD_SVG (script). Alto: variable --ic-card. Efectos: CARD_HOLO (script). -->
+                <span class="cs-tilt" id="cs-tilt"><img id="card-svg-img" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg" alt="Card SVG"><span class="card-holo" id="card-holo" aria-hidden="true"><i class="hl h-foil"></i><i class="hl h-glare"></i><i class="hl h-sheen"></i><i class="hl h-spark" id="h-spark"></i></span></span>
               </button>
               <div id="card-color-pop" onclick="event.stopPropagation()">
                 <div class="cc-swatches-row">
@@ -806,6 +919,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
             <div id="t-badge" style="cursor:pointer;pointer-events:auto" onclick="mostrarSimuladorSobre()"></div>
           </div>
           <div id="lp-body"><div class="lp-body-in"><table><tbody id="rows"></tbody></table></div></div>
+          <!-- ICON: Flecha ocultar/mostrar info · panel izquierdo · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-lptoggle. -->
           <button id="lp-toggle" type="button" onclick="lpToggle(event)"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg><span class="lp-t-hide" data-i18n="lp_hide">Ocultar información</span><span class="lp-t-show" data-i18n="lp_show">Mostrar información</span></button>
           <!-- Pokémon TV: elección de temporadas -->
           <div id="tv-menu">
@@ -884,6 +998,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
             <div class="pack-float" id="pack-float" onclick="ejecutarAperturaSobre()">
               <div class="pack-3d" id="pack-3d">
                 <!-- Sobre 1 (Estado cerrado completo): 3.png -->
+                <!-- ICON: SOBRE (3 capas pack-img-1/2/3) · simulador de sobre · además de la URL del <img> cambia las máscaras --pack-mask en CSS (.pack-full/.pack-body/.pack-top). -->
                 <div class="pack-layer pack-full"><img id="pack-img-3" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/3.png" alt="Sobre completo"></div>
                 <!-- Al abrirse (Cuerpo abierto): 1.png -->
                 <div class="pack-layer pack-body"><img id="pack-img-1" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/1.png" alt="Sobre abierto"></div>
@@ -902,7 +1017,8 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
     <aside id="right-panel">
       <div class="inner" style="transform:scale(.8)">
         <section class="sec" id="sec-cards">
-          <h2><img class="rp-head-icon" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/70048da5eba58b0491b93bdaab0016cbe1475a0c/icon%20cartas.svg" alt=""><span data-i18n="rp_title">Sobre de hoy</span><span id="gold-poke" class="gold-poke" title="≥ 200 USD"><img src="https://raw.githubusercontent.com/eamxat/TGC-avatars/70048da5eba58b0491b93bdaab0016cbe1475a0c/goldpoke.svg" alt="Gold Poké Ball"><i class="gp-spark s1"></i><i class="gp-spark s2"></i></span></h2>
+          <!-- ICON: Icono de cartas · encabezado del panel derecho · URL en el atributo src del <img>. -->
+          <h2><img class="rp-head-icon" data-asset="headIcon" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/70048da5eba58b0491b93bdaab0016cbe1475a0c/icon%20cartas.svg" alt=""><span data-i18n="rp_title">Sobre de hoy</span><span id="gold-poke" class="gold-poke" title="≥ 200 USD"><img src="https://raw.githubusercontent.com/eamxat/TGC-avatars/70048da5eba58b0491b93bdaab0016cbe1475a0c/goldpoke.svg" alt="Gold Poké Ball"><i class="gp-spark s1"></i><i class="gp-spark s2"></i></span></h2>
           <div id="rp-msg"></div>
           <div id="grid"></div>
           <div id="bd-toast"></div>
@@ -915,10 +1031,13 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
               <div class="bd-sheet">
                 <div class="bd-head">
                   <div class="bd-titles"><h3 data-i18n="bd_title">Binder</h3><div id="bd-stats"></div><div id="bd-points"></div></div>
+                  <!-- ICON: ✕ cerrar · Binder · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS .bd-actions .btn svg (CSS, 13px). -->
                   <button class="btn slate" onclick="closeBinder()" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
                 </div>
                 <div class="bd-actions">
+                  <!-- ICON: Exportar · Binder · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS .bd-actions .btn svg (CSS, 13px). -->
                   <button class="btn" onclick="bdExport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14"/></svg><span data-i18n="bd_export">Exportar JSON</span></button>
+                  <!-- ICON: Importar · Binder · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS .bd-actions .btn svg (CSS, 13px). -->
                   <button class="btn" onclick="document.getElementById('bd-file').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20V8m0 0l-4 4m4-4l4 4M5 4h14"/></svg><span data-i18n="bd_import">Importar JSON</span></button>
                   <input type="file" id="bd-file" accept=".json,application/json" hidden onchange="bdImport(this)">
                 </div>
@@ -939,7 +1058,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
                 </div>
               </div>
               <div class="bd-cover">
-                <img src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/tcglogo.png" alt="">
+                <img data-asset="tcgLogo" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/tcglogo.png" alt="">
                 <b>BINDER</b><span id="bd-cover-sub"></span>
               </div>
             </div>
@@ -951,14 +1070,18 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
               <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 3l4 3 4-3"/></svg>
               <b data-i18n="tv_title">Pokémon TV</b>
               <span id="tv-badge"></span>
+              <!-- ICON: ✕ cerrar · Pokémon TV · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-tvclose. -->
               <button class="btn slate" onclick="closeTV()" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <div id="tv-screen"></div>
-            <div class="tv-now"><span id="tv-now"></span><span class="tv-links"><button id="tv-alt" type="button" onclick="tvAlt()" data-i18n-title="tv_alt" title="Probar otro método">↻</button><a id="tv-yt" href="#" target="_blank" rel="noopener noreferrer" data-i18n="tv_yt">Abrir en YouTube</a></span></div>
+            <!-- ICON: Ampliar (nuevo) · Pokémon TV · abre la ventana POP-UP · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS #tv-pop svg (CSS, 11px). -->
+            <div class="tv-now"><span id="tv-now"></span><span class="tv-links"><button id="tv-pop" type="button" onclick="tvPopOpen()" title="Ampliar reproductor" aria-label="Ampliar reproductor"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><button id="tv-alt" type="button" onclick="tvAlt()" data-i18n-title="tv_alt" title="Probar otro método">↻</button><a id="tv-yt" href="#" target="_blank" rel="noopener noreferrer" data-i18n="tv_yt">Abrir en YouTube</a></span></div>
             <div class="tv-last">
               <b data-i18n="tv_last">Tus últimas cartas abiertas</b>
               <div class="tv-nav">
+                <!-- ICON: Flecha ‹ · tira de cartas de Pokémon TV · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
                 <button class="btn arrow" onclick="tvScroll(-1)" aria-label="‹"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg></button>
+                <!-- ICON: Flecha › · tira de cartas de Pokémon TV · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
                 <button class="btn arrow" onclick="tvScroll(1)" aria-label="›"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/></svg></button>
               </div>
             </div>
@@ -984,7 +1107,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
     <a id="tcg-logo-link" href="https://xat.me/eam96" target="_blank" rel="noopener noreferrer" title="TCG World">
       <div class="card" id="tcg-logo-card">
         <div class="card__translater"><div class="card__rotator">
-          <img src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/tcglogo.png" alt="TCG World" draggable="false">
+          <img data-asset="tcgLogo" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/refs/heads/main/tcglogo.png" alt="TCG World" draggable="false">
           <div class="logo-glare"></div>
         </div></div>
       </div>
@@ -994,6 +1117,80 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
 </div>
 
 <script>
+/* ============================================================================
+   CONFIGURACIÓN DE RECURSOS  ·  EDITA AQUÍ LAS URLs (no hace falta tocar nada más)
+   ============================================================================ */
+/* ---- CARD SVG de color: cambia solo la URL entre comillas ----
+   Las claves coinciden con los identificadores de los círculos de color.
+   "silver" = el CARD plateado (identificador interno "blueman"). */
+var CARD_SVG={
+  green:  "https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg",   /* ← URL cardgreen.svg  */
+  orange: "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardorange.svg",   /* ← URL cardorange.svg */
+  sky:    "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardsky.svg",   /* ← URL cardsky.svg (CYAN) */
+  pink:   "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardred.svg",   /* ← URL del CARD rosa (hoy reutiliza cardred + filtro) */
+  purple: "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardpurple.svg",   /* ← URL cardpurple.svg */
+  brown:  "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardorange.svg",   /* ← URL del CARD marrón (hoy reutiliza cardorange + filtro) */
+  silver: "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardblueman.svg",   /* ← URL cardsilver.svg (antes cardblueman) */
+  red:    "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardred.svg",   /* ← URL cardred.svg */
+  black:  "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardblack.svg",   /* ← URL cardblack.svg */
+  gold:   "https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardgold.svg",   /* ← URL cardgold.svg */
+  white:  "https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg"   /* ← URL CARD blanco (categoría reservada) */
+};
+/* ---- Otras imágenes de la interfaz (opcional: si lo dejas vacío se usa la del HTML) ---- */
+var APP_ASSETS={
+  brandLogo:"",  /* logo de la barra superior   */
+  tcgLogo:"",    /* logo TCG World (Binder y pie) */
+  headIcon:""    /* icono de cartas del panel derecho */
+};
+/* ---- Efectos holográficos de los CARD SVG ----
+   enabled:   true/false (apaga todo el efecto)
+   intensity: brillo general        (0 = nada, 1 = normal, 1.6 = fuerte)
+   speed:     velocidad de reflejos (0.5 = lento, 1 = normal, 2 = rápido)
+   sparkles:  cantidad de destellos (0 = ninguno, 1 = normal, 2 = muchos)
+   holo:      intensidad del arcoíris/prisma (0–1.5)
+   cursor:    true = los reflejos siguen al cursor (solo ratón)
+   variants:  por CARD → colores del prisma (4), color de destello, color del
+              brillo metálico "r,g,b", modo de mezcla CSS y ajustes propios.
+   Para añadir el efecto a otro CARD agrega una entrada con su clave (p. ej. red). */
+var CARD_HOLO={
+  enabled:true,intensity:1,speed:1,holo:1,cursor:true,
+  sparkles:6,      /* nº de destellos ocasionales (0 = ninguno) */
+  tilt:10,         /* inclinación 3D máxima en grados (0 = sin 3D) */
+  lift:1.03,       /* escala al apuntar (debe caber en el padding del botón) */
+  variants:{
+    /* prism: 4 colores del foil · spark: color de destellos · sheen: "r,g,b" del brillo metálico · sheenA: su opacidad
+       blend: modo de fusión del foil · rest/peak: visibilidad en reposo / bajo el cursor (0–1)
+       glare/glareBlend: luz especular · sheenBlend: modo del destello metálico */
+    gold:  {prism:["#ffe08a","#fff3c4","#ffbf5e","#f6dc7a"],spark:"#fff8dc",sheen:"255,238,175",sheenA:.6,blend:"overlay",rest:.10,peak:.50,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"},
+    /* NEGRO: color-dodge y soft-light no pueden aclarar un píxel negro puro; reposo 0 = SVG original intacto */
+    black: {prism:["#ff5fd2","#5fd6ff","#7dff8f","#ffd55f"],spark:"#ffffff",sheen:"215,225,255",sheenA:.14,blend:"color-dodge",rest:0,peak:.34,glare:.16,glareBlend:"soft-light",sheenBlend:"screen"},
+    silver:{prism:["#dfe9ff","#ffffff","#b9c9ff","#e0fff6"],spark:"#ffffff",sheen:"255,255,255",sheenA:.55,blend:"overlay",rest:.10,peak:.46,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"}
+  }
+};
+var CARD_HOLO_ALIAS={blueman:"silver"};  /* identificador interno → clave de arriba */
+/* Dispositivos limitados o con "reducir movimiento": se atenúan/apagan los efectos secundarios */
+var FX_LITE=(function(){try{var c=navigator.connection||{};return(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2)||(navigator.deviceMemory&&navigator.deviceMemory<=2)||!!c.saveData}catch(e){return false}})();
+var FX_MQ=window.matchMedia?window.matchMedia("(prefers-reduced-motion: reduce)"):null;
+function fxSync(){document.documentElement.classList.toggle("fx-reduced",!!(FX_MQ&&FX_MQ.matches))}
+fxSync();if(FX_MQ){if(FX_MQ.addEventListener)FX_MQ.addEventListener("change",fxSync);else if(FX_MQ.addListener)FX_MQ.addListener(fxSync)}
+/* Decodificación asíncrona de TODAS las imágenes creadas por script (no bloquea el hilo principal) */
+(function(){var ce=document.createElement;document.createElement=function(t){var n=ce.apply(this,arguments);if(typeof t==="string"&&t.toLowerCase()==="img")n.decoding="async";return n}})();
+/* Aplica las URLs de CARD_SVG a los círculos de color (el resto del código lee data-src) */
+(function(){
+  var alias={blueman:"silver"};
+  document.querySelectorAll("#card-color-pop .c-swatch[data-var]").forEach(function(b){
+    var k=alias[b.dataset.var]||b.dataset.var;
+    if(CARD_SVG[k])b.dataset.src=CARD_SVG[k];
+  });
+  var im=document.getElementById("card-svg-img");if(im&&CARD_SVG.green)im.src=CARD_SVG.green;
+  document.querySelectorAll("[data-asset]").forEach(function(e){var u=APP_ASSETS[e.dataset.asset];if(u)e.src=u});
+})();
+/* Precarga en reposo de los CARD SVG para que el cambio de color sea instantáneo (usa la caché del navegador) */
+(function(){var go=function(){Object.keys(CARD_SVG).forEach(function(k){var i=new Image();i.decoding="async";i.src=CARD_SVG[k]})};(window.requestIdleCallback||function(f){setTimeout(f,1500)})(go)})();
+/* Escala automática: si la ventana es menor que 1303×608 se reduce el marco completo; si cabe, no se toca nada */
+(function(){var fr=document.getElementById("frame"),q=0;if(!fr)return;
+  function fit(){q=0;var sc=Math.min(1,window.innerWidth/1303,window.innerHeight/608);fr.style.transform=sc<1?"scale("+sc+")":""}
+  window.addEventListener("resize",function(){if(!q)q=requestAnimationFrame(fit)},{passive:true});fit()})();
 var $=function(i){return document.getElementById(i)};
 var BACK="https://cdn2.bulbagarden.net/upload/1/17/Cardback.jpg";
 var TCGDEX="https://api.tcgdex.net/v2/en",PTCG="https://api.pokemontcg.io/v2/cards",N=8,PER=4;
@@ -2789,6 +2986,7 @@ function setCardSvgVariant(key){
   var extraFx=b.dataset.fx?(" "+b.dataset.fx):"";
   if(im){
     im.src=b.dataset.src;
+    applyCardHolo(key,b.dataset.src);
     im.style.filter="drop-shadow(0 2px 8px rgba(0,0,0,.45))"+extraFx;
     if(key==="gold"||key==="black"){
       im.classList.remove("badge-unlock-fx");
@@ -3043,8 +3241,8 @@ var _applyLang=applyLang;applyLang=function(){_applyLang();bdBadge(false);if(bdI
 /* ===== POKÉMON TV + historial de últimas cartas abiertas ===== */
 Object.assign(T.es,{tv_title:"Pokémon TV",tv_pick:"Elige temporada",tv_season:"Temporada",tv_cards:"Videos de cartas",tv_soon:"Próximamente",tv_soon_msg:"Esta lista estará disponible muy pronto.",tv_yt:"Abrir en YouTube",tv_last:"Tus últimas cartas abiertas",tv_empty:"Aún no has abierto cartas.\nAbre un sobre y aparecerán aquí.",tv_close:"Cerrar",tv_pts:"pts",tv_opened:"Abierta el",bd_points:"Puntos totales"});
 Object.assign(T.en,{tv_title:"Pokémon TV",tv_pick:"Pick a season",tv_season:"Season",tv_cards:"Card videos",tv_soon:"Coming soon",tv_soon_msg:"This playlist will be available very soon.",tv_yt:"Open on YouTube",tv_last:"Your latest opened cards",tv_empty:"You haven't opened any cards yet.\nOpen a pack and they will show up here.",tv_close:"Close",tv_pts:"pts",tv_opened:"Opened on",bd_points:"Total points"});
-Object.assign(T.es,{tv_fail:"No se pudo cargar el reproductor",tv_retry:"Reintentar",tv_alt:"Probar otro método",tv_hint:"Si abres este archivo desde tu PC, súbelo a una web https (por ejemplo GitHub Pages) o ábrelo con http://localhost."});
-Object.assign(T.en,{tv_fail:"The player could not be loaded",tv_retry:"Retry",tv_alt:"Try another method",tv_hint:"If you open this file from your PC, host it on an https site (e.g. GitHub Pages) or open it via http://localhost."});
+Object.assign(T.es,{tv_pop:"Ampliar reproductor",tv_pop_close:"Cerrar ventana",tv_pop_fs:"Pantalla completa",tv_pop_tip:"Usa ⚙ Ajustes del reproductor para elegir Pista de audio (solo si el video tiene varios idiomas) y Subtítulos (CC).",tv_fail:"No se pudo cargar el reproductor",tv_retry:"Reintentar",tv_alt:"Probar otro método",tv_hint:"Si abres este archivo desde tu PC, súbelo a una web https (por ejemplo GitHub Pages) o ábrelo con http://localhost."});
+Object.assign(T.en,{tv_pop:"Enlarge player",tv_pop_close:"Close window",tv_pop_fs:"Full screen",tv_pop_tip:"Use ⚙ player Settings to choose Audio track (only if the video has several languages) and Subtitles (CC).",tv_fail:"The player could not be loaded",tv_retry:"Retry",tv_alt:"Try another method",tv_hint:"If you open this file from your PC, host it on an https site (e.g. GitHub Pages) or open it via http://localhost."});
 /* Listas de reproducción: pega aquí el ID o el enlace completo de cada playlist (vacío = "Próximamente") */
 var TV_SEASONS=[
   {n:1,title:"Indigo League",list:"PLRcHmntfmJ8CnSmj4C284-a1euH518aQa",si:"kqWj_pvxthrR0m0C"},
@@ -3080,20 +3278,26 @@ function tvBuildMenu(){
     b.addEventListener("click",function(){tvSelect(it.id)});
     box.appendChild(b)})}
 /* Reproductor: embed oficial de YouTube ("Compartir > Insertar"). El botón ↻ prueba un método alternativo (relé https). */
-var tvMode=0,tvFrame=null,tvLid="",tvSi="";
-function tvDirectSrc(lid,si){return"https://www.youtube.com/embed/videoseries?"+(si?"si="+encodeURIComponent(si)+"&":"")+"list="+encodeURIComponent(lid)+"&autoplay=1"}
+var tvMode=0,tvFrame=null,tvLid="",tvSi="";var tvSt={t:0,vid:"",idx:-1},tvpFrame=null,tvpSt={t:0,vid:"",idx:-1};
+function tvOrigin(){return/^https?:$/.test(location.protocol)?"&origin="+encodeURIComponent(location.origin):""}
+function tvDirectSrc(lid,si,rs,extra){
+  /* rs={vid,t}: reanuda en el video y segundo indicados (para pasar entre reproductor normal y ampliado) */
+  var base=(rs&&rs.vid)?"https://www.youtube.com/embed/"+encodeURIComponent(rs.vid)+"?list="+encodeURIComponent(lid)+"&start="+Math.max(0,Math.floor(rs.t||0))+"&autoplay=1"
+    :"https://www.youtube.com/embed/videoseries?"+(si?"si="+encodeURIComponent(si)+"&":"")+"list="+encodeURIComponent(lid)+"&autoplay=1";
+  return base+"&enablejsapi=1"+tvOrigin()+(extra||"")}
 function tvRelaySrc(lid){
   var yt="https://www.youtube.com/embed/videoseries?list="+encodeURIComponent(lid)+"&amp;autoplay=1";
   var html='<!doctype html><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#000}iframe{position:fixed;inset:0;width:100%;height:100%;border:0}</style><iframe src="'+yt+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
   return"https://httpbin.org/base64/"+btoa(html).replace(/\+/g,"-").replace(/\//g,"_")}
-function tvStop(){tvFrame=null;var sc=$("tv-screen");if(sc)sc.innerHTML=""}
-function tvMount(lid,mode,si){
+function tvStop(){tvFrame=null;tvSt={t:0,vid:"",idx:-1};var sc=$("tv-screen");if(sc)sc.innerHTML=""}
+function tvMount(lid,mode,si,rs){
   tvStop();tvLid=lid;tvMode=mode;tvSi=si||"";
   var f=document.createElement("iframe");
-  f.src=mode===0?tvDirectSrc(lid,si):tvRelaySrc(lid);
+  f.src=mode===0?tvDirectSrc(lid,si,rs):tvRelaySrc(lid);
   f.title="YouTube video player";f.setAttribute("frameborder","0");
   f.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
   f.referrerPolicy="strict-origin-when-cross-origin";f.allowFullscreen=true;
+  if(mode===0)ytHook(f);
   tvFrame=f;$("tv-screen").appendChild(f)}
 function tvAlt(){if(!tvLid||!tvOpen)return;tvMount(tvLid,tvMode===0?1:0,tvSi)}
 function tvSelect(id,force){
@@ -3139,7 +3343,7 @@ function closeTV(noRestore){
   if(!tvOpen)return;
   tvOpen=false;tvCur=null;tvUnpaint();
   $("sec-left").classList.remove("tv-on");$("tv").classList.remove("open");$("tv").setAttribute("aria-hidden","true");$("btn-tv").classList.remove("on");
-  tvStop();tvZoomClose();
+  tvStop();tvZoomClose();tvPopClose(true);
   if(tvHadPack&&noRestore!==true&&!busy&&cuota().left>0)mostrarSimuladorSobre(true);
   tvHadPack=false}
 document.addEventListener("keydown",function(e){if(e.key!=="Escape"||!tvOpen)return;if($("tv-zoom").classList.contains("open"))tvZoomClose();else closeTV()});
@@ -3182,7 +3386,7 @@ function tvZoomClose(){$("tv-zoom").classList.remove("open")}
   st.addEventListener("click",function(e){if(st._moved){e.stopPropagation();e.preventDefault()}},true);
   st.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)&&st.scrollWidth>st.clientWidth){st.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
 })();
-function tvLang(){var al=$("tv-alt");if(al)al.title=tr("tv_alt");if(tvOpen){tvBuildMenu();var it=tvItem(tvCur);$("tv-badge").textContent=it.n?tr("tv_season")+" "+it.n:tr(it.tkey);$("tv-now").textContent=tvName(it);var so=document.querySelector("#tv-screen .tv-soon");if(so){so.lastChild.textContent=tr("tv_soon_msg");so.querySelector("b").textContent=tr("tv_soon")}}}
+function tvLang(){var al=$("tv-alt");if(al)al.title=tr("tv_alt");var pb=$("tv-pop");if(pb){pb.title=tr("tv_pop");pb.setAttribute("aria-label",tr("tv_pop"))}if(tvOpen){tvBuildMenu();var it=tvItem(tvCur);$("tv-badge").textContent=it.n?tr("tv_season")+" "+it.n:tr(it.tkey);$("tv-now").textContent=tvName(it);var so=document.querySelector("#tv-screen .tv-soon");if(so){so.lastChild.textContent=tr("tv_soon_msg");so.querySelector("b").textContent=tr("tv_soon")}}}
 var _applyLang2=applyLang;applyLang=function(){_applyLang2();tvLang()};
 
 /* ============================================================================
@@ -3768,11 +3972,188 @@ if(est.pack&&est.pack.length){
   lastMsg=cuota().left<=0?"limit":"empty";msg(lastMsg);
 }
 
+
+/* ===== CARD SVG: película holográfica + inclinación 3D ===== */
+var holoSparkN=-1;
+function holoBuildSparks(n){
+  var c=$("h-spark");if(!c||n===holoSparkN)return;holoSparkN=n;c.innerHTML="";
+  var seed=7;function rnd(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646}
+  for(var i=0;i<n;i++){
+    var b=document.createElement("b");
+    b.style.left=(14+rnd()*72).toFixed(1)+"%";b.style.top=(10+rnd()*80).toFixed(1)+"%";
+    var dur=5.5+rnd()*5;b.style.setProperty("--dur",dur.toFixed(2)+"s");b.style.setProperty("--dl",(-rnd()*dur).toFixed(2)+"s");
+    c.appendChild(b)}
+}
+function applyCardHolo(key,src){
+  var h=$("card-holo");if(!h)return;
+  var k=CARD_HOLO_ALIAS[key]||key,v=CARD_HOLO.variants[k];
+  if(!CARD_HOLO.enabled||!v||!src){h.classList.remove("on");return}
+  document.documentElement.classList.toggle("fx-lite",!!FX_LITE);
+  var st=h.style,pr=v.prism||[];
+  st.setProperty("--holo-mask",'url("'+src+'")');
+  st.setProperty("--hint",String(CARD_HOLO.intensity));
+  st.setProperty("--hspeed",String(Math.max(.1,CARD_HOLO.speed)));
+  st.setProperty("--hholo",String(CARD_HOLO.holo));
+  for(var i=0;i<4;i++)st.setProperty("--hc"+(i+1),pr[i%pr.length]||"#fff");
+  st.setProperty("--hsheena",String(v.sheenA!=null?v.sheenA:.6));st.setProperty("--hspark",v.spark||"#fff");st.setProperty("--hsheen",v.sheen||"255,255,255");
+  st.setProperty("--hrest",String(v.rest!=null?v.rest:.08));st.setProperty("--hpeak",String(v.peak!=null?v.peak:.5));st.setProperty("--hglare",String(v.glare!=null?v.glare:.5));
+  h.querySelector(".h-foil").style.mixBlendMode=v.blend||"overlay";
+  h.querySelector(".h-glare").style.mixBlendMode=v.glareBlend||"soft-light";
+  h.querySelector(".h-sheen").style.mixBlendMode=v.sheenBlend||v.glareBlend||"soft-light";
+  h.querySelector(".h-spark").style.mixBlendMode="screen";
+  holoBuildSparks(FX_LITE?0:Math.max(0,Math.min(16,CARD_HOLO.sparkles|0)));
+  h.classList.add("on");
+}
+(function(){
+  var b=$("card-svg-btn"),t=$("cs-tilt"),q=0,cur=null,active=false;
+  if(!b||!t)return;
+  function paint(){q=0;if(!cur)return;var s=t.style;for(var k in cur)s.setProperty("--"+k,cur[k])}
+  function rest(){active=false;t.classList.remove("is-tilt");cur={rx:"0deg",ry:"0deg",mx:"50%",my:"32%",posx:"50%",posy:"50%",o:0,sc:1};if(!q)q=requestAnimationFrame(paint)}
+  function aim(e){
+    if(FX_MQ&&FX_MQ.matches)return;
+    var r=b.getBoundingClientRect();if(!r.width||!r.height)return;
+    var x=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y=Math.max(0,Math.min(1,(e.clientY-r.top)/r.height));
+    var m=CARD_HOLO.tilt||0,cx=(x-.5)*2,cy=(y-.5)*2;
+    active=true;t.classList.add("is-tilt");
+    cur={rx:(-cx*m).toFixed(2)+"deg",ry:(cy*m).toFixed(2)+"deg",mx:(x*100).toFixed(1)+"%",my:(y*100).toFixed(1)+"%",
+         posx:(30+x*40).toFixed(1)+"%",posy:(30+y*40).toFixed(1)+"%",o:1,sc:m?(CARD_HOLO.lift||1.03):1};
+    if(!q)q=requestAnimationFrame(paint)}
+  /* Ratón/lápiz: sigue el cursor. Táctil: solo mientras el dedo está apoyado, y siempre vuelve a su sitio */
+  b.addEventListener("pointermove",function(e){if(e.pointerType==="touch"&&!active)return;aim(e)},{passive:true});
+  b.addEventListener("pointerdown",function(e){if(e.pointerType==="touch")aim(e)},{passive:true});
+  b.addEventListener("pointerleave",rest);
+  b.addEventListener("pointerup",function(e){if(e.pointerType==="touch")rest()});
+  b.addEventListener("pointercancel",rest);b.addEventListener("lostpointercapture",rest);b.addEventListener("touchend",rest,{passive:true});b.addEventListener("touchcancel",rest,{passive:true});
+  window.addEventListener("blur",rest);
+  document.addEventListener("visibilitychange",function(){if(document.hidden)rest()});
+})();
+
+/* ===== MULTI / HP: capa superior del documento (Popover API) =====
+   Un elemento en la "top layer" se pinta por encima de cualquier z-index, transform, overflow o
+   contexto de apilamiento de los contenedores padres (mismo mecanismo que los diálogos nativos). */
+var TL_OK=typeof HTMLElement!=="undefined"&&typeof HTMLElement.prototype.showPopover==="function";
+function tlPlace(pop,anchor,alignRight){
+  var fr=$("frame"),m=fr&&/scale\(([\d.]+)\)/.exec(fr.style.transform||""),sc=m?parseFloat(m[1]):1,
+      r=anchor.getBoundingClientRect(),w=pop.offsetWidth*sc;
+  var left=alignRight?r.right-w:r.left;
+  left=Math.max(4,Math.min(left,window.innerWidth-w-4));
+  pop.style.left=left+"px";pop.style.top=(r.bottom+8*sc)+"px";pop.style.right="auto";
+  pop.style.transform=sc<1?"scale("+sc+")":"";
+}
+function tlSync(){
+  [["lg-pop",".lgw",false],["hp-pop","#hp-pill",true]].forEach(function(d){
+    var pop=$(d[0]);if(!pop||!TL_OK)return;
+    var open=pop.classList.contains("open"),isTL=false;
+    try{isTL=pop.matches(":popover-open")}catch(e){}
+    if(open){
+      if(!isTL){try{pop.showPopover()}catch(e){}}
+      var anchor=document.querySelector(d[1])||pop.parentNode;
+      pop.classList.add("tl");tlPlace(pop,anchor,d[2]);
+    }else{
+      if(isTL){try{pop.hidePopover()}catch(e){}}
+      pop.classList.remove("tl");pop.style.left=pop.style.top=pop.style.right=pop.style.transform="";
+    }
+  });
+}
+window.addEventListener("resize",function(){if(TL_OK)requestAnimationFrame(tlSync)},{passive:true});
+
+/* ===== Pokémon TV · ventana ampliada (POP-UP) =====
+   Usa el reproductor oficial de YouTube con TODOS sus controles (⚙ ajustes, CC, pista de audio).
+   La API pública de YouTube NO permite elegir la pista de audio por código: se elige en el ⚙ nativo.
+   Con enablejsapi se lee (solo lectura) el video y el segundo actuales para reanudar al abrir/cerrar. */
+function ytPost(f,msg){try{f&&f.contentWindow&&f.contentWindow.postMessage(JSON.stringify(msg),"https://www.youtube.com")}catch(e){}}
+function ytHook(f){
+  f.addEventListener("load",function(){
+    var hello=function(){ytPost(f,{event:"listening",id:"tv",channel:"widget"})};
+    hello();setTimeout(hello,1200);
+  });
+}
+window.addEventListener("message",function(e){
+  if(e.origin!=="https://www.youtube.com")return;
+  var st=null;
+  if(tvFrame&&e.source===tvFrame.contentWindow)st=tvSt;else if(tvpFrame&&e.source===tvpFrame.contentWindow)st=tvpSt;
+  if(!st)return;
+  var d=e.data;if(typeof d==="string"){try{d=JSON.parse(d)}catch(x){return}}
+  if(!d||typeof d!=="object")return;
+  var inf=d.event==="infoDelivery"?d.info:(d.event==="initialDelivery"?d.info:null);
+  if(!inf)return;
+  if(typeof inf.currentTime==="number")st.t=inf.currentTime;
+  if(inf.videoData&&inf.videoData.video_id)st.vid=inf.videoData.video_id;
+  if(typeof inf.playlistIndex==="number")st.idx=inf.playlistIndex;
+});
+var tvpBuilt=false,tvpTimer=0,tvpPrevFocus=null;
+function tvPopBuild(){
+  if(tvpBuilt)return;tvpBuilt=true;
+  var o=document.createElement("div");o.id="tvp";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-hidden","true");
+  o.innerHTML='<div id="tvp-win"><div id="tvp-head"><svg class="tvp-ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 3l4 3 4-3"/></svg><b id="tvp-title"></b>'
+    +'<button type="button" class="btn" id="tvp-fs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>'
+    +'<button type="button" class="btn slate" id="tvp-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button></div>'
+    +'<div id="tvp-screen"></div><div id="tvp-tip"></div></div>';
+  document.body.appendChild(o);
+  o.addEventListener("click",function(e){if(e.target===o)tvPopClose()});
+  $("tvp-x").addEventListener("click",function(){tvPopClose()});
+  var fs=$("tvp-fs");
+  if(!(document.fullscreenEnabled||document.webkitFullscreenEnabled))fs.style.display="none";
+  fs.addEventListener("click",function(){var t=$("tvp-screen"),r=t.requestFullscreen||t.webkitRequestFullscreen;if(r)try{var pr=r.call(t);if(pr&&pr.catch)pr.catch(function(){})}catch(x){}});
+  document.addEventListener("keydown",function(e){
+    if(e.key!=="Escape"||!o.classList.contains("open")||document.fullscreenElement)return;
+    e.stopImmediatePropagation();tvPopClose()},true);
+}
+function tvPopOpen(){
+  if(!tvOpen||!tvLid)return;
+  tvPopBuild();
+  var o=$("tvp");if(o.classList.contains("open"))return;
+  var rs=tvSt.vid?{vid:tvSt.vid,t:tvSt.t}:null;
+  if(tvFrame)ytPost(tvFrame,{event:"command",func:"pauseVideo",args:""});
+  $("tvp-title").textContent=$("tv-now").textContent||"Pokémon TV";
+  $("tvp-tip").textContent=tr("tv_pop_tip");
+  $("tvp-x").title=tr("tv_pop_close");$("tvp-x").setAttribute("aria-label",tr("tv_pop_close"));
+  $("tvp-fs").title=tr("tv_pop_fs");$("tvp-fs").setAttribute("aria-label",tr("tv_pop_fs"));
+  var f=document.createElement("iframe");
+  f.src=tvDirectSrc(tvLid,tvSi,rs,"&playsinline=1&fs=1&hl="+(L==="es"?"es":"en"));
+  f.title="YouTube video player";f.setAttribute("frameborder","0");
+  f.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen";
+  f.referrerPolicy="strict-origin-when-cross-origin";f.allowFullscreen=true;
+  tvpSt={t:rs?rs.t:0,vid:rs?rs.vid:"",idx:-1};
+  ytHook(f);tvpFrame=f;$("tvp-screen").appendChild(f);
+  tvpPrevFocus=document.activeElement;
+  clearTimeout(tvpTimer);o.classList.add("open");o.setAttribute("aria-hidden","false");
+  void o.offsetWidth;o.classList.add("show");
+  setTimeout(function(){var x=$("tvp-x");if(x)x.focus()},60);
+}
+function tvPopClose(noRestore){
+  var o=$("tvp");if(!o||!o.classList.contains("open"))return;
+  var rs=tvpSt.vid?{vid:tvpSt.vid,t:tvpSt.t}:null;
+  if(document.fullscreenElement&&document.exitFullscreen)try{document.exitFullscreen()}catch(x){}
+  o.classList.remove("show");o.setAttribute("aria-hidden","true");
+  var f=tvpFrame;tvpFrame=null;
+  if(f){f.src="about:blank";if(f.parentNode)f.parentNode.removeChild(f)}
+  clearTimeout(tvpTimer);
+  tvpTimer=setTimeout(function(){o.classList.remove("open")},noRestore===true?0:260);
+  if(noRestore===true)o.classList.remove("open");
+  if(noRestore!==true&&tvOpen&&tvLid&&rs)tvMount(tvLid,0,tvSi,rs);
+  if(tvpPrevFocus&&tvpPrevFocus.focus)try{tvpPrevFocus.focus()}catch(x){}
+}
 /* ===== Ajustes JS ===== */
+var __popFrontLast=null;
+/* Si esta página está dentro de un iframe (Xatframe), NINGÚN z-index/popover interno puede superar la caja de chat
+   de xat, que vive en el documento padre. Se avisa al padre para que suba el iframe mientras haya un panel abierto. */
+function notifyParentFront(on){
+  if(on===__popFrontLast)return;__popFrontLast=on;
+  try{if(window.parent&&window.parent!==window)window.parent.postMessage({type:"xatframe:front",front:!!on,id:"tcg-frame"},"*")}catch(e){}
+}
+window.addEventListener("pagehide",function(){notifyParentFront(false)});
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Escape")return;
+  var o=($("lg-pop")&&$("lg-pop").classList.contains("open"))||($("hp-pop")&&$("hp-pop").classList.contains("open"));
+  if(o&&typeof closeMenus==="function")closeMenus();
+});
 function syncPopFront(){
   var h=document.querySelector("header");if(!h)return;
   var o=($("lg-pop")&&$("lg-pop").classList.contains("open"))||($("hp-pop")&&$("hp-pop").classList.contains("open"));
   h.classList.toggle("pop-front",!!o);
+  if(typeof tlSync==="function")tlSync();
+  notifyParentFront(!!o);
 }
 ["toggleCardLangsMenu","toggleHpPop","closeMenus"].forEach(function(n){
   var f=window[n];if(typeof f!=="function")return;
@@ -3794,7 +4175,8 @@ document.addEventListener("pointerdown",function(e){
   });
   wrap.addEventListener("mouseenter",function(){clearTimeout(t)});
 })();
-setInterval(refrescar,1000);
+setInterval(function(){if(!document.hidden)refrescar()},1000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)refrescar()});
 </script>
 </body>
 </html>
