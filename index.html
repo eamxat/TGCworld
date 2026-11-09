@@ -695,7 +695,7 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
  transform:translateZ(0) rotateY(var(--rx)) rotateX(var(--ry)) scale(var(--sc));transform-origin:50% 50%;
  transition:transform .7s cubic-bezier(.22,1,.36,1)}
 .cs-tilt.is-tilt{transition:transform .09s linear;will-change:transform}
-.card-holo{display:none;position:absolute;inset:0;pointer-events:none;contain:paint}
+.card-holo{display:none;position:absolute;inset:0;pointer-events:none}
 .card-holo.on{display:block}
 .card-holo .hl{position:absolute;inset:0;pointer-events:none;overflow:hidden;
  -webkit-mask-image:var(--holo-mask);mask-image:var(--holo-mask);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
@@ -739,7 +739,8 @@ html.fx-reduced .card-holo .h-sheen::before,html.fx-reduced .card-holo .h-spark{
 #tv-pop svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 #tv-pop:hover{color:var(--accent);border-color:var(--accent);transform:scale(1.12)}
 #tvp{position:fixed;inset:0;z-index:2147483600;display:none;align-items:center;justify-content:center;padding:10px;background:rgba(5,6,10,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .25s ease;font-family:'Poppins',ui-sans-serif,system-ui,sans-serif}
-#tvp.open{display:flex}
+#tvp.open{display:flex;pointer-events:none}
+#tvp-win{pointer-events:auto}
 #tvp.show{opacity:1}
 #tvp-win{width:min(96vw,calc((100vh - 96px) * 16 / 9));max-width:1280px;display:flex;flex-direction:column;gap:10px;padding:12px 14px 12px;border-radius:20px;border:1px solid var(--pnl-line);background:linear-gradient(180deg,rgb(var(--pnl-top)),rgb(var(--pnl-bot)));box-shadow:var(--shadow-pnl);color:var(--txt-main);transform:translateY(14px) scale(.97);transition:transform .3s cubic-bezier(.22,1,.36,1)}
 #tvp.show #tvp-win{transform:none}
@@ -854,14 +855,14 @@ html.fx-reduced .card-holo .h-sheen::before,html.fx-reduced .card-holo .h-spark{
 
     <!-- Contador de HP (Pokémon Points) permanentemente visible al lado de Pokémon TV -->
     <div class="apw" style="margin-left:-6px">
-      <button id="hp-pill" class="hp-pill" type="button" onclick="toggleHpPop(event)" title="Pokémon Points (HP) · Racha y Recompensas">
+      <button id="hp-pill" class="hp-pill" type="button" onclick="toggleHpPop(event)" title="Puntos de experiencia (XP) · Racha y Recompensas">
         <span class="hp-ico">⚡</span>
-        <span class="hp-lbl">HP</span>
+        <span class="hp-lbl">XP</span>
         <span id="hp-val">0</span>
       </button>
       <div id="hp-pop" popover="manual" onclick="event.stopPropagation()">
         <div class="hp-pop-head">
-          <b id="hp-pop-title">Pokémon Points (HP)</b>
+          <b id="hp-pop-title">Puntos de experiencia (XP)</b>
           <span id="hp-streak-lbl" style="font-size:10px;color:var(--accent-soft);font-weight:700">Racha: 1d</span>
         </div>
         <div class="hp-streak-bar" id="hp-streak-bar"></div>
@@ -1163,7 +1164,7 @@ var CARD_HOLO={
        glare/glareBlend: luz especular · sheenBlend: modo del destello metálico */
     gold:  {prism:["#ffe08a","#fff3c4","#ffbf5e","#f6dc7a"],spark:"#fff8dc",sheen:"255,238,175",sheenA:.6,blend:"overlay",rest:.10,peak:.50,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"},
     /* NEGRO: color-dodge y soft-light no pueden aclarar un píxel negro puro; reposo 0 = SVG original intacto */
-    black: {prism:["#ff5fd2","#5fd6ff","#7dff8f","#ffd55f"],spark:"#ffffff",sheen:"215,225,255",sheenA:.14,blend:"color-dodge",rest:0,peak:.34,glare:.16,glareBlend:"soft-light",sheenBlend:"screen"},
+    black: {prism:["#ff5fd2","#5fd6ff","#7dff8f","#ffd55f"],spark:"#ffffff",sheen:"215,225,255",sheenA:.14,blend:"color-dodge",rest:0,peak:.22,glare:.12,glareBlend:"soft-light",sheenBlend:"screen"},
     silver:{prism:["#dfe9ff","#ffffff","#b9c9ff","#e0fff6"],spark:"#ffffff",sheen:"255,255,255",sheenA:.55,blend:"overlay",rest:.10,peak:.46,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"}
   }
 };
@@ -3570,8 +3571,8 @@ function registrarTransaccionHP(txId,cantidad,motivoEs,motivoEn){
   hpState.history.unshift({
     id:txId,
     amount:amt,
-    reasonEs:motivoEs||"Recompensa HP",
-    reasonEn:motivoEn||motivoEs||"HP Reward",
+    reasonEs:motivoEs||"Recompensa XP",
+    reasonEn:motivoEn||motivoEs||"XP Reward",
     date:new Date().toISOString()
   });
   hpState.history=hpState.history.slice(0,35);
@@ -3617,7 +3618,7 @@ function verificarRecompensaIngresoDiario(){
   );
   if(ganado>0){
     setTimeout(function(){
-      bdToast("⚡ +"+ganado+" HP · "+(L==="es"?"Recompensa diaria (Día "+racha+"/7)":"Daily Login (Day "+racha+"/7)"));
+      bdToast("⚡ +"+ganado+" XP · "+(L==="es"?"Recompensa diaria (Día "+racha+"/7)":"Daily Login (Day "+racha+"/7)"));
     },650);
   }
 }
@@ -3650,7 +3651,7 @@ function otorgarHpPorSobre(listaCartas,numSobre){
   );
   if(ganado>0){
     setTimeout(function(){
-      bdToast("⚡ +"+ganado+" HP · "+(L==="es"?"Sobre abierto":"Pack opened"));
+      bdToast("⚡ +"+ganado+" XP · "+(L==="es"?"Sobre abierto":"Pack opened"));
     },900);
   }
 }
@@ -3691,7 +3692,7 @@ function desbloquearInsigniaCard(key,nombrePokemon,silencioso){
         imgBtn.classList.add("badge-unlock-fx");
       }
     }
-    bdToast("🏅 "+(L==="es"?"¡Insignia ":"Badge ")+meta.label+(L==="es"?" desbloqueada con ":" unlocked by ")+(nombrePokemon||"Pokémon")+"! (+"+bono+" HP)");
+    bdToast("🏅 "+(L==="es"?"¡Insignia ":"Badge ")+meta.label+(L==="es"?" desbloqueada con ":" unlocked by ")+(nombrePokemon||"Pokémon")+"! (+"+bono+" XP)");
   }
   return true;
 }
@@ -3785,6 +3786,8 @@ function sincronizarSwatchesInsignias(){
 
 function actualizarUIProgresionHP(pulse){
   var vEl=$("hp-val"),pill=$("hp-pill");
+  if($("hp-pop-title"))$("hp-pop-title").textContent=L==="es"?"Puntos de experiencia (XP)":"Experience Points (XP)";
+  if(pill)pill.title=(L==="es"?"Puntos de experiencia (XP) · Racha y Recompensas":"Experience Points (XP) · Streak & Rewards");
   if(vEl)vEl.textContent=(+hpState.hp||0).toLocaleString(L==="es"?"es":"en");
   if(pill&&pulse){
     pill.classList.remove("pulse");
@@ -3810,8 +3813,8 @@ function actualizarUIProgresionHP(pulse){
     list.innerHTML="";
     (hpState.history||[]).slice(0,12).forEach(function(item){
       var row=el("div","hp-log-item");
-      row.appendChild(el("span",null,L==="es"?item.reasonEs:item.reasonEn));
-      row.appendChild(el("b",null,"+"+item.amount+" HP"));
+      row.appendChild(el("span",null,String(L==="es"?item.reasonEs:item.reasonEn).replace(/\bHP\b/g,"XP")));
+      row.appendChild(el("b",null,"+"+item.amount+" XP"));
       list.appendChild(row);
     });
   }
@@ -4084,7 +4087,7 @@ window.addEventListener("message",function(e){
 var tvpBuilt=false,tvpTimer=0,tvpPrevFocus=null;
 function tvPopBuild(){
   if(tvpBuilt)return;tvpBuilt=true;
-  var o=document.createElement("div");o.id="tvp";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-hidden","true");
+  var o=document.createElement("div");o.id="tvp";o.setAttribute("role","dialog");o.setAttribute("aria-modal","false");o.setAttribute("aria-hidden","true");
   o.innerHTML='<div id="tvp-win"><div id="tvp-head"><svg class="tvp-ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 3l4 3 4-3"/></svg><b id="tvp-title"></b>'
     +'<button type="button" class="btn" id="tvp-fs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>'
     +'<button type="button" class="btn slate" id="tvp-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button></div>'
@@ -4118,14 +4121,14 @@ function tvPopOpen(){
   ytHook(f);tvpFrame=f;$("tvp-screen").appendChild(f);
   tvpPrevFocus=document.activeElement;
   clearTimeout(tvpTimer);o.classList.add("open");o.setAttribute("aria-hidden","false");
-  void o.offsetWidth;o.classList.add("show");
+  void o.offsetWidth;o.classList.add("show");syncFrontState();
   setTimeout(function(){var x=$("tvp-x");if(x)x.focus()},60);
 }
 function tvPopClose(noRestore){
   var o=$("tvp");if(!o||!o.classList.contains("open"))return;
   var rs=tvpSt.vid?{vid:tvpSt.vid,t:tvpSt.t}:null;
   if(document.fullscreenElement&&document.exitFullscreen)try{document.exitFullscreen()}catch(x){}
-  o.classList.remove("show");o.setAttribute("aria-hidden","true");
+  o.classList.remove("show");o.setAttribute("aria-hidden","true");syncFrontState();
   var f=tvpFrame;tvpFrame=null;
   if(f){f.src="about:blank";if(f.parentNode)f.parentNode.removeChild(f)}
   clearTimeout(tvpTimer);
@@ -4135,12 +4138,74 @@ function tvPopClose(noRestore){
   if(tvpPrevFocus&&tvpPrevFocus.focus)try{tvpPrevFocus.focus()}catch(x){}
 }
 /* ===== Ajustes JS ===== */
-var __popFrontLast=null;
-/* Si esta página está dentro de un iframe (Xatframe), NINGÚN z-index/popover interno puede superar la caja de chat
-   de xat, que vive en el documento padre. Se avisa al padre para que suba el iframe mientras haya un panel abierto. */
+var __popFrontLast=null,__hostSaved=null;
+/* Si esta página va dentro de un iframe (Xatframe), ningún z-index ni popover INTERNO puede superar la caja de chat
+   de xat, que vive en el documento padre. Dos vías mientras haya un panel abierto (MULTI, XP o video ampliado):
+   1) mismo origen / srcdoc: se sube el propio <iframe> y sus ancestros posicionados (se restaura al cerrar).
+   2) cualquier origen: postMessage({type:"xatframe:front",front:true|false}) para que el padre suba el iframe. */
+/* ¿Hay interfaz TCG bajo ese punto? (html, body, #frame y la franja del header no cuentan: ahí debe responder el chat) */
+function isUiPoint(x,y){
+  var t=document.elementFromPoint(x,y);
+  return !!t&&t!==document.documentElement&&t!==document.body&&t.id!=="frame"&&t.tagName!=="HEADER"&&t.tagName!=="MAIN";
+}
+var __hostFE=null,__hostPE=null,__hostPd=null;
+function __hostPoint(e){ /* ratón en el documento PADRE (el iframe está en pointer-events:none) */
+  var fe=__hostFE;if(!fe)return;
+  var r=fe.getBoundingClientRect(),k=r.width?fe.clientWidth/r.width:1;
+  setHostCapture(isUiPoint((e.clientX-r.left)*k,(e.clientY-r.top)*k));
+}
+function __selfPoint(e){if(__hostFE&&e.pointerType!=="touch")setHostCapture(isUiPoint(e.clientX,e.clientY))}
+function setHostCapture(on){
+  var fe=__hostFE;if(!fe)return;
+  var v=on?"auto":"none";if(fe.style.pointerEvents!==v)fe.style.pointerEvents=v;
+}
+function raiseHostFrame(on){
+  try{
+    var fe=window.frameElement;if(!fe)return;
+    if(on&&!__hostSaved){
+      __hostSaved=[];
+      for(var n=fe;n&&n.nodeType===1&&n!==document.documentElement&&n.ownerDocument===fe.ownerDocument;n=n.parentElement){
+        var cs=fe.ownerDocument.defaultView.getComputedStyle(n);
+        if(n!==fe&&cs.position==="static")continue;
+        __hostSaved.push([n,n.style.position,n.style.zIndex]);
+        if(cs.position==="static")n.style.position="relative";
+        n.style.zIndex="2147483647";
+      }
+      __hostFE=fe;__hostPE=fe.style.pointerEvents;__hostPd=fe.ownerDocument;
+      __hostPd.addEventListener("mousemove",__hostPoint,true);
+      document.addEventListener("pointermove",__selfPoint,true);
+    }else if(!on&&__hostSaved){
+      __hostSaved.forEach(function(r){r[0].style.position=r[1];r[0].style.zIndex=r[2]});__hostSaved=null;
+      try{__hostPd.removeEventListener("mousemove",__hostPoint,true)}catch(e){}
+      document.removeEventListener("pointermove",__selfPoint,true);
+      fe.style.pointerEvents=__hostPE||"";__hostFE=null;__hostPd=null;
+    }
+  }catch(e){}
+}
+/* Origen distinto: el padre pregunta {type:"xatframe:hit",x,y} (coords dentro del iframe) y recibe {type:"xatframe:hit-result",ui:true|false} */
+window.addEventListener("message",function(e){
+  var d=e.data;if(!d||d.type!=="xatframe:hit"||!e.source)return;
+  try{e.source.postMessage({type:"xatframe:hit-result",ui:isUiPoint(+d.x||0,+d.y||0)},"*")}catch(x){}
+});
+/* Origen distinto: mientras el frame está al frente, avisa al padre cada vez que el cursor entra/sale de la interfaz TCG */
+var __lastUi=null;
+function __selfPost(e){
+  if(e.pointerType==="touch")return;
+  var u=isUiPoint(e.clientX,e.clientY);if(u===__lastUi)return;__lastUi=u;
+  try{window.parent.postMessage({type:"xatframe:hit-result",ui:u},"*")}catch(x){}
+}
 function notifyParentFront(on){
   if(on===__popFrontLast)return;__popFrontLast=on;
+  __lastUi=null;
+  if(window.parent&&window.parent!==window){
+    if(on)document.addEventListener("pointermove",__selfPost,true);else document.removeEventListener("pointermove",__selfPost,true);
+  }
+  raiseHostFrame(on);
   try{if(window.parent&&window.parent!==window)window.parent.postMessage({type:"xatframe:front",front:!!on,id:"tcg-frame"},"*")}catch(e){}
+}
+function syncFrontState(){
+  var o=($("lg-pop")&&$("lg-pop").classList.contains("open"))||($("hp-pop")&&$("hp-pop").classList.contains("open"))||($("tvp")&&$("tvp").classList.contains("show"));
+  notifyParentFront(!!o);
 }
 window.addEventListener("pagehide",function(){notifyParentFront(false)});
 document.addEventListener("keydown",function(e){
@@ -4153,7 +4218,7 @@ function syncPopFront(){
   var o=($("lg-pop")&&$("lg-pop").classList.contains("open"))||($("hp-pop")&&$("hp-pop").classList.contains("open"));
   h.classList.toggle("pop-front",!!o);
   if(typeof tlSync==="function")tlSync();
-  notifyParentFront(!!o);
+  syncFrontState();
 }
 ["toggleCardLangsMenu","toggleHpPop","closeMenus"].forEach(function(n){
   var f=window[n];if(typeof f!=="function")return;
