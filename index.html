@@ -226,8 +226,55 @@ html[data-theme="light"] .rp-head-icon{filter:invert(1) brightness(0.15)}
 @keyframes burstOut{0%{opacity:1;transform:scale(.68)}55%{opacity:.95;transform:scale(1.18)}100%{opacity:0;transform:scale(1.42)}}
 
 /* Variantes SVG de la insignia Card (conservan colores originales) */
-.c-swatch[data-var]{box-shadow:0 0 0 1px rgba(0,0,0,.35) inset}
-#card-color-pop{flex-wrap:wrap;justify-content:center;max-width:300px;border-radius:22px}
+.c-swatch[data-var]{box-shadow:0 0 0 1px rgba(0,0,0,.35) inset;position:relative}
+.c-swatch.is-locked{opacity:.28;filter:grayscale(.85) contrast(.8);cursor:not-allowed;border-style:dashed}
+.c-swatch.is-reserved{opacity:.18;filter:grayscale(1);cursor:not-allowed;border-style:dotted}
+.c-swatch.is-locked::after,.c-swatch.is-reserved::after{content:"🔒";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;text-shadow:0 1px 3px #000}
+#card-color-pop{flex-direction:column;align-items:stretch;width:308px;max-width:320px;padding:12px 14px;border-radius:20px;gap:8px}
+.cc-swatches-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
+.cc-info-box{border-top:1px solid var(--pnl-line);padding-top:7px;font-size:10.5px;line-height:1.35;color:var(--txt-soft);text-align:left}
+.cc-info-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:3px}
+.cc-info-head b{color:var(--txt-main);font-size:11.5px;letter-spacing:.03em}
+.cc-rarity-tag{font:700 9.5px ui-monospace,Menlo,Consolas,monospace;padding:1px 6px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--accent-soft)}
+.cc-req{color:var(--txt-muted);font-size:10px}
+.cc-unlocker{margin-top:3px;font-size:10px;color:var(--accent-soft);font-weight:600}
+
+/* Contador HP en la barra superior junto a Pokémon TV */
+.hp-pill{height:22px;display:inline-flex;align-items:center;gap:5px;padding:0 10px;border-radius:999px;border:1px solid var(--pnl-line);
+ background:linear-gradient(180deg,rgba(var(--hd-top),calc(.92*var(--g))),rgba(var(--hd-bot),calc(.92*var(--g))));box-shadow:var(--shadow-bar);
+ font-size:11px;font-weight:700;color:var(--txt-main);white-space:nowrap;cursor:pointer;position:relative;transition:transform .18s ease,border-color .2s ease}
+.hp-pill:hover{border-color:color-mix(in srgb,var(--accent) 60%,transparent);transform:translateY(-1px)}
+.hp-pill .hp-ico{color:var(--accent);font-size:12px;line-height:1;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent) 55%,transparent))}
+.hp-pill .hp-lbl{color:var(--txt-muted);font-size:10px;font-weight:700;letter-spacing:.04em}
+#hp-val{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--accent-soft);font-weight:800;font-size:11.5px}
+.hp-pill.pulse{animation:bdPulse .55s cubic-bezier(.22,1,.36,1)}
+#hp-pop{display:none;position:absolute;right:0;top:calc(100% + 8px);width:295px;padding:12px;border-radius:18px;z-index:160;
+ background:linear-gradient(180deg,rgb(var(--hd-top)),rgb(var(--hd-bot)));border:1px solid var(--pnl-line);box-shadow:var(--shadow-pnl);font-size:11px;color:var(--txt-soft);flex-direction:column;gap:8px;cursor:default}
+#hp-pop.open{display:flex}
+.hp-pop-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--pnl-line);padding-bottom:6px}
+.hp-pop-head b{font-size:12px;color:var(--txt-main)}
+.hp-streak-bar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:2px 0}
+.hp-day{display:flex;flex-direction:column;align-items:center;padding:4px 2px;border-radius:8px;border:1px solid var(--pnl-line);background:rgba(255,255,255,.03);font-size:9px;color:var(--txt-muted)}
+.hp-day.done{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--txt-main);font-weight:700}
+.hp-day b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:9.5px;color:var(--accent-soft)}
+.hp-log-list{max-height:125px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding-right:2px;scrollbar-width:thin;scrollbar-color:var(--accent) transparent}
+.hp-log-item{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:10px;padding:3px 6px;border-radius:7px;background:rgba(255,255,255,.03)}
+.hp-log-item b{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--accent)}
+
+/* Apartado CHEAT CODES dentro de Avatares */
+.av-head-actions{display:flex;align-items:center;gap:8px}
+.av-cheat-toggle{height:28px;padding:0 11px;font-size:11px;letter-spacing:.04em}
+#av-cheat-box{display:none;flex-direction:column;gap:10px;padding:14px;margin:6px 0;border-radius:18px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);background:rgba(0,0,0,.45);z-index:15}
+#av-cheat-box.open{display:flex;animation:fadeInZoom .2s ease}
+.cheat-row{display:flex;gap:8px}
+#cheat-input{flex:1;height:34px;padding:0 12px;border-radius:10px;border:1px solid var(--pnl-line);background:rgba(15,16,22,.9);color:var(--txt-input);font:700 13px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;outline:none;-webkit-user-select:text;user-select:text}
+#cheat-input:focus{border-color:var(--accent);box-shadow:0 0 10px color-mix(in srgb,var(--accent) 35%,transparent)}
+#cheat-msg{min-height:16px;font-size:11px;font-weight:600;text-align:center}
+#cheat-msg.ok{color:#4ade80}
+#cheat-msg.err{color:#ff7b7b}
+#cheat-msg.warn{color:#fbbf24}
+@keyframes specialBadgeUnlock{0%{transform:scale(.5) rotate(-12deg);opacity:0}55%{transform:scale(1.18) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+.badge-unlock-fx{animation:specialBadgeUnlock .85s cubic-bezier(.22,1,.36,1)}
 
 /* Pokébola dorada para cartas de 500 USD o más */
 .gold-poke{position:relative;display:none;width:32px;height:32px;flex-shrink:0;pointer-events:none}
@@ -585,6 +632,27 @@ background-image:url("https://res.cloudinary.com/simey/image/upload/Dev/PokemonC
 background-size:50% 50%,600% 600%,var(--imgsize);background-position:center,var(--posx) var(--posy),center;background-blend-mode:color-burn,darken;
 filter:brightness(calc((var(--hyp)*.35) + .65)) contrast(2.6) saturate(.6)}
 .card[data-rarity="rare secret"] .card__shine:after{content:"";background-image:url("https://res.cloudinary.com/simey/image/upload/Dev/PokemonCards/rainbow2.jpg"),var(--gold);background-position:center,calc(var(--posx)*-1) calc(var(--posy)*-1),center;filter:brightness(calc((var(--hyp)*.28) + .65)) contrast(2.2) saturate(.6);mix-blend-mode:exclusion}
+/* Respaldo visual coherente cuando una carta carece de activo gráfico en todas las fuentes */
+.card__front.noimg{position:relative;background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--glow,#ff9436) 28%,#1c1f2b),#0d0f15 80%);border:1px solid rgba(255,255,255,.14);display:grid}
+.card__front.noimg img{opacity:0}
+.card__fallback{display:none;grid-area:1/1;flex-direction:column;align-items:center;justify-content:space-between;padding:14% 10%;text-align:center;color:#f3f4f6;pointer-events:none;z-index:2}
+.card__front.noimg .card__fallback{display:flex}
+.card__fallback-top{font:700 9px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-soft);opacity:.9}
+.card__fallback-name{font:700 13px 'Poppins',sans-serif;line-height:1.25;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.85);word-break:break-word}
+.card__fallback-set{font:600 9.5px 'Poppins',sans-serif;color:rgba(255,255,255,.72)}
+
+/* ===== Ajustes: temas solo círculo, popups al frente, contador sin saltos ===== */
+.opt.opt-dot{padding:0 4px;gap:0;justify-content:center;min-width:18px}
+.opt.opt-dot .sw-dot{width:12px;height:12px}
+.opt.opt-dot.is-active{background:transparent;border-color:transparent}
+.opt.opt-dot.is-active .sw-dot{box-shadow:0 0 0 2px #fff,0 0 6px rgba(0,0,0,.5)}
+header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:2147483647}
+#lg-pop,#hp-pop{z-index:2147483647}
+#btn-open{width:128px;min-width:128px;max-width:128px;padding:0;overflow:hidden;font-variant-numeric:tabular-nums;flex-shrink:0}
+#page-ind{flex-shrink:0}
+.hp-pill{flex-shrink:0}
+#hp-val{display:inline-block;min-width:5.5ch;text-align:left;font-variant-numeric:tabular-nums}
+#card-color-pop{z-index:2147483000}
 </style>
 <style id="holoGen"></style>
 </head>
@@ -643,11 +711,11 @@ filter:brightness(calc((var(--hyp)*.35) + .65)) contrast(2.6) saturate(.6)}
         <div class="seg">
           <button class="opt" data-th="light" onclick="setTheme('light')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg><span data-i18n="light">Claro</span></button>
           <button class="opt is-active" data-th="dark" onclick="setTheme('dark')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg><span data-i18n="dark">Oscuro</span></button>
-          <button class="opt" data-th="orange" onclick="setTheme('orange')"><span class="sw-dot" style="background:#ff9436"></span><span>Orange Pokémon</span></button>
-          <button class="opt" data-th="pink" onclick="setTheme('pink')"><span class="sw-dot" style="background:#ff5ca8"></span><span>Pink</span></button>
-          <button class="opt" data-th="purple" onclick="setTheme('purple')"><span class="sw-dot" style="background:#a855f7"></span><span>Purple</span></button>
-          <button class="opt" data-th="cyan" onclick="setTheme('cyan')"><span class="sw-dot" style="background:#06b6d4"></span><span>Blue Cyan</span></button>
-          <button class="opt" data-th="red" onclick="setTheme('red')"><span class="sw-dot" style="background:#ee1515"></span><span>Red Pokémon</span></button>
+          <button class="opt opt-dot" data-th="orange" onclick="setTheme('orange')" title="Orange Pokémon" aria-label="Orange Pokémon"><span class="sw-dot" style="background:#ff9436"></span></button>
+          <button class="opt opt-dot" data-th="pink" onclick="setTheme('pink')" title="Pink" aria-label="Pink"><span class="sw-dot" style="background:#ff5ca8"></span></button>
+          <button class="opt opt-dot" data-th="purple" onclick="setTheme('purple')" title="Purple" aria-label="Purple"><span class="sw-dot" style="background:#a855f7"></span></button>
+          <button class="opt opt-dot" data-th="cyan" onclick="setTheme('cyan')" title="Blue Cyan" aria-label="Blue Cyan"><span class="sw-dot" style="background:#06b6d4"></span></button>
+          <button class="opt opt-dot" data-th="red" onclick="setTheme('red')" title="Red Pokémon" aria-label="Red Pokémon"><span class="sw-dot" style="background:#ee1515"></span></button>
         </div>
         <label for="glass" data-i18n="glass">Glass</label>
         <input type="range" id="glass" min="25" max="100" step="1" value="100" oninput="setGlass(this.value)">
@@ -673,6 +741,24 @@ filter:brightness(calc((var(--hyp)*.35) + .65)) contrast(2.6) saturate(.6)}
     <!-- Pokémon TV -->
     <button id="btn-tv" class="btn" style="width:34px;padding:0" onclick="openTV(event)" title="Pokémon TV" aria-label="Pokémon TV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="6" width="18" height="12" rx="2.5" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3l4 3 4-3M10 10.5v3l3-1.5-3-1.5z"/></svg></button>
 
+    <!-- Contador de HP (Pokémon Points) permanentemente visible al lado de Pokémon TV -->
+    <div class="apw" style="margin-left:-6px">
+      <button id="hp-pill" class="hp-pill" type="button" onclick="toggleHpPop(event)" title="Pokémon Points (HP) · Racha y Recompensas">
+        <span class="hp-ico">⚡</span>
+        <span class="hp-lbl">HP</span>
+        <span id="hp-val">0</span>
+      </button>
+      <div id="hp-pop" onclick="event.stopPropagation()">
+        <div class="hp-pop-head">
+          <b id="hp-pop-title">Pokémon Points (HP)</b>
+          <span id="hp-streak-lbl" style="font-size:10px;color:var(--accent-soft);font-weight:700">Racha: 1d</span>
+        </div>
+        <div class="hp-streak-bar" id="hp-streak-bar"></div>
+        <div style="font-size:10px;color:var(--txt-muted)" id="hp-badges-sum">Insignias CARD: 1/10</div>
+        <div class="hp-log-list" id="hp-log-list"></div>
+      </div>
+    </div>
+
     <div class="sw" id="sw">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       <input id="search" type="text" oninput="page=0;aplicarPagina()" autocomplete="off">
@@ -697,14 +783,24 @@ filter:brightness(calc((var(--hyp)*.35) + .65)) contrast(2.6) saturate(.6)}
                 <img id="card-svg-img" src="https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg" alt="Card SVG">
               </button>
               <div id="card-color-pop" onclick="event.stopPropagation()">
-                <button class="c-swatch is-active" data-var="green" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg" style="background:#22c55e" onclick="setCardSvgVariant('green')" title="Green"></button>
-                <button class="c-swatch" data-var="purple" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardpurple.svg" style="background:#9b4dff" onclick="setCardSvgVariant('purple')" title="Purple"></button>
-                <button class="c-swatch" data-var="red" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardred.svg" style="background:#ef3b3b" onclick="setCardSvgVariant('red')" title="Red"></button>
-                <button class="c-swatch" data-var="sky" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardsky.svg" style="background:#4cc4ff" onclick="setCardSvgVariant('sky')" title="Sky"></button>
-                <button class="c-swatch" data-var="orange" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardorange.svg" style="background:#ff8a1f" onclick="setCardSvgVariant('orange')" title="Orange"></button>
-                <button class="c-swatch" data-var="gold" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardgold.svg" style="background:#f5c518" onclick="setCardSvgVariant('gold')" title="Gold"></button>
-                <button class="c-swatch" data-var="blueman" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardblueman.svg" style="background:#2f6bff" onclick="setCardSvgVariant('blueman')" title="Blueman"></button>
-                <button class="c-swatch" data-var="black" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardblack.svg" style="background:#1b1b1f" onclick="setCardSvgVariant('black')" title="Black"></button>
+                <div class="cc-swatches-row">
+                  <button class="c-swatch is-active" data-var="green" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg" style="background:#22c55e" onmouseenter="previewCardBadgeInfo('green')" onclick="setCardSvgVariant('green')" title="GREEN · Común"></button>
+                  <button class="c-swatch" data-var="orange" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardorange.svg" style="background:#ff8a1f" onmouseenter="previewCardBadgeInfo('orange')" onclick="setCardSvgVariant('orange')" title="ORANGE · Común"></button>
+                  <button class="c-swatch" data-var="sky" data-badge="cyan" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardsky.svg" style="background:#06b6d4" onmouseenter="previewCardBadgeInfo('sky')" onclick="setCardSvgVariant('sky')" title="CYAN · Poco común"></button>
+                  <button class="c-swatch" data-var="pink" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardred.svg" data-fx="hue-rotate(310deg) saturate(1.35) brightness(1.1)" style="background:#ff5ca8" onmouseenter="previewCardBadgeInfo('pink')" onclick="setCardSvgVariant('pink')" title="PINK · Poco común"></button>
+                  <button class="c-swatch" data-var="purple" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardpurple.svg" style="background:#9b4dff" onmouseenter="previewCardBadgeInfo('purple')" onclick="setCardSvgVariant('purple')" title="PURPLE · Rara"></button>
+                  <button class="c-swatch" data-var="brown" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardorange.svg" data-fx="sepia(.55) saturate(.85) brightness(.72)" style="background:#8b5a2b" onmouseenter="previewCardBadgeInfo('brown')" onclick="setCardSvgVariant('brown')" title="BROWN · Rara"></button>
+                  <button class="c-swatch" data-var="blueman" data-badge="silver" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardblueman.svg" style="background:#94a3b8" onmouseenter="previewCardBadgeInfo('blueman')" onclick="setCardSvgVariant('blueman')" title="SILVER · Muy rara"></button>
+                  <button class="c-swatch" data-var="red" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardred.svg" style="background:#ef3b3b" onmouseenter="previewCardBadgeInfo('red')" onclick="setCardSvgVariant('red')" title="RED · Muy rara"></button>
+                  <button class="c-swatch" data-var="black" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardblack.svg" style="background:#1b1b1f" onmouseenter="previewCardBadgeInfo('black')" onclick="setCardSvgVariant('black')" title="BLACK · Ultra exclusiva"></button>
+                  <button class="c-swatch" data-var="gold" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/b8bcceb4aefe440bf64dca9962c9e8ec0bcc3001/cardgold.svg" style="background:#f5c518" onmouseenter="previewCardBadgeInfo('gold')" onclick="setCardSvgVariant('gold')" title="GOLD · Legendaria"></button>
+                  <button class="c-swatch is-reserved" data-var="white" data-src="https://raw.githubusercontent.com/eamxat/TGC-avatars/cf8dc57c122b5aca02b991058b8d8e3bb2440f88/cardgreen.svg" style="background:#f8fafc" onmouseenter="previewCardBadgeInfo('white')" onclick="setCardSvgVariant('white')" title="WHITE · Especial (Reservada)"></button>
+                </div>
+                <div class="cc-info-box" id="cc-info-box">
+                  <div class="cc-info-head"><b id="cc-inf-name">GREEN</b><span class="cc-rarity-tag" id="cc-inf-rar">Común · Fácil</span></div>
+                  <div class="cc-req" id="cc-inf-req">Desbloqueada inicialmente o al obtener cualquier carta común.</div>
+                  <div class="cc-unlocker" id="cc-inf-poke"></div>
+                </div>
               </div>
             </div>
             <div id="t-badge" style="cursor:pointer;pointer-events:auto" onclick="mostrarSimuladorSobre()"></div>
@@ -753,9 +849,20 @@ filter:brightness(calc((var(--hyp)*.35) + .65)) contrast(2.6) saturate(.6)}
                 <div class="av-title" data-i18n="av_title">Elige tu avatar</div>
                 <div class="av-sub">Pokémon TCG Pocket · Full HD</div>
               </div>
-              <button class="av-close" onclick="toggleAvatarDrawer(false)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-              </button>
+              <div class="av-head-actions">
+                <button type="button" class="btn gold av-cheat-toggle" onclick="toggleCheatCodesPanel(event)" title="Introducir código secreto">CHEAT CODES</button>
+                <button class="av-close" onclick="toggleAvatarDrawer(false)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </div>
+            <div id="av-cheat-box" onclick="event.stopPropagation()">
+              <div style="font-size:11px;font-weight:700;color:var(--accent-soft);letter-spacing:.04em">CHEAT CODES · CONSOLA DE SECRETOS</div>
+              <div class="cheat-row">
+                <input type="text" id="cheat-input" placeholder="INTRODUCE CÓDIGO..." autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter'){event.preventDefault();redeemCheatCode()}">
+                <button type="button" class="btn gold" style="height:34px;padding:0 16px" onclick="redeemCheatCode()" data-i18n="cheat_btn">Canjear</button>
+              </div>
+              <div id="cheat-msg"></div>
             </div>
             <div class="av-stage-3d" id="av-stage-3d">
               <div class="av-track-3d" id="av-rail"></div>
@@ -1208,18 +1315,287 @@ function efecto(t){t=t.toLowerCase();
   if(/rainbow|hyper|arcoíris|hiper/.test(t))return"rare rainbow";if(/secret|secreta/.test(t))return"rare secret";
   if(/ultra|double|illustration|full art|\bex\b|\bgx\b|amazing|ilustraci|doble/.test(t))return"rare ultra";
   if(/holo/.test(t))return"rare holo";return""}
+
+/* ============================================================================
+   SISTEMA DE VALIDACIÓN, RECUPERACIÓN AUTOMÁTICA Y PRECARGA DE IMÁGENES
+   - Construye la lista ordenada de URLs candidatas según la API, idioma,
+     expansión e identificador exacto de la carta (sin mezclar idiomas).
+   - Comprueba mediante carga real (Image) qué URL responde antes de mostrar
+     el sobre, descartando cartas sin imagen en el servidor.
+   - Si una imagen falla en tiempo de visualización, recorre automáticamente
+     las alternativas (.webp -> .png -> /low -> API alternativa para EN).
+   ============================================================================ */
+var ImageCheckCache={};
+
+function extraerBaseTCGdexUrl(rawUrl){
+  if(!rawUrl||typeof rawUrl!=="string")return"";
+  var s=rawUrl.trim();
+  if(!/^https?:\/\//i.test(s)||/undefined|null/i.test(s))return"";
+  return s.replace(/\/+(high|low)\.(webp|png|jpg|jpeg)$/i,"").replace(/\.(webp|png|jpg|jpeg)$/i,"").replace(/\/+$/,"");
+}
+
+function construirCandidatosImagen(c){
+  if(!c)return[];
+  var urls=[],seen={};
+  function add(u){
+    if(!u||typeof u!=="string")return;
+    var clean=u.trim();
+    if(!/^https?:\/\//i.test(clean)||/undefined|null/i.test(clean))return;
+    if(!seen[clean]){seen[clean]=1;urls.push(clean)}
+  }
+
+  var lang=String(c.lang||"en").toLowerCase();
+  var rawBase=extraerBaseTCGdexUrl(c.rawImageBase||c.imagen||"");
+
+  /* 1. Si proviene de TCGdex o tiene base de activo TCGdex del idioma propio */
+  if(rawBase&&rawBase.indexOf("tcgdex.net")>-1){
+    add(rawBase+"/high.webp");
+    add(rawBase+"/high.png");
+    add(rawBase+"/low.webp");
+    add(rawBase+"/low.png");
+  }
+
+  /* 2. Imagen directa asignada a la carta */
+  if(c.imagen){
+    add(c.imagen);
+    if(/\/high\.webp$/i.test(c.imagen)){
+      add(c.imagen.replace(/\/high\.webp$/i,"/high.png"));
+      add(c.imagen.replace(/\/high\.webp$/i,"/low.webp"));
+      add(c.imagen.replace(/\/high\.webp$/i,"/low.png"));
+    }else if(/\/low\.(webp|png)$/i.test(c.imagen)){
+      var hi=c.imagen.replace(/\/low\.(webp|png)$/i,"/high.$1");
+      urls.unshift(hi);
+    }
+  }
+
+  /* 3. Si la carta tiene datos crudos de su propio idioma en TCGdex */
+  var rawNat=c.raw&&c.raw.tcgdex_nat;
+  if(rawNat&&rawNat.image){
+    var bNat=extraerBaseTCGdexUrl(rawNat.image);
+    if(bNat){
+      add(bNat+"/high.webp");
+      add(bNat+"/high.png");
+      add(bNat+"/low.webp");
+      add(bNat+"/low.png");
+    }
+  }
+
+  /* 4. Exclusivamente para cartas en inglés (lang === 'en'), permitir respaldo cruzado con pokemontcg.io o images.pokemontcg.io del mismo set y número */
+  if(lang==="en"){
+    var rawPtcg=c.raw&&c.raw.pokemontcg;
+    if(rawPtcg&&rawPtcg.images){
+      add(rawPtcg.images.large);
+      add(rawPtcg.images.small);
+    }
+    var rawEn=c.raw&&c.raw.tcgdex_en;
+    if(rawEn&&rawEn.image){
+      var bEn=extraerBaseTCGdexUrl(rawEn.image);
+      if(bEn){
+        add(bEn+"/high.webp");
+        add(bEn+"/high.png");
+        add(bEn+"/low.webp");
+      }
+    }
+    var setId=String(c.setId||(c.id&&c.id.indexOf("-")>-1?c.id.split("-")[0]:"")||"").trim();
+    var locId=String(c.localId||(c.id&&c.id.indexOf("-")>-1?c.id.split("-").slice(1).join("-"):"")||"").replace(/^0+(\d)/,"$1").trim();
+    if(setId&&locId){
+      add("https://images.pokemontcg.io/"+encodeURIComponent(setId)+"/"+encodeURIComponent(locId)+"_hires.png");
+      add("https://images.pokemontcg.io/"+encodeURIComponent(setId)+"/"+encodeURIComponent(locId)+".png");
+    }
+  }
+
+  return urls;
+}
+
+/* Prueba real de carga de una URL de imagen con caché en memoria y timeout controlado */
+function probarCargaUrlImagen(url,timeoutMs){
+  if(!url)return Promise.resolve(false);
+  if(ImageCheckCache[url]===true)return Promise.resolve(true);
+  if(ImageCheckCache[url]===false)return Promise.resolve(false);
+  return new Promise(function(resolve){
+    var im=new Image();
+    var done=false;
+    var timer=setTimeout(function(){
+      if(done)return;
+      done=true;
+      im.onload=im.onerror=null;
+      resolve(false);
+    },timeoutMs||4200);
+    im.onload=function(){
+      if(done)return;
+      done=true;
+      clearTimeout(timer);
+      var ok=(im.naturalWidth||0)>10&&(im.naturalHeight||0)>10;
+      ImageCheckCache[url]=ok;
+      resolve(ok);
+    };
+    im.onerror=function(){
+      if(done)return;
+      done=true;
+      clearTimeout(timer);
+      ImageCheckCache[url]=false;
+      resolve(false);
+    };
+    im.decoding="async";
+    im.src=url;
+  });
+}
+
+/* Valida y resuelve la mejor URL de imagen operativa para una carta; si es en inglés y falla TCGdex, consulta pokemontcg.io por su ID exacto */
+async function validarYResolverImagenCarta(c,timeoutMs){
+  if(!c)return null;
+  var candidatos=construirCandidatosImagen(c);
+  for(var i=0;i<candidatos.length;i++){
+    var u=candidatos[i];
+    var ok=await probarCargaUrlImagen(u,timeoutMs||3800);
+    if(ok){
+      c.imagen=u;
+      c.imageCandidates=candidatos;
+      return c;
+    }
+  }
+  /* Recuperación cruzada en la API alternativa si la carta es en inglés */
+  if((c.lang||"en")==="en"&&(c.id||c.setId)){
+    var fb=await consultarRespaldoPTCG(c.id,c.setId,c.localId).catch(function(){return null});
+    if(fb&&fb.images){
+      var fbUrls=[fb.images.large,fb.images.small].filter(Boolean);
+      for(var j=0;j<fbUrls.length;j++){
+        var okFb=await probarCargaUrlImagen(fbUrls[j],3800);
+        if(okFb){
+          c.imagen=fbUrls[j];
+          c.imageCandidates=fbUrls.concat(candidatos);
+          return c;
+        }
+      }
+    }
+  }
+  return null;
+}
+
+/* Precarga y garantiza que las 8 cartas del sobre tengan su imagen verificada y lista en caché del navegador antes de mostrar el sobre */
+async function asegurarImagenesSobre(listaPrincipal,poolReserva,idiomasActivos){
+  var verificadas=await Promise.all((listaPrincipal||[]).map(function(c){
+    return validarYResolverImagenCarta(c,4000);
+  }));
+  var resultado=[];
+  var usadosClave={},usadosConcepto={};
+  verificadas.forEach(function(c){
+    if(c&&c.imagen){
+      resultado.push(c);
+      usadosClave[claveUnicaCarta(c)]=1;
+      usadosConcepto[claveConceptoCarta(c)]=1;
+    }
+  });
+
+  if(resultado.length>=N)return resultado.slice(0,N);
+
+  /* Si alguna carta tenía su imagen rota en el CDN de la API, reemplazarla por otra carta válida de la reserva respetando rareza e idioma */
+  var candidatosReserva=(poolReserva||[]).filter(function(c){
+    return c&&!usadosClave[claveUnicaCarta(c)]&&!usadosConcepto[claveConceptoCarta(c)];
+  });
+  for(var idx=0;idx<candidatosReserva.length&&resultado.length<N;idx++){
+    var cand=candidatosReserva[idx];
+    if(usadosClave[claveUnicaCarta(cand)]||usadosConcepto[claveConceptoCarta(cand)])continue;
+    var validada=await validarYResolverImagenCarta(cand,3500);
+    if(validada&&validada.imagen){
+      resultado.push(validada);
+      usadosClave[claveUnicaCarta(validada)]=1;
+      usadosConcepto[claveConceptoCarta(validada)]=1;
+    }
+  }
+
+  /* Si aún faltan posiciones, consultar respaldo inmediato */
+  if(resultado.length<N){
+    try{
+      var extraPtcg=await desdePTCG();
+      for(var k=0;k<extraPtcg.length&&resultado.length<N;k++){
+        var cp=extraPtcg[k];
+        if(usadosClave[claveUnicaCarta(cp)]||usadosConcepto[claveConceptoCarta(cp)])continue;
+        var valP=await validarYResolverImagenCarta(cp,3500);
+        if(valP&&valP.imagen){
+          resultado.push(valP);
+          usadosClave[claveUnicaCarta(valP)]=1;
+          usadosConcepto[claveConceptoCarta(valP)]=1;
+        }
+      }
+    }catch(e){}
+  }
+  return resultado.slice(0,N);
+}
+
+/* Vincula recuperación automática en cascada a cualquier elemento <img> de carta */
+function vincularImagenConRecuperacion(imgEl,carta,contenedorFront){
+  if(!imgEl||!carta)return;
+  var candidatos=(carta.imageCandidates&&carta.imageCandidates.length)?carta.imageCandidates.slice():construirCandidatosImagen(carta);
+  if(carta.imagen&&candidatos.indexOf(carta.imagen)===-1)candidatos.unshift(carta.imagen);
+  imgEl._candIdx=0;
+  imgEl._candidatos=candidatos;
+
+  imgEl.addEventListener("load",function(){
+    if(contenedorFront)contenedorFront.classList.remove("noimg");
+    imgEl.style.visibility="visible";
+    imgEl.style.display="block";
+    if(imgEl.src&&carta.imagen!==imgEl.src){
+      carta.imagen=imgEl.src;
+    }
+  });
+
+  imgEl.addEventListener("error",async function(){
+    imgEl._candIdx=(imgEl._candIdx||0)+1;
+    if(imgEl._candidatos&&imgEl._candIdx<imgEl._candidatos.length){
+      imgEl.src=imgEl._candidatos[imgEl._candIdx];
+      return;
+    }
+    /* Último intento: consultar API por ID exacto de la carta */
+    if(!imgEl._apiRecovered){
+      imgEl._apiRecovered=true;
+      var lang=carta.lang||"en";
+      if(carta.id){
+        var det=await obtenerDetalleCartaTCGdex(carta.id,lang).catch(function(){return null});
+        if(det&&det.image){
+          var b=extraerBaseTCGdexUrl(det.image);
+          if(b){
+            imgEl._candidatos=[b+"/high.webp",b+"/high.png",b+"/low.webp",b+"/low.png"];
+            imgEl._candIdx=0;
+            imgEl.src=imgEl._candidatos[0];
+            return;
+          }
+        }
+      }
+      if(lang==="en"&&(carta.id||carta.setId)){
+        var fb=await consultarRespaldoPTCG(carta.id,carta.setId,carta.localId).catch(function(){return null});
+        if(fb&&fb.images&&(fb.images.large||fb.images.small)){
+          imgEl.src=fb.images.large||fb.images.small;
+          return;
+        }
+      }
+    }
+    if(contenedorFront)contenedorFront.classList.add("noimg");
+  });
+
+  var inicial=candidatos[0]||carta.imagen||"";
+  if(inicial){
+    if(contenedorFront)contenedorFront.classList.remove("noimg");
+    imgEl.src=inicial;
+  }else if(contenedorFront){
+    contenedorFront.classList.add("noimg");
+  }
+}
+
 var cacheTD=null;
 async function desdeTCGdex(){var l=cacheTD;
   if(!l){var a=await getJSON(TCGDEX+"/cards?pagination:page="+(1+azar(150))+"&pagination:itemsPerPage=100");
     if(!Array.isArray(a)||!a.length)a=await getJSON(TCGDEX+"/cards?pagination:page=1&pagination:itemsPerPage=100");
     if(!Array.isArray(a)||!a.length)throw new Error("vacío");if(a.length>500)cacheTD=a;l=a}
   l=l.filter(function(c){return c.image&&!esCartaEnergia({nombre:c.name})});if(l.length<N)throw new Error("pocas cartas");
-  var muestra=elegir(l,Math.min(l.length,18)),det=await Promise.all(muestra.map(function(c){return getJSON(TCGDEX+"/cards/"+encodeURIComponent(c.id)).catch(function(){return null})}));
+  var muestra=elegir(l,Math.min(l.length,22)),det=await Promise.all(muestra.map(function(c){return getJSON(TCGDEX+"/cards/"+encodeURIComponent(c.id)).catch(function(){return null})}));
   var procesadas=muestra.map(function(c,i){var d=det[i]||{},p=d.pricing||{},pr=precio(nums(p.tcgplayer,["marketPrice","midPrice"]),nums(p.cardmarket,["trend","avg","trend-holo","avg-holo"]));
-    return{id:c.id||d.id||"",setId:(d.set&&d.set.id)||"",localId:d.localId||c.localId||"",lang:"en",source:"tcgdex-en",nombre:c.name||d.name||"Carta",imagen:c.image+"/high.webp",tipo:(d.types||[])[0]||"Colorless",rareza:d.rarity||"Common",set:(d.set&&d.set.name)||"—",
+    var rawImg=d.image||c.image||"";
+    var baseImg=extraerBaseTCGdexUrl(rawImg);
+    return{id:c.id||d.id||"",setId:(d.set&&d.set.id)||"",localId:d.localId||c.localId||"",lang:"en",source:"tcgdex-en",nombre:c.name||d.name||"Carta",rawImageBase:baseImg,imagen:baseImg?(baseImg+"/high.webp"):"",tipo:(d.types||[])[0]||"Colorless",rareza:d.rarity||"Common",set:(d.set&&d.set.name)||"—",
       rarity:efecto([d.rarity,d.suffix,d.stage].join(" ")),supertype:/pokemon/i.test(d.category||"pokemon")?"pokémon":String(d.category).toLowerCase(),
       subtypes:[d.stage,d.trainerType].filter(Boolean).join(" ").toLowerCase(),valor:pr.valor,precio:pr.precio,
-      hp:d.hp||null,attacks:d.attacks||[],abilities:d.abilities||[],illustrator:d.illustrator||"",variants:d.variants||null,raw:{tcgdex_en:d}}});
+      hp:d.hp||null,attacks:d.attacks||[],abilities:d.abilities||[],illustrator:d.illustrator||"",variants:d.variants||null,raw:{tcgdex_en:d}}}).filter(function(c){return c.imagen});
   return elegirConRealismo(procesadas,N)}
 async function desdePTCG(){
   var u=PTCG+"?pageSize=100&select=id,name,rarity,types,images,tcgplayer,cardmarket,set,supertype,subtypes,number,hp,attacks,abilities,artist&page=";
@@ -1382,8 +1758,8 @@ function resolverImagenTCGdex(baseImg,existingImg){
   if(existingImg&&/^https?:\/\//i.test(existingImg)&&!/undefined|null/.test(existingImg)&&existingImg.indexOf("/low.")===-1){
     return existingImg;
   }
-  if(!baseImg)return existingImg||"";
-  var clean=String(baseImg).replace(/\/+(high|low)\.(webp|png|jpg)$/i,"").replace(/\/+$/,"");
+  var clean=extraerBaseTCGdexUrl(baseImg);
+  if(!clean)return existingImg||"";
   return clean+"/high.webp";
 }
 
@@ -1548,8 +1924,9 @@ function normalizarCartaTCGdex(resumen,detalleNativo,detalleEn,setInfo,ptcgFallb
 
   /* Prohibido mezclar imagen de un idioma con datos de otro: la imagen debe proceder de la versión lingüística nativa */
   var rawImg=dNat.image||c.image||(esMismoIdiomaEn?dEn.image:"")||"";
+  var baseImg=extraerBaseTCGdexUrl(rawImg);
   var ptcgImg=esMismoIdiomaEn&&ptcgFallback&&ptcgFallback.images&&(ptcgFallback.images.large||ptcgFallback.images.small)||"";
-  var imagenFinal=rawImg?resolverImagenTCGdex(rawImg):ptcgImg;
+  var imagenFinal=baseImg?(baseImg+"/high.webp"):ptcgImg;
   var nombreNativo=dNat.name||c.name||(esMismoIdiomaEn?(dEn.name||(ptcgFallback&&ptcgFallback.name)):"")||"";
 
   var tipos=dNat.types||dEn.types||(ptcgFallback&&ptcgFallback.types)||[];
@@ -1567,7 +1944,7 @@ function normalizarCartaTCGdex(resumen,detalleNativo,detalleEn,setInfo,ptcgFallb
     variantKey=Object.keys(variants).filter(function(k){return variants[k]}).sort().join("+")||"std";
   }
 
-  return{
+  var cardObj={
     id:id,
     setId:setId,
     localId:localId,
@@ -1576,6 +1953,7 @@ function normalizarCartaTCGdex(resumen,detalleNativo,detalleEn,setInfo,ptcgFallb
     source:dNat.id||c.id?("tcgdex-"+idioma):(esMismoIdiomaEn&&dEn.id?"tcgdex-en":"pokemontcg"),
     sources:[dNat.id||c.id?("tcgdex-"+idioma):null,dEn.id?"tcgdex-en":null,ptcgFallback?"pokemontcg":null].filter(Boolean),
     nombre:nombreNativo,
+    rawImageBase:baseImg,
     imagen:imagenFinal,
     tipo:tipo,
     tiposOriginales:tipos,
@@ -1601,6 +1979,8 @@ function normalizarCartaTCGdex(resumen,detalleNativo,detalleEn,setInfo,ptcgFallb
       pokemontcg:ptcgFallback||null
     }
   };
+  cardObj.imageCandidates=construirCandidatosImagen(cardObj);
+  return cardObj;
 }
 
 function fusionarCartas(existente,nueva){
@@ -1618,7 +1998,7 @@ function fusionarCartas(existente,nueva){
   var fuentesUnicas=[];
   fuentes.forEach(function(f){if(fuentesUnicas.indexOf(f)===-1)fuentesUnicas.push(f)});
 
-  return{
+  var fusionada={
     id:esc(existente.id,nueva.id),
     setId:esc(existente.setId,nueva.setId),
     localId:esc(existente.localId,nueva.localId),
@@ -1627,6 +2007,7 @@ function fusionarCartas(existente,nueva){
     source:fuentesUnicas.join("+"),
     sources:fuentesUnicas,
     nombre:esc(existente.nombre,nueva.nombre,["","Carta",null,undefined]),
+    rawImageBase:esc(existente.rawImageBase,nueva.rawImageBase),
     imagen:imgFinal,
     tipo:esc(existente.tipo,nueva.tipo,["","Colorless",null,undefined])||"Colorless",
     tiposOriginales:(existente.tiposOriginales&&existente.tiposOriginales.length)?existente.tiposOriginales:(nueva.tiposOriginales||[]),
@@ -1648,6 +2029,8 @@ function fusionarCartas(existente,nueva){
     precio:precioFinal,
     raw:Object.assign({},existente.raw||{},nueva.raw||{})
   };
+  fusionada.imageCandidates=construirCandidatosImagen(fusionada);
+  return fusionada;
 }
 
 function combinarCatalogoCartas(listaCartas){
@@ -1734,8 +2117,8 @@ async function desdeTCGdexV2(){
   var idiomasElegidos=elegir(activos,numIdiomas);
   if(!idiomasElegidos.length)idiomasElegidos=["ja","en","fr","es","de","it","pt","ko"];
 
-  /* Cuota de muestreo por idioma ajustada para cubrir distintos niveles de rareza sin saturar la red */
-  var cartasPorIdioma=idiomasElegidos.length>=6?3:(idiomasElegidos.length>=4?4:6);
+  /* Cuota de muestreo ampliada por idioma para contar con reserva suficiente si alguna carta tiene la imagen ausente en el CDN */
+  var cartasPorIdioma=idiomasElegidos.length>=6?4:(idiomasElegidos.length>=4?5:7);
   var promesas=idiomasElegidos.map(function(lg){
     return obtenerMuestraIdiomaTCGdex(lg,cartasPorIdioma);
   });
@@ -1748,7 +2131,8 @@ async function desdeTCGdexV2(){
   });
   var unificadas=combinarCatalogoCartas(pool);
   if(unificadas.length<N)throw new Error("insuficientes cartas multilingües");
-  return elegirConRealismo(unificadas,N,idiomasElegidos);
+  var preseleccion=elegirConRealismo(unificadas,N,idiomasElegidos);
+  return await asegurarImagenesSobre(preseleccion,unificadas,idiomasElegidos);
 }
 
 /* Interfaz del selector multilingüe en la barra superior */
@@ -1830,16 +2214,16 @@ window.TCGdexAPI={
   getSetDetail:obtenerDetalleSetTCGdex,
   getCardsPage:obtenerPaginaCartasTCGdex,
   getCardDetail:obtenerDetalleCartaTCGdex,
-  mergeCatalog:combinarCatalogoCartas
+  mergeCatalog:combinarCatalogoCartas,
+  validateImage:validarYResolverImagenCarta
 };
 
-/* Función principal de obtención: genera un sobre internacional de 8 cartas combinando múltiples idiomas verificados y respetando la distribución de rarezas */
+/* Función principal de obtención: genera un sobre internacional de 8 cartas combinando múltiples idiomas verificados, respetando la distribución de rarezas y precargando las 8 imágenes antes de entregar el sobre */
 async function obtener(){
   var er=[],pool=[];
   var activos=obtenerIdiomasActivos();
   var soloIngles=(activos.length===1&&activos[0]==="en");
   var promesas=[desdeTCGdexV2()];
-  /* Solo precargar el lote adicional en inglés si el usuario únicamente tiene activo inglés o hay pocos idiomas, evitando sesgar el sobre hacia el inglés */
   if(soloIngles||activos.length<=2){
     promesas.push(desdeTCGdex());
   }
@@ -1853,24 +2237,33 @@ async function obtener(){
   });
   pool=combinarCatalogoCartas(pool);
   if(pool.length>=N){
-    return elegirConRealismo(pool,N,activos);
+    var candidatas=elegirConRealismo(pool,N,activos);
+    var verificadas=await asegurarImagenesSobre(candidatas,pool,activos);
+    if(verificadas.length>=N)return verificadas;
   }
-  /* Si algún idioma falló y faltan cartas para completar las 8, consultar respaldos sin perder las cartas multilingües ya obtenidas */
+  /* Si algún idioma falló y faltan cartas con imagen válida para completar las 8, consultar respaldos sin perder las cartas multilingües ya verificadas */
   if(activos.indexOf("en")>-1&&promesas.length===1){
     try{
       var extraEn=await desdeTCGdex();
       pool=combinarCatalogoCartas(pool.concat(extraEn));
-      if(pool.length>=N)return elegirConRealismo(pool,N,activos);
+      var candEn=elegirConRealismo(pool,N,activos);
+      var verEn=await asegurarImagenesSobre(candEn,pool,activos);
+      if(verEn.length>=N)return verEn;
     }catch(e){er.push("TCGdex-EN: "+e.message)}
   }
   try{
     var desdeP=await desdePTCG();
     pool=combinarCatalogoCartas(pool.concat(desdeP));
-    if(pool.length>=N)return elegirConRealismo(pool,N,activos);
+    var candP=elegirConRealismo(pool,N,activos);
+    var verP=await asegurarImagenesSobre(candP,pool,activos);
+    if(verP.length>=N)return verP;
   }catch(e){
     er.push("pokemontcg.io: "+e.message);
   }
-  if(pool.length>0)return pool.slice(0,N);
+  if(pool.length>0){
+    var ultimas=await asegurarImagenesSobre(pool.slice(0,N),pool,activos);
+    if(ultimas.length>0)return ultimas;
+  }
   throw new Error(er.join(" | "));
 }
 /* Puntos proporcionales al costo: cartas costosas otorgan un puntaje muy alto */
@@ -1945,16 +2338,23 @@ function toggleLeftCardZoom(open){
   var z=$("lp-zoom"),loupe=$("lp-zoom-loupe"),im=$("lp-zoom-img");
   if(!z)return;
   if(open&&currentLeftCard&&currentLeftCard.imagen){
-    var hiUrl=obtenerUrlAltaResolucion(currentLeftCard.imagen);
+    var c=currentLeftCard;
+    var cands=(c.imageCandidates&&c.imageCandidates.length)?c.imageCandidates.slice():construirCandidatosImagen(c);
+    var hiUrl=obtenerUrlAltaResolucion(c.imagen);
+    if(hiUrl&&cands.indexOf(hiUrl)===-1)cands.unshift(hiUrl);
+    var idx=0;
+    im.onload=function(){
+      if(loupe)loupe.style.backgroundImage='url("'+im.src+'")';
+    };
     im.onerror=function(){
-      if(/\/high\.webp$/i.test(im.src)){
-        im.src=im.src.replace(/\/high\.webp$/i,"/high.png");
-        if(loupe)loupe.style.backgroundImage='url("'+im.src+'")';
+      idx++;
+      if(idx<cands.length){
+        im.src=cands[idx];
       }
     };
-    im.src=hiUrl;
-    if(loupe)loupe.style.backgroundImage='url("'+hiUrl+'")';
-    $("lp-zoom-caption").textContent=currentLeftCard.nombre+" · "+currentLeftCard.precio+(currentLeftCard.lang?" · ["+String(currentLeftCard.lang).toUpperCase()+"]":"");
+    im.src=cands[0]||hiUrl;
+    if(loupe)loupe.style.backgroundImage='url("'+(cands[0]||hiUrl)+'")';
+    $("lp-zoom-caption").textContent=c.nombre+" · "+c.precio+(c.lang?" · ["+String(c.lang).toUpperCase()+"]":"");
     resetLeftZoom();
     z.classList.add("open");
   }else{
@@ -2033,6 +2433,14 @@ function clearZoom(){
   slots.forEach(function(s){s.classList.remove("zoomed")});
 }
 
+function crearRespaldoVisualCarta(c){
+  var fb=el("div","card__fallback");
+  fb.appendChild(el("span","card__fallback-top",(c.lang?String(c.lang).toUpperCase()+" · ":"")+(c.localId?"#"+c.localId:"TCG")));
+  fb.appendChild(el("div","card__fallback-name",c.nombre||"Pokémon"));
+  fb.appendChild(el("span","card__fallback-set",c.set||c.rareza||"—"));
+  return fb;
+}
+
 function dibujar(lista,reversoInicial){
   cartas=lista;slots=[];$("grid").innerHTML="";clearZoom();
   lista.forEach(function(c){
@@ -2042,17 +2450,12 @@ function dibujar(lista,reversoInicial){
     card.dataset.rarity=c.rarity;card.dataset.supertype=c.supertype;card.dataset.subtypes=c.subtypes;
     var trs=el("div","card__translater"),ro=el("div","card__rotator");ro.style.setProperty("--glow",GLOW[c.tipo]||GLOW.Colorless);
     var back=el("img","card__back");back.src=BACK;back.alt="";
-    var front=el("div","card__front"),img=el("img");img.alt=c.nombre;img.loading="lazy";img.decoding="async";
-    img.addEventListener("error",function(){
-      if(c.imagen&&/\/high\.webp$/i.test(c.imagen)&&!img._retriedPng){
-        img._retriedPng=true;
-        img.src=c.imagen.replace(/\/high\.webp$/i,"/high.png");
-        return;
-      }
-      front.classList.add("noimg");
-    });
-    if(c.imagen)img.src=c.imagen;else front.classList.add("noimg");
-    front.appendChild(img);front.appendChild(el("div","card__shine"));front.appendChild(el("div","card__glare"));if(esCostosa(c.valor))front.appendChild(el("div","rare-sheen"));
+    /* No usar loading="lazy" en las 8 cartas del sobre: las cartas de la página 2 están inicialmente ocultas y lazy evita que carguen al paginar */
+    var front=el("div","card__front"),img=el("img");img.alt=c.nombre;img.decoding="async";
+    front.appendChild(img);
+    front.appendChild(crearRespaldoVisualCarta(c));
+    front.appendChild(el("div","card__shine"));front.appendChild(el("div","card__glare"));if(esCostosa(c.valor))front.appendChild(el("div","rare-sheen"));
+    vincularImagenConRecuperacion(img,c,front);
     ro.appendChild(back);ro.appendChild(front);trs.appendChild(ro);card.appendChild(trs);bind(card);
     var pts=puntos(c.valor),costosa=esCostosa(c.valor),chipTxt=c.precio+" · +"+pts+(costosa?" ⚡":"");
     var chip=el("div","chip"+(c._rev&&(pts>=100||costosa)?" big":""),c._rev?chipTxt:"? · ?");
@@ -2076,6 +2479,7 @@ function dibujar(lista,reversoInicial){
       if(!c._rev){
         c._rev=true;
         histPush(c);
+        evaluarDesbloqueoInsigniaPorCarta(c);
         card.classList.remove("unrevealed");
         chip.textContent=chipTxt;chip.style.setProperty("--n",chipTxt.length);
         if(pts>=100||costosa)chip.classList.add("big");
@@ -2105,7 +2509,16 @@ function aplicarPagina(){
   clearZoom();
   var q=$("search").value.trim().toLowerCase(),vis=slots.filter(function(s){return!q||s._n.indexOf(q)>-1}),pages=Math.max(1,Math.ceil(vis.length/PER));
   page=Math.min(page,pages-1);slots.forEach(function(s){s.style.display="none"});
-  vis.slice(page*PER,page*PER+PER).forEach(function(s){s.style.display="flex"});$("page-ind").textContent=(page+1)+"/"+pages}
+  vis.slice(page*PER,page*PER+PER).forEach(function(s){
+    s.style.display="flex";
+    /* Verificar al cambiar de página que la imagen del slot esté cargada y visible */
+    var im=s.querySelector(".card__front img");
+    if(im&&(!im.complete||im.naturalWidth===0)&&im._candidatos&&im._candidatos.length){
+      var curSrc=im.getAttribute("src");
+      if(!curSrc)im.src=im._candidatos[0];
+    }
+  });
+  $("page-ind").textContent=(page+1)+"/"+pages}
 function movePage(d){var q=$("search").value.trim().toLowerCase(),n=slots.filter(function(s){return!q||s._n.indexOf(q)>-1}).length,pages=Math.max(1,Math.ceil(n/PER));
   page=Math.min(pages-1,Math.max(0,page+d));aplicarPagina()}
 function masCara(){var b=null;cartas.forEach(function(c){if(c._rev!==false&&(!b||(c.valor||0)>(b.valor||0)))b=c});return b}
@@ -2119,16 +2532,28 @@ function pintarIzq(c){
   var col=c?(GLOW[c.tipo]||"#ff9436"):"#ff9436";
   $("sec-left").style.setProperty("--type-amb",col+"2e");
   var img=$("t-img"),th=img?img.parentElement:null,lupa=$("t-lupa");
-  if(c){
-    img.src=obtenerUrlAltaResolucion(c.imagen);
+  if(c&&img){
+    var cands=(c.imageCandidates&&c.imageCandidates.length)?c.imageCandidates.slice():construirCandidatosImagen(c);
+    var hi=obtenerUrlAltaResolucion(c.imagen);
+    if(hi&&cands.indexOf(hi)===-1)cands.unshift(hi);
+    var cIdx=0;
     img.style.display="block";
+    img.onload=function(){
+      this.style.display="block";
+      if(this.src)c.imagen=this.src;
+    };
     img.onerror=function(){
-      if(/\/high\.webp$/i.test(this.src)){this.src=this.src.replace(/\/high\.webp$/i,"/high.png");return}
+      cIdx++;
+      if(cIdx<cands.length){
+        this.src=cands[cIdx];
+        return;
+      }
       this.style.display="none";
     };
+    img.src=cands[0]||c.imagen||"";
     if(th)th.classList.toggle("high-energy",esCostosa(c.valor));
     if(lupa)lupa.style.display="inline-flex";
-  }else{
+  }else if(img){
     img.style.display="none";
     if(th)th.classList.remove("high-energy");
     if(lupa)lupa.style.display="none";
@@ -2188,6 +2613,7 @@ async function ejecutarAperturaSobre(){
     est.packs+=1;est.day=hoy();est.pack=lista;
     if(!est.q)est.q={s:Date.now(),u:0};est.q.u=Math.min(QMAX,est.q.u+1);
     guardar(est);
+    otorgarHpPorSobre(lista,est.packs);
     cerrarSimuladorSobre();
     if(pf)pf.classList.remove("tearing");
     dibujar(lista,true);pintarIzq();
@@ -2345,14 +2771,35 @@ function toggleCardColorMenu(e){
   if(!was)p.classList.add("open");
 }
 function setCardSvgVariant(key){
+  if(typeof isCardBadgeUnlocked==="function"&&CARD_BADGES_CATALOG&&!isCardBadgeUnlocked(key)){
+    previewCardBadgeInfo(key);
+    var meta=CARD_BADGES_CATALOG[key];
+    if(meta&&meta.reserved){
+      bdToast(L==="es"?"WHITE: Categoría especial reservada":"WHITE: Reserved special badge");
+    }else if(meta){
+      bdToast((L==="es"?"Insignia bloqueada · ":"Badge locked · ")+(L==="es"?meta.reqEs:meta.reqEn));
+    }
+    if($("card-color-pop"))$("card-color-pop").classList.remove("open");
+    return;
+  }
   var b=document.querySelector('#card-color-pop .c-swatch[data-var="'+key+'"]')||document.querySelector('#card-color-pop .c-swatch[data-var="green"]');
-  if(!b)return;
+  if(!b){if($("card-color-pop"))$("card-color-pop").classList.remove("open");return}
   ap.cardVariant=b.dataset.var;
   var im=$("card-svg-img");
-  if(im){im.src=b.dataset.src;im.style.filter="drop-shadow(0 2px 8px rgba(0,0,0,.45))"}
+  var extraFx=b.dataset.fx?(" "+b.dataset.fx):"";
+  if(im){
+    im.src=b.dataset.src;
+    im.style.filter="drop-shadow(0 2px 8px rgba(0,0,0,.45))"+extraFx;
+    if(key==="gold"||key==="black"){
+      im.classList.remove("badge-unlock-fx");
+      void im.offsetWidth;
+      im.classList.add("badge-unlock-fx");
+    }
+  }
   document.querySelectorAll("#card-color-pop .c-swatch").forEach(function(sw){
     sw.classList.toggle("is-active",sw===b);
   });
+  if(CARD_BADGES_CATALOG)previewCardBadgeInfo(ap.cardVariant);
   saveAp();
   if($("card-color-pop"))$("card-color-pop").classList.remove("open");
 }
@@ -2411,6 +2858,7 @@ function closeMenus(){
   if($("btn-wp")){$("btn-wp").setAttribute("aria-expanded","false");$("btn-wp").classList.remove("blue")}
   if($("lg-pop"))$("lg-pop").classList.remove("open");
   if($("btn-card-langs")){$("btn-card-langs").setAttribute("aria-expanded","false");$("btn-card-langs").classList.remove("blue")}
+  if($("hp-pop"))$("hp-pop").classList.remove("open");
   if($("card-color-pop"))$("card-color-pop").classList.remove("open");
   if($("sw"))$("sw").classList.remove("ap-hide");
 }
@@ -2491,9 +2939,11 @@ function bdRemove(id){
 function bdCard(c){
   var card=el("div","card");card.dataset.rarity=c.rarity||"";card.dataset.supertype=c.supertype||"";card.dataset.subtypes=c.subtypes||"";
   var trs=el("div","card__translater"),ro=el("div","card__rotator");ro.style.setProperty("--glow",GLOW[c.tipo]||GLOW.Colorless);
-  var front=el("div","card__front"),img=el("img");img.alt=c.nombre;
-  img.addEventListener("error",function(){front.classList.add("noimg")});if(c.imagen)img.src=c.imagen;else front.classList.add("noimg");
-  front.appendChild(img);front.appendChild(el("div","card__shine"));front.appendChild(el("div","card__glare"));front.appendChild(el("div","rare-sheen"));
+  var front=el("div","card__front"),img=el("img");img.alt=c.nombre;img.decoding="async";
+  front.appendChild(img);
+  front.appendChild(crearRespaldoVisualCarta(c));
+  front.appendChild(el("div","card__shine"));front.appendChild(el("div","card__glare"));front.appendChild(el("div","rare-sheen"));
+  vincularImagenConRecuperacion(img,c,front);
   ro.appendChild(front);trs.appendChild(ro);card.appendChild(trs);bind(card);
   card.classList.add("still");var st=0;
   ro.addEventListener("pointerenter",function(){clearTimeout(st);card.classList.remove("still")});
@@ -2540,7 +2990,8 @@ document.addEventListener("keydown",function(e){if(e.key!=="Escape"||!bdIsOpen)r
 function bdExport(){
   var data={app:"tcg-world-binder",version:1,exportedAt:new Date().toISOString(),
     state:{day:est.day,score:est.score,packs:est.packs,sig:firma(est.day+"|"+est.score+"|"+est.packs),q:est.q||null,qsig:est.q?cuotaFirma(est.q):null},
-    pack:est.pack||null,binder:binder,appearance:ap,totalPoints:est.score,packsOpened:est.packs,history:hist};
+    pack:est.pack||null,binder:binder,appearance:ap,totalPoints:est.score,packsOpened:est.packs,history:hist,
+    progression:typeof exportarProgresionHP==="function"?exportarProgresionHP():null};
   var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
   a.download="tcgworld-progreso-"+hoy()+".json";document.body.appendChild(a);a.click();
   setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},600);bdToast(tr("bd_exported"))}
@@ -2561,6 +3012,7 @@ function bdImport(inp){
         guardar(est)}
       if(st&&st.q&&typeof st.qsig==="string"&&st.qsig===cuotaFirma(st.q)){mezclarCuota(est,st.q);guardar(est)}
       if(Array.isArray(d.history)){var hid={};hist.forEach(function(h){hid[h.id]=1});d.history.forEach(function(h){if(h&&h.id&&h.nombre&&!hid[h.id]){hist.push(h);hid[h.id]=1}});hist.sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))});hist=hist.slice(0,HMAX);histSave()}
+      if(d.progression&&typeof importarProgresionHP==="function"){importarProgresionHP(d.progression)}
       var a=d.appearance;
       if(a&&typeof a==="object"){
         if(typeof a.theme==="string"&&VALID_THEMES.indexOf(a.theme)>-1)ap.theme=a.theme;
@@ -2708,7 +3160,8 @@ function tvRenderCards(){
   $("tv-empty").style.display=hist.length?"none":"flex";$("tv-empty").style.whiteSpace="pre-line";
   hist.forEach(function(h){
     var b=el("button","tv-card"+(esCostosa(h.valor)?" high-energy":""));b.type="button";
-    var im=el("img");im.alt=h.nombre;im.draggable=false;im.addEventListener("error",function(){im.style.visibility="hidden"});if(h.imagen)im.src=h.imagen;
+    var im=el("img");im.alt=h.nombre;im.draggable=false;im.decoding="async";
+    vincularImagenConRecuperacion(im,h,null);
     b.appendChild(im);b.appendChild(el("span",null,h.precio+" \u00B7 +"+puntos(h.valor)));
     b.addEventListener("click",function(){tvZoom(h)});
     st.appendChild(b)})}
@@ -2732,18 +3185,615 @@ function tvZoomClose(){$("tv-zoom").classList.remove("open")}
 function tvLang(){var al=$("tv-alt");if(al)al.title=tr("tv_alt");if(tvOpen){tvBuildMenu();var it=tvItem(tvCur);$("tv-badge").textContent=it.n?tr("tv_season")+" "+it.n:tr(it.tkey);$("tv-now").textContent=tvName(it);var so=document.querySelector("#tv-screen .tv-soon");if(so){so.lastChild.textContent=tr("tv_soon_msg");so.querySelector("b").textContent=tr("tv_soon")}}}
 var _applyLang2=applyLang;applyLang=function(){_applyLang2();tvLang()};
 
+/* ============================================================================
+   SISTEMA DE PROGRESIÓN: HP (POKÉMON POINTS), LOGIN DIARIO, CARD BADGES Y CHEAT CODES
+   - Tabla configurable de HP por rareza oficial y base por sobre.
+   - Recompensa de ingreso diario de 7 días consecutivos con protección anti-reclamo.
+   - Catálogo oficial de 11 insignias CARD (10 desbloqueables + WHITE reservada).
+   - Validación criptográfica SHA-256 en cliente para códigos secretos (sin exponer
+     el código en texto plano en el código fuente).
+   - Preparación modular para Pokémon TV (sin simular visualizaciones no verificables).
+   ============================================================================ */
+var HP_CONFIG={
+  packBase:5,
+  rarityRewards:{
+    common:1,
+    uncommon:3,
+    rare:8,
+    holo:10,
+    double:15,
+    ir:25,
+    ultra:35,
+    sir:60,
+    secret:75,
+    hyper:100
+  },
+  dailyLogin:[10,15,20,25,30,40,60],
+  badgeUnlockBonus:{
+    green:5,
+    orange:10,
+    sky:15,
+    pink:15,
+    purple:25,
+    brown:25,
+    blueman:45,
+    red:50,
+    black:120,
+    gold:150
+  }
+};
+
+/* Catálogo oficial de Insignias CARD */
+var CARD_BADGES_CATALOG={
+  green:{
+    key:"green",label:"GREEN",rarityEs:"Común",rarityEn:"Common",diffEs:"Fácil",diffEn:"Easy",
+    reqEs:"Desbloqueada de inicio o al obtener cualquier carta Common.",
+    reqEn:"Unlocked by default or by pulling any Common card."
+  },
+  orange:{
+    key:"orange",label:"ORANGE",rarityEs:"Común",rarityEn:"Common",diffEs:"Fácil",diffEn:"Easy",
+    reqEs:"Obtener una carta tipo Fuego/Rayo o abrir tu primer sobre.",
+    reqEn:"Pull a Fire/Lightning card or open your first pack."
+  },
+  sky:{
+    key:"sky",label:"CYAN",rarityEs:"Poco común",rarityEn:"Uncommon",diffEs:"Media-baja",diffEn:"Low-Medium",
+    reqEs:"Obtener una carta Uncommon (Poco común) o tipo Agua/Planta.",
+    reqEn:"Pull an Uncommon card or a Water/Grass type card."
+  },
+  pink:{
+    key:"pink",label:"PINK",rarityEs:"Poco común",rarityEn:"Uncommon",diffEs:"Media-baja",diffEn:"Low-Medium",
+    reqEs:"Obtener una carta tipo Psíquico/Hada de rareza Uncommon o superior.",
+    reqEn:"Pull a Psychic/Fairy Uncommon or higher card."
+  },
+  purple:{
+    key:"purple",label:"PURPLE",rarityEs:"Rara",rarityEn:"Rare",diffEs:"Media",diffEn:"Medium",
+    reqEs:"Obtener una carta Rare / Holo Rare o con valor ≥ $3.00.",
+    reqEn:"Pull a Rare / Holo Rare card or a card worth ≥ $3.00."
+  },
+  brown:{
+    key:"brown",label:"BROWN",rarityEs:"Rara",rarityEn:"Rare",diffEs:"Media",diffEn:"Medium",
+    reqEs:"Obtener una carta Rare o superior de tipo Lucha, Dragón o Metálico.",
+    reqEn:"Pull a Rare+ Fighting, Dragon or Metal card."
+  },
+  blueman:{
+    key:"blueman",label:"SILVER",rarityEs:"Muy rara",rarityEn:"Very Rare",diffEs:"Alta",diffEn:"High",
+    reqEs:"Obtener una carta Double Rare (EX/GX/V) o Illustration Rare (o valor ≥ $12).",
+    reqEn:"Pull a Double Rare (EX/GX/V) or Illustration Rare (or worth ≥ $12)."
+  },
+  red:{
+    key:"red",label:"RED",rarityEs:"Muy rara",rarityEn:"Very Rare",diffEs:"Alta",diffEn:"High",
+    reqEs:"Obtener una carta Ultra Rare / Full Art / VMAX / VSTAR (o valor ≥ $22).",
+    reqEn:"Pull an Ultra Rare / Full Art / VMAX / VSTAR (or worth ≥ $22)."
+  },
+  black:{
+    key:"black",label:"BLACK",rarityEs:"Ultra exclusiva",rarityEn:"Ultra Exclusive",diffEs:"Extremadamente alta",diffEn:"Extremely High",
+    reqEs:"Obtener una Special Illustration Rare (SIR) o Secret Rare de alta exclusividad (o valor ≥ $55).",
+    reqEn:"Pull a Special Illustration Rare (SIR) or high-exclusivity Secret Rare (or worth ≥ $55)."
+  },
+  gold:{
+    key:"gold",label:"GOLD",rarityEs:"Legendaria",rarityEn:"Legendary",diffEs:"Extremadamente alta",diffEn:"Extremely High",
+    reqEs:"Obtener una Hyper Rare / Gold / Rainbow o joya de colección con valor ≥ $95.",
+    reqEn:"Pull a Hyper Rare / Gold / Rainbow or a grail card worth ≥ $95."
+  },
+  white:{
+    key:"white",label:"WHITE",rarityEs:"Especial",rarityEn:"Special",diffEs:"Por definir",diffEn:"TBD",
+    reserved:true,
+    reqEs:"Categoría especial reservada para un evento futuro oficial.",
+    reqEn:"Special reserved category for a future official event."
+  }
+};
+
+var CONFIRMED_BADGE_KEYS=["green","orange","sky","pink","purple","brown","blueman","red","black","gold"];
+var HP_STORAGE_KEY="pkframe_hp_progression_v1";
+
+function firmaHP(st){
+  if(!st)return"";
+  var bKeys=Object.keys(st.badges||{}).sort().map(function(k){return k+":"+(st.badges[k]&&st.badges[k].unlocked?1:0)}).join(",");
+  var cKeys=(st.redeemedCodes||[]).slice().sort().join(",");
+  var raw=[st.hp||0,st.lastLoginDay||"",st.lastLoginTs||0,st.streak||0,bKeys,cKeys,(st.txIds||[]).length].join("|");
+  return firma("hp_v1|"+raw);
+}
+
+function estadoHpInicial(){
+  return{
+    hp:0,
+    lastLoginDay:"",
+    lastLoginTs:0,
+    streak:0,
+    badges:{
+      green:{unlocked:true,pokemon:"Inicial",date:new Date().toISOString(),reason:"Insignia inicial"}
+    },
+    redeemedCodes:[],
+    txIds:[],
+    history:[]
+  };
+}
+
+function cargarProgresionHP(){
+  var def=estadoHpInicial();
+  try{
+    var raw=localStorage.getItem(HP_STORAGE_KEY);
+    if(!raw){
+      var m=document.cookie.match(/(?:^|; )pk_hp=([^;]*)/);
+      if(m){
+        var p=decodeURIComponent(m[1]).split("|");
+        if(p.length===4&&firma("hpc|"+p[0]+"|"+p[1]+"|"+p[2])===p[3]){
+          def.hp=Math.max(0,+p[0]||0);
+          def.lastLoginDay=p[1]||"";
+          def.streak=Math.max(0,+p[2]||0);
+        }
+      }
+      return def;
+    }
+    var parsed=JSON.parse(raw);
+    if(!parsed||typeof parsed!=="object")return def;
+    if(parsed.sig&&parsed.sig===firmaHP(parsed)){
+      if(!parsed.badges||!parsed.badges.green){
+        parsed.badges=Object.assign({green:{unlocked:true,pokemon:"Inicial",date:new Date().toISOString()}},parsed.badges||{});
+      }
+      /* Asegurar que WHITE permanezca reservada */
+      if(parsed.badges&&parsed.badges.white)delete parsed.badges.white;
+      return parsed;
+    }
+  }catch(e){}
+  return def;
+}
+
+var hpState=cargarProgresionHP();
+
+function guardarProgresionHP(){
+  if(hpState.badges&&hpState.badges.white)delete hpState.badges.white;
+  hpState.sig=firmaHP(hpState);
+  try{
+    localStorage.setItem(HP_STORAGE_KEY,JSON.stringify(hpState));
+  }catch(e){}
+  try{
+    var cStr=hpState.hp+"|"+(hpState.lastLoginDay||"")+"|"+(hpState.streak||0);
+    var cSig=firma("hpc|"+cStr);
+    document.cookie="pk_hp="+encodeURIComponent(cStr+"|"+cSig)+"; max-age=31536000; path=/; SameSite=Lax";
+  }catch(e){}
+}
+
+function registrarTransaccionHP(txId,cantidad,motivoEs,motivoEn){
+  var amt=Math.round(+cantidad||0);
+  if(amt<=0||!txId)return 0;
+  if(!Array.isArray(hpState.txIds))hpState.txIds=[];
+  if(hpState.txIds.indexOf(txId)>-1)return 0; /* Evita duplicación de recompensas */
+  hpState.txIds.push(txId);
+  if(hpState.txIds.length>400)hpState.txIds=hpState.txIds.slice(-400);
+  hpState.hp=Math.max(0,(+hpState.hp||0)+amt);
+  if(!Array.isArray(hpState.history))hpState.history=[];
+  hpState.history.unshift({
+    id:txId,
+    amount:amt,
+    reasonEs:motivoEs||"Recompensa HP",
+    reasonEn:motivoEn||motivoEs||"HP Reward",
+    date:new Date().toISOString()
+  });
+  hpState.history=hpState.history.slice(0,35);
+  guardarProgresionHP();
+  actualizarUIProgresionHP(true);
+  return amt;
+}
+
+/* Recompensa por Ingreso Diario (Daily Login Rewards 1 a 7 días) */
+function verificarRecompensaIngresoDiario(){
+  var diaHoy=hoy();
+  var ahora=Date.now();
+  if(hpState.lastLoginDay===diaHoy)return;
+  /* Evitar reinicios por retroceder el reloj del dispositivo */
+  if(hpState.lastLoginTs&&ahora+3600000<hpState.lastLoginTs)return;
+
+  var racha=1;
+  if(hpState.lastLoginDay){
+    var pA=hpState.lastLoginDay.split("-").map(Number);
+    var pB=diaHoy.split("-").map(Number);
+    var utcA=Date.UTC(pA[0],(pA[1]||1)-1,pA[2]||1);
+    var utcB=Date.UTC(pB[0],(pB[1]||1)-1,pB[2]||1);
+    var diffDias=Math.round((utcB-utcA)/86400000);
+    if(diffDias===0)return;
+    if(diffDias===1){
+      racha=((hpState.streak||0)%7)+1;
+    }else if(diffDias<0){
+      return;
+    }else{
+      racha=1;
+    }
+  }
+  hpState.lastLoginDay=diaHoy;
+  hpState.lastLoginTs=ahora;
+  hpState.streak=racha;
+  var tabla=HP_CONFIG.dailyLogin||[10,15,20,25,30,40,60];
+  var premio=tabla[Math.min(tabla.length-1,Math.max(0,racha-1))]||10;
+  var ganado=registrarTransaccionHP(
+    "login_"+diaHoy,
+    premio,
+    "Ingreso diario (Día "+racha+"/7)",
+    "Daily login (Day "+racha+"/7)"
+  );
+  if(ganado>0){
+    setTimeout(function(){
+      bdToast("⚡ +"+ganado+" HP · "+(L==="es"?"Recompensa diaria (Día "+racha+"/7)":"Daily Login (Day "+racha+"/7)"));
+    },650);
+  }
+}
+
+/* Cálculo de HP de acuerdo con las 8 cartas obtenidas en una apertura real */
+function otorgarHpPorSobre(listaCartas,numSobre){
+  if(!Array.isArray(listaCartas)||!listaCartas.length)return;
+  var firmaCartas=listaCartas.map(function(c){return(c&&c.id)||c.nombre||"x"}).join("_");
+  var txId="pack_"+hoy()+"_"+(numSobre||est.packs)+"_"+firma(firmaCartas);
+  var totalHp=HP_CONFIG.packBase||5;
+  var mejorCat="common";
+  var rOrder=["common","uncommon","rare","holo","double","ir","ultra","sir","secret","hyper"];
+
+  listaCartas.forEach(function(c){
+    if(!c)return;
+    var cat=clasificarRarezaOficial(c);
+    var add=HP_CONFIG.rarityRewards[cat];
+    if(typeof add!=="number")add=HP_CONFIG.rarityRewards.common||1;
+    totalHp+=add;
+    if(rOrder.indexOf(cat)>rOrder.indexOf(mejorCat))mejorCat=cat;
+    /* Evaluar desbloqueo de insignias por las cartas obtenidas en el sobre */
+    evaluarDesbloqueoInsigniaPorCarta(c,true);
+  });
+
+  var ganado=registrarTransaccionHP(
+    txId,
+    totalHp,
+    "Apertura de sobre #"+(numSobre||est.packs)+" (8 cartas)",
+    "Pack opening #"+(numSobre||est.packs)+" (8 cards)"
+  );
+  if(ganado>0){
+    setTimeout(function(){
+      bdToast("⚡ +"+ganado+" HP · "+(L==="es"?"Sobre abierto":"Pack opened"));
+    },900);
+  }
+}
+
+function isCardBadgeUnlocked(key){
+  if(key==="white")return false; /* Reservada */
+  if(key==="green")return true;
+  if(!hpState||!hpState.badges)return true;
+  return !!(hpState.badges&&hpState.badges[key]&&hpState.badges[key].unlocked);
+}
+
+function desbloquearInsigniaCard(key,nombrePokemon,silencioso){
+  if(!key||key==="white"||!CARD_BADGES_CATALOG[key])return false;
+  if(isCardBadgeUnlocked(key))return false;
+  if(!hpState.badges)hpState.badges={};
+  var meta=CARD_BADGES_CATALOG[key];
+  hpState.badges[key]={
+    unlocked:true,
+    pokemon:nombrePokemon||"Pokémon TCG",
+    date:new Date().toISOString()
+  };
+  var bono=HP_CONFIG.badgeUnlockBonus[key]||15;
+  registrarTransaccionHP(
+    "badge_unlock_"+key,
+    bono,
+    "Insignia CARD "+meta.label+" ("+(nombrePokemon||"Pokémon")+")",
+    "CARD Badge "+meta.label+" ("+(nombrePokemon||"Pokémon")+")"
+  );
+  guardarProgresionHP();
+  sincronizarSwatchesInsignias();
+  if(!silencioso){
+    if(key==="gold"||key==="black"){
+      sonarRara();
+      var imgBtn=$("card-svg-img");
+      if(imgBtn){
+        imgBtn.classList.remove("badge-unlock-fx");
+        void imgBtn.offsetWidth;
+        imgBtn.classList.add("badge-unlock-fx");
+      }
+    }
+    bdToast("🏅 "+(L==="es"?"¡Insignia ":"Badge ")+meta.label+(L==="es"?" desbloqueada con ":" unlocked by ")+(nombrePokemon||"Pokémon")+"! (+"+bono+" HP)");
+  }
+  return true;
+}
+
+/* Evalúa qué insignias CARD desbloquea una carta según su rareza oficial, tipo, ilustración y valor */
+function evaluarDesbloqueoInsigniaPorCarta(c,silencioso){
+  if(!c)return;
+  var cat=clasificarRarezaOficial(c);
+  var val=+(c.valor||0);
+  var tipo=String(c.tipo||"Colorless");
+  var nom=c.nombre||"Pokémon";
+  var rOrder=["common","uncommon","rare","holo","double","ir","ultra","sir","secret","hyper"];
+  var idx=rOrder.indexOf(cat);
+
+  /* GREEN: Común */
+  desbloquearInsigniaCard("green",nom,true);
+  /* ORANGE: Común accesible (Fuego, Rayo o cualquier carta obtenida en sobre) */
+  if(tipo==="Fire"||tipo==="Lightning"||idx>=0){
+    desbloquearInsigniaCard("orange",nom,silencioso);
+  }
+  /* CYAN (sky): Poco común o Agua/Planta */
+  if(idx>=1||tipo==="Water"||tipo==="Grass"){
+    desbloquearInsigniaCard("sky",nom,silencioso);
+  }
+  /* PINK: Poco común+ o Psíquico/Hada/Colorless */
+  if((idx>=1&&(tipo==="Psychic"||tipo==="Fairy"||tipo==="Colorless"))||idx>=2){
+    desbloquearInsigniaCard("pink",nom,silencioso);
+  }
+  /* PURPLE: Rara / Holo Rare o valor >= $3 */
+  if(idx>=2||val>=3){
+    desbloquearInsigniaCard("purple",nom,silencioso);
+  }
+  /* BROWN: Rara+ de tipo Lucha, Dragón, Metálico u Oscuridad, o Double Rare+ */
+  if((idx>=2&&(tipo==="Fighting"||tipo==="Dragon"||tipo==="Metal"||tipo==="Darkness"))||idx>=4||val>=5){
+    desbloquearInsigniaCard("brown",nom,silencioso);
+  }
+  /* SILVER (blueman): Muy rara (Double Rare / Illustration Rare o valor >= $12) */
+  if(idx>=4||val>=12){
+    desbloquearInsigniaCard("blueman",nom,silencioso);
+  }
+  /* RED: Muy rara (Ultra Rare / Full Art / VMAX o valor >= $22) */
+  if(idx>=6||val>=22){
+    desbloquearInsigniaCard("red",nom,silencioso);
+  }
+  /* BLACK: Ultra exclusiva (Special Illustration Rare / Secret Rare o valor >= $55) */
+  if(cat==="sir"||cat==="secret"||cat==="hyper"||val>=55){
+    desbloquearInsigniaCard("black",nom,false);
+  }
+  /* GOLD: Legendaria (Hyper Rare / Gold / Rainbow o valor >= $95) */
+  if(cat==="hyper"||val>=95){
+    desbloquearInsigniaCard("gold",nom,false);
+  }
+}
+
+function previewCardBadgeInfo(key){
+  if(!CARD_BADGES_CATALOG)return;
+  var meta=CARD_BADGES_CATALOG[key]||CARD_BADGES_CATALOG.green;
+  if(!meta)return;
+  var unlocked=isCardBadgeUnlocked(meta.key);
+  var info=hpState&&hpState.badges&&hpState.badges[meta.key];
+  if($("cc-inf-name"))$("cc-inf-name").textContent=meta.label+(meta.reserved?" (RESERVADA)":(unlocked?" ✓":" 🔒"));
+  if($("cc-inf-rar"))$("cc-inf-rar").textContent=(L==="es"?meta.rarityEs+" · "+meta.diffEs:meta.rarityEn+" · "+meta.diffEn);
+  if($("cc-inf-req"))$("cc-inf-req").textContent=(L==="es"?meta.reqEs:meta.reqEn);
+  var pokeEl=$("cc-inf-poke");
+  if(pokeEl){
+    if(unlocked&&info&&info.pokemon){
+      pokeEl.textContent=(L==="es"?"Desbloqueada por: ":"Unlocked by: ")+info.pokemon;
+    }else{
+      pokeEl.textContent="";
+    }
+  }
+}
+
+function sincronizarSwatchesInsignias(){
+  document.querySelectorAll("#card-color-pop .c-swatch").forEach(function(sw){
+    var k=sw.dataset.var;
+    var meta=CARD_BADGES_CATALOG[k];
+    if(meta&&meta.reserved){
+      sw.classList.add("is-reserved");
+      sw.classList.remove("is-locked");
+    }else{
+      var ok=isCardBadgeUnlocked(k);
+      sw.classList.toggle("is-locked",!ok);
+    }
+  });
+  var countUnl=CONFIRMED_BADGE_KEYS.filter(isCardBadgeUnlocked).length;
+  if($("hp-badges-sum")){
+    $("hp-badges-sum").textContent=(L==="es"?"Insignias CARD desbloqueadas: ":"Unlocked CARD Badges: ")+countUnl+"/"+CONFIRMED_BADGE_KEYS.length;
+  }
+}
+
+function actualizarUIProgresionHP(pulse){
+  var vEl=$("hp-val"),pill=$("hp-pill");
+  if(vEl)vEl.textContent=(+hpState.hp||0).toLocaleString(L==="es"?"es":"en");
+  if(pill&&pulse){
+    pill.classList.remove("pulse");
+    void pill.offsetWidth;
+    pill.classList.add("pulse");
+  }
+  if($("hp-streak-lbl")){
+    $("hp-streak-lbl").textContent=(L==="es"?"Racha: ":"Streak: ")+(hpState.streak||1)+"d/7d";
+  }
+  var bar=$("hp-streak-bar");
+  if(bar){
+    bar.innerHTML="";
+    var rewards=HP_CONFIG.dailyLogin||[10,15,20,25,30,40,60];
+    for(var d=1;d<=7;d++){
+      var cell=el("div","hp-day"+(d<=(hpState.streak||0)?" done":""));
+      cell.appendChild(el("span",null,"D"+d));
+      cell.appendChild(el("b",null,"+"+rewards[d-1]));
+      bar.appendChild(cell);
+    }
+  }
+  var list=$("hp-log-list");
+  if(list){
+    list.innerHTML="";
+    (hpState.history||[]).slice(0,12).forEach(function(item){
+      var row=el("div","hp-log-item");
+      row.appendChild(el("span",null,L==="es"?item.reasonEs:item.reasonEn));
+      row.appendChild(el("b",null,"+"+item.amount+" HP"));
+      list.appendChild(row);
+    });
+  }
+  sincronizarSwatchesInsignias();
+}
+
+function toggleHpPop(ev){
+  if(ev&&ev.stopPropagation)ev.stopPropagation();
+  var pop=$("hp-pop");
+  if(!pop)return;
+  var was=pop.classList.contains("open");
+  closeMenus();
+  if(!was){
+    actualizarUIProgresionHP(false);
+    pop.classList.add("open");
+  }
+}
+
+/* ============================================================================
+   SISTEMA CHEAT CODES EN AVATARES (Validación por resumen criptográfico SHA-256)
+   Nota técnica honesta: Al ser una aplicación 100% cliente sin servidor externo,
+   el código no se almacena en texto plano sino que se verifica contra su hash
+   SHA-256 con sal ("pkframe_cheat_v1::" + código en minúsculas) y se protege
+   con la firma de persistencia local.
+   ============================================================================ */
+var CHEAT_FULL_UNLOCK_HASH="b6a10fc3732569906552fb2c6e6424fb11524140b10d913d94806c504cc2ea96";
+
+async function sha256Hex(texto){
+  if(window.crypto&&window.crypto.subtle&&window.TextEncoder){
+    var buf=new TextEncoder().encode(texto);
+    var digest=await window.crypto.subtle.digest("SHA-256",buf);
+    return Array.from(new Uint8Array(digest)).map(function(b){return("0"+b.toString(16)).slice(-2)}).join("");
+  }
+  /* Respaldo determinista si el navegador bloquea SubtleCrypto en contexto file:// */
+  return firma("fallback_sha|"+texto);
+}
+
+function toggleCheatCodesPanel(ev){
+  if(ev&&ev.stopPropagation)ev.stopPropagation();
+  var box=$("av-cheat-box"),inp=$("cheat-input"),msgEl=$("cheat-msg");
+  if(!box)return;
+  var open=!box.classList.contains("open");
+  box.classList.toggle("open",open);
+  if(open){
+    if(msgEl){msgEl.textContent="";msgEl.className=""}
+    if(inp){inp.value="";setTimeout(function(){inp.focus()},60)}
+  }
+}
+
+async function redeemCheatCode(){
+  var inp=$("cheat-input"),msgEl=$("cheat-msg");
+  if(!inp||!msgEl)return;
+  var norm=String(inp.value||"").trim().toLowerCase();
+  if(!norm){
+    msgEl.className="err";
+    msgEl.textContent=L==="es"?"Introduce un código válido.":"Enter a valid code.";
+    return;
+  }
+  var hashHex=await sha256Hex("pkframe_cheat_v1::"+norm);
+  var esValido=(hashHex===CHEAT_FULL_UNLOCK_HASH)||(firma("fallback_sha|pkframe_cheat_v1::"+norm)==="jkn03w");
+
+  if(!esValido){
+    msgEl.className="err";
+    msgEl.textContent=L==="es"?"Código inválido o no reconocido.":"Invalid or unrecognized code.";
+    return;
+  }
+
+  if(!Array.isArray(hpState.redeemedCodes))hpState.redeemedCodes=[];
+  if(hpState.redeemedCodes.indexOf(CHEAT_FULL_UNLOCK_HASH)>-1){
+    msgEl.className="warn";
+    msgEl.textContent=L==="es"?"Este código secreto ya fue canjeado anteriormente.":"This secret code has already been redeemed.";
+    return;
+  }
+
+  hpState.redeemedCodes.push(CHEAT_FULL_UNLOCK_HASH);
+  var nuevas=0;
+  CONFIRMED_BADGE_KEYS.forEach(function(k){
+    if(!isCardBadgeUnlocked(k)){
+      if(!hpState.badges)hpState.badges={};
+      hpState.badges[k]={
+        unlocked:true,
+        pokemon:"CHEAT CODE · FULL UNLOCK",
+        date:new Date().toISOString()
+      };
+      nuevas++;
+    }
+  });
+  guardarProgresionHP();
+  sincronizarSwatchesInsignias();
+  actualizarUIProgresionHP(true);
+  sonarRara();
+  inp.value="";
+  msgEl.className="ok";
+  msgEl.textContent=L==="es"
+    ?"¡Código aceptado! Las 10 insignias CARD confirmadas han sido desbloqueadas."
+    :"Code accepted! All 10 confirmed CARD badges have been unlocked.";
+  bdToast("🔓 "+(L==="es"?"¡10 Insignias CARD desbloqueadas!":"All 10 CARD Badges unlocked!"));
+}
+
+function exportarProgresionHP(){
+  return hpState;
+}
+function importarProgresionHP(p){
+  if(!p||typeof p!=="object")return;
+  if(p.sig&&p.sig===firmaHP(p)){
+    hpState.hp=Math.max(hpState.hp||0,+p.hp||0);
+    hpState.streak=Math.max(hpState.streak||0,+p.streak||0);
+    if(p.lastLoginDay>hpState.lastLoginDay){
+      hpState.lastLoginDay=p.lastLoginDay;
+      hpState.lastLoginTs=p.lastLoginTs||Date.now();
+    }
+    if(p.badges&&typeof p.badges==="object"){
+      Object.keys(p.badges).forEach(function(k){
+        if(k!=="white"&&p.badges[k]&&p.badges[k].unlocked){
+          hpState.badges[k]=p.badges[k];
+        }
+      });
+    }
+    if(Array.isArray(p.redeemedCodes)){
+      p.redeemedCodes.forEach(function(c){
+        if(hpState.redeemedCodes.indexOf(c)===-1)hpState.redeemedCodes.push(c);
+      });
+    }
+    if(Array.isArray(p.txIds)){
+      p.txIds.forEach(function(id){
+        if(hpState.txIds.indexOf(id)===-1)hpState.txIds.push(id);
+      });
+    }
+    guardarProgresionHP();
+    actualizarUIProgresionHP(false);
+  }
+}
+
 /* ===== Inicio ===== */
 applyLang();
 renderCardLangsMenu();
+sincronizarSwatchesInsignias();
+verificarRecompensaIngresoDiario();
+actualizarUIProgresionHP(false);
+/* Si la variante guardada no estuviera desbloqueada aún, usar GREEN por defecto */
+if(!isCardBadgeUnlocked(ap.cardVariant)){
+  setCardSvgVariant("green");
+}else{
+  setCardSvgVariant(ap.cardVariant);
+}
 /* Verificación en segundo plano de los 18 idiomas de TCGdex y precarga de catálogos */
 verificarTodosLosIdiomasTCGdex().catch(function(){});
 if(est.pack&&est.pack.length){
   dibujar(est.pack,false);pintarIzq();
+  /* Validar también las cartas guardadas de la sesión actual por si alguna URL caducó */
+  est.pack.forEach(function(c){
+    validarYResolverImagenCarta(c,4000);
+    if(c&&c._rev!==false)evaluarDesbloqueoInsigniaPorCarta(c,true);
+  });
 }else{
   /* Si no hay sobre abierto aún, muestra el sobre listo para abrir en el panel izquierdo */
   mostrarSimuladorSobre(true);
   lastMsg=cuota().left<=0?"limit":"empty";msg(lastMsg);
 }
+
+/* ===== Ajustes JS ===== */
+function syncPopFront(){
+  var h=document.querySelector("header");if(!h)return;
+  var o=($("lg-pop")&&$("lg-pop").classList.contains("open"))||($("hp-pop")&&$("hp-pop").classList.contains("open"));
+  h.classList.toggle("pop-front",!!o);
+}
+["toggleCardLangsMenu","toggleHpPop","closeMenus"].forEach(function(n){
+  var f=window[n];if(typeof f!=="function")return;
+  window[n]=function(){var r=f.apply(this,arguments);syncPopFront();return r};
+});
+/* Cierra el menú de color si se hace clic fuera, aunque otro elemento detenga la propagación */
+document.addEventListener("pointerdown",function(e){
+  var pop=$("card-color-pop");
+  if(!pop||!pop.classList.contains("open"))return;
+  if(pop.contains(e.target)||(e.target.closest&&e.target.closest("#card-svg-btn")))return;
+  pop.classList.remove("open");
+},true);
+(function(){
+  var wrap=document.querySelector(".card-svg-wrap"),t=null;
+  if(!wrap)return;
+  wrap.addEventListener("mouseleave",function(){
+    clearTimeout(t);
+    t=setTimeout(function(){var p=$("card-color-pop");if(p)p.classList.remove("open")},450);
+  });
+  wrap.addEventListener("mouseenter",function(){clearTimeout(t)});
+})();
 setInterval(refrescar,1000);
 </script>
 </body>
