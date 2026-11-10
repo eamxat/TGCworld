@@ -151,6 +151,10 @@ html[data-theme="light"] .btn.slate{border-color:var(--btn-navy-line)}
 #ap.open,#wp.open{display:flex}
 /* Selector multilingüe de cartas (18 idiomas de TCGdex + verificación de disponibilidad) */
 .lgw{position:relative;flex-shrink:0;margin-left:-6px}
+/* Alineación: contenedores en flex (sin hueco de línea de base) para que sus botones queden a la misma altura que el resto */
+.apw,.wpw,.lgw{display:flex}
+/* Con Theme o Wallpaper abiertos se ocultan Binder, TV, XP y MULTI para que no se sobrepongan */
+header:has(#ap.open,#wp.open) :is(#btn-binder,#btn-tv,#hp-pill,#btn-card-langs){visibility:hidden}
 #lg-pop{display:none;position:absolute;left:0;top:calc(100% + 8px);width:320px;max-height:340px;flex-direction:column;gap:8px;padding:12px;border-radius:18px;z-index:120;
  background:linear-gradient(180deg,rgb(var(--hd-top)),rgb(var(--hd-bot)));border:1px solid var(--pnl-line);box-shadow:var(--shadow-pnl);font-size:11px;color:var(--txt-soft)}
 #lg-pop.open{display:flex}
@@ -227,12 +231,25 @@ html[data-theme="light"] .rp-head-icon{filter:invert(1) brightness(0.15)}
 @property --gl{syntax:"<number>";inherits:false;initial-value:1}
 @keyframes rareHue{to{--hue:360}}
 @keyframes rareBreath{0%,100%{--pu:0}50%{--pu:1}}
-.slot.high-energy,.slot.high-energy:hover,.thumb.high-energy,.thumb.high-energy:hover,.tv-card.high-energy,.tv-card.high-energy:hover{position:relative;animation:rareHue 7s linear infinite,rareBreath 3.6s ease-in-out infinite;transition:transform .2s ease,--gl .4s ease;
+.slot.high-energy,.slot.high-energy:hover,.tv-card.high-energy,.tv-card.high-energy:hover{position:relative;animation:rareHue 7s linear infinite,rareBreath 3.6s ease-in-out infinite;transition:transform .2s ease,--gl .4s ease;
  border-color:hsl(var(--hue) 95% 72% / .95);
  box-shadow:0 0 calc(14px + var(--pu)*12px*var(--gl)) hsl(var(--hue) 100% 62% / calc(.4 + var(--pu)*.22)),0 0 calc(30px + var(--pu)*22px*var(--gl)) hsl(calc(var(--hue) + 70) 100% 60% / calc(.24 + var(--pu)*.18)),var(--shadow-card)}
-.slot.high-energy:hover,.thumb.high-energy:hover,.tv-card.high-energy:hover{--gl:1.55}
+.slot.high-energy:hover,.tv-card.high-energy:hover{--gl:1.55}
+/* Mejor Carta: brillo en capa propia (solo filter/opacity, sin repintar sombras ni reiniciar la animación al cambiar de carta) */
+.thumb::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;border:1px solid hsl(0 95% 72% / .95);box-shadow:0 0 18px hsl(0 100% 62% / .5),0 0 40px hsl(70 100% 60% / .32);opacity:0;transition:opacity .45s ease;will-change:filter,opacity;animation:thumbGlow 7s linear infinite}
+.thumb.high-energy::after{opacity:1}
+@keyframes thumbGlow{0%{filter:hue-rotate(0deg) brightness(.92)}25%{filter:hue-rotate(90deg) brightness(1.14)}50%{filter:hue-rotate(180deg) brightness(.92)}75%{filter:hue-rotate(270deg) brightness(1.14)}100%{filter:hue-rotate(360deg) brightness(.92)}}
+@media (prefers-reduced-motion:reduce){.thumb::after{animation:none}}
 /* Brillo holográfico sobre la carta (mismo recurso que el sobre) */
-.card__rotator .rare-sheen{display:none;pointer-events:none;transform:translateZ(1.6px);mix-blend-mode:overlay;background:linear-gradient(125deg,transparent 28%,rgba(255,255,255,.55) 44%,hsl(var(--hue) 100% 70% / .5) 50%,hsl(calc(var(--hue) + 80) 100% 72% / .45) 56%,transparent 72%);background-size:240% 240%;animation:packHolo 3.6s ease-in-out infinite}
+.card__rotator .rare-sheen{display:none;pointer-events:none;transform:translateZ(1.6px);mix-blend-mode:overlay;overflow:hidden}
+/* Barrido vertical (arriba → abajo): banda con los mismos colores, animada solo con transform; los bordes transparentes evitan saltos al reiniciar el ciclo */
+.card__rotator .rare-sheen::before{content:"";position:absolute;left:0;top:0;width:100%;height:60%;background:linear-gradient(180deg,transparent 0,rgba(255,255,255,.55) 30%,hsl(var(--hue) 100% 70% / .5) 50%,hsl(calc(var(--hue) + 80) 100% 72% / .45) 70%,transparent 100%);transform:translate3d(0,-100%,0);will-change:transform;animation:rareSheenDown 3.6s linear infinite}
+@keyframes rareSheenDown{0%{transform:translate3d(0,-100%,0)}100%{transform:translate3d(0,167%,0)}}
+@media (prefers-reduced-motion:reduce){.card__rotator .rare-sheen::before{animation:none;transform:translate3d(0,30%,0)}}
+/* Binder: el brillo recorre la carta en diagonal, desde la esquina superior derecha hacia abajo-izquierda (banda inclinada 33°) */
+.bd-item .card__rotator .rare-sheen::before,#bd-zoom-card .card__rotator .rare-sheen::before{left:-60%;width:220%;height:30%;background:linear-gradient(180deg,transparent 0,rgba(255,255,255,.55) 30%,hsl(var(--hue) 100% 70% / .5) 50%,hsl(calc(var(--hue) + 80) 100% 72% / .45) 70%,transparent 100%);transform:translate3d(16.4%,-131%,0) rotate(33deg);animation-name:rareSheenDiag}
+@keyframes rareSheenDiag{0%{transform:translate3d(16.4%,-131%,0) rotate(33deg)}100%{transform:translate3d(-37.2%,298.5%,0) rotate(33deg)}}
+@media (prefers-reduced-motion:reduce){.bd-item .card__rotator .rare-sheen::before,#bd-zoom-card .card__rotator .rare-sheen::before{animation:none;transform:translate3d(-10%,90%,0) rotate(33deg)}}
 .slot.high-energy .card__rotator .rare-sheen,.bd-item .card__rotator .rare-sheen,#bd-zoom-card .card__rotator .rare-sheen{display:grid}
 /* Destellos mágicos */
 .rare-sparks{display:none;position:absolute;inset:0;pointer-events:none;z-index:130}
@@ -450,15 +467,11 @@ html[data-theme="light"] .rp-head-icon{filter:invert(1) brightness(0.15)}
 .tv-soon b{font-size:14px;color:var(--txt-main)}
 .tv-now{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:11px;font-weight:600;color:var(--txt-soft);flex-shrink:0}
 .tv-links{display:flex;align-items:center;gap:10px;flex-shrink:0}
-#tv-alt{width:20px;height:20px;padding:0;border-radius:50%;border:1px solid var(--pnl-line);background:rgba(var(--strip),calc(.05*var(--g)));color:var(--txt-soft);font-size:12px;line-height:1;cursor:pointer;transition:color .2s,border-color .2s,transform .3s}
-#tv-alt:hover{color:var(--accent);border-color:var(--accent);transform:rotate(180deg)}
 .tv-soon .tv-fb{display:flex;gap:8px;margin-top:4px}
 .tv-soon .tv-fb a,.tv-soon .tv-fb button{height:24px;padding:0 12px;border-radius:999px;border:1px solid var(--pnl-line);background:rgba(255,255,255,.08);color:var(--txt-main);font:600 11px 'Poppins',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;text-decoration:none;cursor:pointer}
 .tv-soon .tv-fb a:hover,.tv-soon .tv-fb button:hover{border-color:var(--accent);color:var(--accent)}
 .tv-soon small{font-size:10px;line-height:1.45;color:var(--txt-muted)}
-.tv-now a{color:var(--accent);text-decoration:none;white-space:nowrap}
 #tv-now{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tv-now a:hover{text-decoration:underline}
 .tv-last{display:flex;align-items:center;justify-content:space-between;margin:12px 0 6px;flex-shrink:0}
 .tv-last b{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .tv-nav{display:flex;gap:6px}
@@ -638,10 +651,10 @@ background-size:100% 100%,200% 200%,237% 237%,195% 195%,120% 120%;filter:brightn
 background-image:var(--grain),var(--rb),var(--ln),var(--rg);background-blend-mode:screen,hue,hard-light;background-size:var(--imgsize),200% 700%,300%,200%;
 background-position:center,0% var(--posy),var(--posx) var(--posy),var(--posx) var(--posy);filter:brightness(.75) contrast(2.6) saturate(.45)}
 .card[data-rarity="rare holo v"] .card__shine:after{content:"";background-position:center,0% var(--posy),calc(var(--posx)*-1) calc(var(--posy)*-1),var(--posx) var(--posy);background-size:var(--imgsize),200% 400%,195%,200%;filter:brightness(.9) contrast(2.2) saturate(1.4);mix-blend-mode:soft-light}
-.card[data-rarity="rare ultra"][data-supertype="pokémon"] .card__shine,.card[data-rarity="rare ultra"][data-supertype="pokémon"] .card__shine:after{--space:5%;--angle:133deg;--imgsize:50%;
+.card[data-rarity="rare ultra"] .card__shine,.card[data-rarity="rare ultra"] .card__shine:after{--space:5%;--angle:133deg;--imgsize:50%;
 background-image:url("https://res.cloudinary.com/simey/image/upload/Dev/PokemonCards/illusion.webp"),var(--rb),var(--ln),var(--rg);background-blend-mode:exclusion,hue,hard-light;background-size:var(--imgsize),200% 700%,300%,200%;
 background-position:center,0% var(--posy),var(--posx) var(--posy),var(--posx) var(--posy);filter:brightness(calc((var(--hyp)*.25) + .48)) contrast(1.8) saturate(1.25)}
-.card[data-rarity="rare ultra"][data-supertype="pokémon"] .card__shine:after{content:"";mix-blend-mode:exclusion;background-size:var(--imgsize),200% 400%,195%,200%;background-position:center,0% var(--posy),calc(var(--posx)*-1) calc(var(--posy)*-1),var(--posx) var(--posy);filter:brightness(calc((var(--hyp)*.4) + .75)) contrast(1.5) saturate(1.2)}
+.card[data-rarity="rare ultra"] .card__shine:after{content:"";mix-blend-mode:exclusion;background-size:var(--imgsize),200% 400%,195%,200%;background-position:center,0% var(--posy),calc(var(--posx)*-1) calc(var(--posy)*-1),var(--posx) var(--posy);filter:brightness(calc((var(--hyp)*.4) + .75)) contrast(1.5) saturate(1.2)}
 .card[data-rarity^="rare rainbow"] .card__shine,.card[data-rarity^="rare rainbow"] .card__shine:after{--space:7%;--angle:-20deg;--angle2:130deg;--imgsize:540px 700px;
 background-image:url("https://res.cloudinary.com/simey/image/upload/Dev/PokemonCards/rainbow2.jpg"),
 repeating-linear-gradient(var(--angle),rgb(253,71,65) calc(var(--space)*1),rgb(255,243,151) calc(var(--space)*2),rgb(168,255,95) calc(var(--space)*3),rgb(131,255,247) calc(var(--space)*4),rgb(75,198,255) calc(var(--space)*5),rgb(255,73,246) calc(var(--space)*6),rgb(255,56,49) calc(var(--space)*7)),
@@ -714,14 +727,14 @@ header.pop-front,header:has(#lg-pop.open),header:has(#hp-pop.open){z-index:21474
  opacity:calc(var(--o) * var(--hint,1));transition:opacity .45s ease}
 /* Destello metálico que recorre la tarjeta de vez en cuando */
 .card-holo .h-sheen{opacity:calc(.9 * var(--hint,1))}
-.card-holo .h-sheen::before{content:"";position:absolute;top:-12%;bottom:-12%;left:0;width:24%;
- background:linear-gradient(105deg,transparent 0,rgba(var(--hsheen,255,255,255),var(--hsheena,.7)) 50%,transparent 100%);
- transform:translate3d(-160%,0,0) skewX(-16deg);opacity:0;animation:holoSweep calc(8s / var(--hspeed,1)) ease-in-out infinite}
+.card-holo .h-sheen::before{content:"";position:absolute;left:-60%;right:-60%;top:0;height:24%;
+ background:linear-gradient(180deg,transparent 0,rgba(var(--hsheen,255,255,255),var(--hsheena,.7)) 50%,transparent 100%);
+ transform:translate3d(34.5%,-62%,0) rotate(46deg);opacity:0;animation:holoSweep calc(8s / var(--hspeed,1)) ease-in-out infinite}
 .card-holo .h-spark{opacity:calc(.9 * var(--hint,1))}
-.card-holo .h-spark b{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;opacity:0;transform:scale(0) rotate(0deg);
+.card-holo .h-spark b{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;opacity:0;transform:scale(0) rotate(0deg);
  background:linear-gradient(90deg,transparent 30%,var(--hspark,#fff) 50%,transparent 70%) center/100% 1px no-repeat,linear-gradient(0deg,transparent 30%,var(--hspark,#fff) 50%,transparent 70%) center/1px 100% no-repeat,radial-gradient(circle,var(--hspark,#fff) 0 1px,transparent 2.2px);
  animation:holoStar calc(var(--dur,7s) / var(--hspeed,1)) ease-in-out infinite;animation-delay:var(--dl,0s)}
-@keyframes holoSweep{0%{transform:translate3d(-160%,0,0) skewX(-16deg);opacity:0}5%{opacity:1}24%{transform:translate3d(520%,0,0) skewX(-16deg);opacity:0}100%{transform:translate3d(520%,0,0) skewX(-16deg);opacity:0}}
+@keyframes holoSweep{0%{transform:translate3d(34.5%,-62%,0) rotate(46deg);opacity:0}4%{opacity:1}20%{opacity:1}24%{transform:translate3d(-34.5%,378%,0) rotate(46deg);opacity:0}100%{transform:translate3d(-34.5%,378%,0) rotate(46deg);opacity:0}}
 @keyframes holoStar{0%,72%,100%{opacity:0;transform:scale(0) rotate(0deg)}82%{opacity:1;transform:scale(1) rotate(45deg)}91%{opacity:.7;transform:scale(.6) rotate(80deg)}}
 /* Equipos lentos: se mantiene el foil estático y se apagan los efectos animados secundarios */
 html.fx-lite .card-holo .h-sheen::before,html.fx-lite .card-holo .h-spark{display:none}
@@ -738,6 +751,12 @@ html.fx-reduced .card-holo .h-sheen::before,html.fx-reduced .card-holo .h-spark{
 #tv-pop{width:20px;height:20px;padding:0;border-radius:50%;border:1px solid var(--pnl-line);background:rgba(var(--strip),calc(.05*var(--g)));color:var(--txt-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s,transform .2s}
 #tv-pop svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 #tv-pop:hover{color:var(--accent);border-color:var(--accent);transform:scale(1.12)}
+#tv-sat{width:20px;height:20px;padding:0;border-radius:50%;border:1px solid var(--pnl-line);background:rgba(var(--strip),calc(.05*var(--g)));color:var(--txt-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s,transform .2s}
+#tv-sat svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#tv-sat:hover{color:var(--accent);border-color:var(--accent);transform:scale(1.12)}
+/* Ventana ampliada "Saturno": misma ventana #tvp-win, centrada, exactamente 728 × 486 (la pantalla conserva 16:9) */
+#tvp.tvp-sat #tvp-win{width:728px;max-width:none;height:486px}
+#tvp.tvp-sat #tvp-screen{flex:1 1 0;min-height:0;width:auto;max-width:100%;align-self:center}
 #tvp{position:fixed;inset:0;z-index:2147483600;display:none;align-items:center;justify-content:center;padding:10px;background:rgba(5,6,10,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .25s ease;font-family:'Poppins',ui-sans-serif,system-ui,sans-serif}
 #tvp.open{display:flex;pointer-events:none}
 #tvp-win{pointer-events:auto}
@@ -786,28 +805,6 @@ html.fx-reduced .card-holo .h-sheen::before,html.fx-reduced .card-holo .h-spark{
 
     <!-- ICON: Traducir · barra superior (idioma UI ES/EN) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
     <button class="btn" style="width:60px" onclick="toggleLang()" title="UI ES/EN"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg><span id="lang-ind">EN</span></button>
-
-    <!-- Selector Multilingüe de Cartas (18 idiomas de TCGdex con verificación real) -->
-    <div class="lgw">
-      <!-- ICON: Globo · barra superior (botón MULTI, idiomas de cartas) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
-      <button id="btn-card-langs" class="btn" style="padding:0 10px" onclick="toggleCardLangsMenu(event)" aria-expanded="false" title="Idiomas de cartas (TCGdex & APIs)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.6 9h16.8M3.6 15h16.8M12 3a14.5 14.5 0 010 18M12 3a14.5 14.5 0 000 18"/></svg>
-        <span id="card-langs-ind">MULTI</span>
-      </button>
-      <div id="lg-pop" popover="manual" onclick="event.stopPropagation()">
-        <div class="lg-head">
-          <b data-i18n="cl_title">Idiomas de cartas</b>
-          <div class="lg-actions">
-            <button type="button" class="lg-act" onclick="selectAllCardLangs()" data-i18n="cl_all">Todos</button>
-            <button type="button" class="lg-act" onclick="selectDefaultCardLangs()" data-i18n="cl_mix">Equilibrado</button>
-          </div>
-        </div>
-        <div id="lg-grid"></div>
-        <div class="lg-foot">
-          <span id="lg-status">Verificando catálogos en TCGdex...</span>
-        </div>
-      </div>
-    </div>
 
     <!-- Selector de Apariencia (Claro, Oscuro, Orange Pokémon, Pink, Purple, Blue Cyan) -->
     <div class="apw">
@@ -868,6 +865,28 @@ html.fx-reduced .card-holo .h-sheen::before,html.fx-reduced .card-holo .h-spark{
         <div class="hp-streak-bar" id="hp-streak-bar"></div>
         <div style="font-size:10px;color:var(--txt-muted)" id="hp-badges-sum">Insignias CARD: 1/10</div>
         <div class="hp-log-list" id="hp-log-list"></div>
+      </div>
+    </div>
+
+    <!-- Selector Multilingüe de Cartas (18 idiomas de TCGdex con verificación real) -->
+    <div class="lgw">
+      <!-- ICON: Globo · barra superior (botón MULTI, idiomas de cartas) · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS --ic-btn. -->
+      <button id="btn-card-langs" class="btn" style="padding:0 10px" onclick="toggleCardLangsMenu(event)" aria-expanded="false" title="Idiomas de cartas (TCGdex & APIs)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.6 9h16.8M3.6 15h16.8M12 3a14.5 14.5 0 010 18M12 3a14.5 14.5 0 000 18"/></svg>
+        <span id="card-langs-ind">MULTI</span>
+      </button>
+      <div id="lg-pop" popover="manual" onclick="event.stopPropagation()">
+        <div class="lg-head">
+          <b data-i18n="cl_title">Idiomas de cartas</b>
+          <div class="lg-actions">
+            <button type="button" class="lg-act" onclick="selectAllCardLangs()" data-i18n="cl_all">Todos</button>
+            <button type="button" class="lg-act" onclick="selectDefaultCardLangs()" data-i18n="cl_mix">Equilibrado</button>
+          </div>
+        </div>
+        <div id="lg-grid"></div>
+        <div class="lg-foot">
+          <span id="lg-status">Verificando catálogos en TCGdex...</span>
+        </div>
       </div>
     </div>
 
@@ -1076,7 +1095,7 @@ html.fx-reduced .card-holo .h-sheen::before,html.fx-reduced .card-holo .h-spark{
             </div>
             <div id="tv-screen"></div>
             <!-- ICON: Ampliar (nuevo) · Pokémon TV · abre la ventana POP-UP · SVG inline. Reemplazo: cambia el <svg> interno por otro SVG 24x24 (stroke="currentColor") o <img>. Tamaño: variable CSS #tv-pop svg (CSS, 11px). -->
-            <div class="tv-now"><span id="tv-now"></span><span class="tv-links"><button id="tv-pop" type="button" onclick="tvPopOpen()" title="Ampliar reproductor" aria-label="Ampliar reproductor"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><button id="tv-alt" type="button" onclick="tvAlt()" data-i18n-title="tv_alt" title="Probar otro método">↻</button><a id="tv-yt" href="#" target="_blank" rel="noopener noreferrer" data-i18n="tv_yt">Abrir en YouTube</a></span></div>
+            <div class="tv-now"><span id="tv-now"></span><span class="tv-links"><button id="tv-pop" type="button" onclick="tvPopOpen()" title="Ampliar reproductor" aria-label="Ampliar reproductor"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><button id="tv-sat" type="button" onclick="tvSatOpen()" title="Ampliar reproductor (728 × 486)" aria-label="Ampliar reproductor (728 × 486)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5.2"/><g transform="rotate(-28 12 12)"><path d="M1.5 12A10.5 3.4 0 0 1 7.84 8.88M16.16 8.88A10.5 3.4 0 0 1 22.5 12M1.5 12A10.5 3.4 0 0 0 22.5 12"/></g></svg></button></span></div>
             <div class="tv-last">
               <b data-i18n="tv_last">Tus últimas cartas abiertas</b>
               <div class="tv-nav">
@@ -1163,9 +1182,10 @@ var CARD_HOLO={
        blend: modo de fusión del foil · rest/peak: visibilidad en reposo / bajo el cursor (0–1)
        glare/glareBlend: luz especular · sheenBlend: modo del destello metálico */
     gold:  {prism:["#ffe08a","#fff3c4","#ffbf5e","#f6dc7a"],spark:"#fff8dc",sheen:"255,238,175",sheenA:.6,blend:"overlay",rest:.10,peak:.50,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"},
-    /* NEGRO: color-dodge y soft-light no pueden aclarar un píxel negro puro; reposo 0 = SVG original intacto */
-    black: {prism:["#ff5fd2","#5fd6ff","#7dff8f","#ffd55f"],spark:"#ffffff",sheen:"215,225,255",sheenA:.14,blend:"color-dodge",rest:0,peak:.22,glare:.12,glareBlend:"soft-light",sheenBlend:"screen"},
-    silver:{prism:["#dfe9ff","#ffffff","#b9c9ff","#e0fff6"],spark:"#ffffff",sheen:"255,255,255",sheenA:.55,blend:"overlay",rest:.10,peak:.46,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"}
+    /* NEGRO: color-dodge/soft-light/overlay no pueden aclarar un píxel negro (el holo no se veía y quemaba los grises); screen sí lo hace de forma limpia. Reposo 0 = SVG original intacto */
+    black: {prism:["#ff5fd2","#5fd6ff","#7dff8f","#ffd55f"],spark:"#ffffff",sheen:"215,225,255",sheenA:.14,blend:"screen",rest:0,peak:.3,glare:.12,glareBlend:"screen",sheenBlend:"screen"},
+    silver:{prism:["#dfe9ff","#ffffff","#b9c9ff","#e0fff6"],spark:"#ffffff",sheen:"255,255,255",sheenA:.55,blend:"overlay",rest:.10,peak:.46,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"},
+    red:   {prism:["#ff5a5a","#ffb08a","#ffd9d9","#ff7ab8"],spark:"#ffe9e9",sheen:"255,205,205",sheenA:.55,blend:"overlay",rest:.10,peak:.46,glare:.45,glareBlend:"soft-light",sheenBlend:"soft-light"}
   }
 };
 var CARD_HOLO_ALIAS={blueman:"silver"};  /* identificador interno → clave de arriba */
@@ -1508,11 +1528,14 @@ function elegirConRealismo(lista,n,idiomasActivos){
 }
 function nums(o,ks){var r=[];(function f(x){if(x&&typeof x==="object")Object.keys(x).forEach(function(k){var v=x[k];if(typeof v==="number"&&ks.indexOf(k)>-1)r.push(v);else if(typeof v==="object")f(v)})})(o);return r}
 function precio(u,e){var v;if(u.length){v=Math.max.apply(null,u);return{valor:v,precio:"$"+v.toFixed(2)}}if(e.length){v=Math.max.apply(null,e);return{valor:v,precio:"\u20AC"+v.toFixed(2)}}return{valor:null,precio:"—"}}
-function efecto(t){t=t.toLowerCase();
+function efecto(t){t=String(t||"").toLowerCase();
+  /* La rareza declarada por la API tiene prioridad sobre el subtipo (p. ej. un Hyper/Secret/Ultra Rare con sufijo V conserva su rareza) */
+  if(/rainbow|hyper|arcoíris|arcoiris|hiper|crown|gold|dorada/.test(t))return"rare rainbow";
+  if(/secret|secreta/.test(t))return"rare secret";
+  if(/ultra|double|illustration|full art|amazing|shiny|radiant|shining|prime|legend|ilustraci|doble|radiante|incre[ií]ble/.test(t))return"rare ultra";
   if(/vmax|vstar/.test(t)||/\bv\b/.test(t))return"rare holo v";
-  if(/rainbow|hyper|arcoíris|hiper/.test(t))return"rare rainbow";if(/secret|secreta/.test(t))return"rare secret";
-  if(/ultra|double|illustration|full art|\bex\b|\bgx\b|amazing|ilustraci|doble/.test(t))return"rare ultra";
-  if(/holo/.test(t))return"rare holo";return""}
+  if(/\bex\b|\bgx\b|lv\.?\s?x|break/.test(t))return"rare ultra";
+  if(/holo|brillante/.test(t))return"rare holo";return""}
 
 /* ============================================================================
    SISTEMA DE VALIDACIÓN, RECUPERACIÓN AUTOMÁTICA Y PRECARGA DE IMÁGENES
@@ -1850,7 +1873,7 @@ var TCGdexStore={
   selectedLangs:DEFAULT_ACTIVE_LANGS.slice(),
   unifiedCatalog:{},
   activeRequests:0,
-  maxConcurrency:5,
+  maxConcurrency:8,
   queue:[]
 };
 
@@ -2464,6 +2487,27 @@ async function obtener(){
   }
   throw new Error(er.join(" | "));
 }
+/* Rendimiento: el siguiente sobre se genera y se verifica (datos + imágenes) en segundo plano con la misma obtener(); al abrir se usa ya preparado.
+   Si cambian los idiomas activos, caduca o falla, se genera como siempre. */
+var __packPre=null;
+function __preKey(){try{return obtenerIdiomasActivos().join(",")}catch(e){return""}}
+function precargarSobre(){
+  try{
+    if(__packPre||busy)return;
+    var c=navigator.connection;if(c&&c.saveData)return;
+    if(cuota().left<=0)return;
+    var pr=obtener(),o={key:__preKey(),t:Date.now(),pr:pr};
+    __packPre=o;
+    pr.catch(function(){if(__packPre===o)__packPre=null});
+  }catch(e){__packPre=null}
+}
+async function obtenerRapido(){
+  var o=__packPre;__packPre=null;
+  if(o&&o.key===__preKey()&&Date.now()-o.t<900000){
+    try{var l=await o.pr;if(Array.isArray(l)&&l.length>=N)return l}catch(e){}
+  }
+  return await obtener();
+}
 /* Puntos proporcionales al costo: cartas costosas otorgan un puntaje muy alto */
 function puntos(v){
   if(v==null||v<=0)return 5;
@@ -2670,7 +2714,7 @@ function dibujar(lista,reversoInicial){
       slot.appendChild(sb);slot._sync();
     }
     slot.addEventListener("pointerenter",function(){if(c._rev)pintarIzq(c)});
-    slot.addEventListener("pointerleave",function(){pintarIzq()});
+    slot.addEventListener("pointerleave",function(){pintarIzq(selIzq())});
     slot.addEventListener("click",function(e){
       e.stopPropagation();
       if(ap.lpCollapsed)lpSet(false);
@@ -2679,6 +2723,7 @@ function dibujar(lista,reversoInicial){
         histPush(c);
         evaluarDesbloqueoInsigniaPorCarta(c);
         card.classList.remove("unrevealed");
+        selSticky=c;
         chip.textContent=chipTxt;chip.style.setProperty("--n",chipTxt.length);
         if(pts>=100||costosa)chip.classList.add("big");
         if(costosa){
@@ -2693,6 +2738,7 @@ function dibujar(lista,reversoInicial){
         return;
       }
       var isZ=slot.classList.contains("zoomed");
+      selSticky=c;
       clearZoom();
       if(!isZ){
         slot.classList.add("zoomed");
@@ -2723,6 +2769,9 @@ function masCara(){var b=null;cartas.forEach(function(c){if(c._rev!==false&&(!b|
 function sumaPack(){var s=0;cartas.forEach(function(c){if(c._rev!==false)s+=puntos(c.valor)});return s}
 function algRevelada(){return cartas.some(function(c){return c._rev!==false})}
 
+/* Carta seleccionada con clic en «Sobre de hoy»: su información se mantiene en el panel izquierdo al quitar el cursor */
+var selSticky=null;
+function selIzq(){var c=selSticky;return c&&c._rev&&est.pack&&est.pack.indexOf(c)>-1?c:undefined}
 function pintarIzq(c){
   var sel=!!c;c=c||masCara();
   currentLeftCard=c||null;
@@ -2734,21 +2783,24 @@ function pintarIzq(c){
     var cands=(c.imageCandidates&&c.imageCandidates.length)?c.imageCandidates.slice():construirCandidatosImagen(c);
     var hi=obtenerUrlAltaResolucion(c.imagen);
     if(hi&&cands.indexOf(hi)===-1)cands.unshift(hi);
-    var cIdx=0;
-    img.style.display="block";
-    img.onload=function(){
-      this.style.display="block";
-      if(this.src)c.imagen=this.src;
-    };
-    img.onerror=function(){
-      cIdx++;
-      if(cIdx<cands.length){
-        this.src=cands[cIdx];
-        return;
-      }
-      this.style.display="none";
-    };
-    img.src=cands[0]||c.imagen||"";
+    var cIdx=0,imgKey=(c.id||"")+"|"+(cands[0]||c.imagen||"");
+    if(img._k!==imgKey||img.style.display==="none"){
+      img._k=imgKey;
+      img.style.display="block";
+      img.onload=function(){
+        this.style.display="block";
+        if(this.src)c.imagen=this.src;
+      };
+      img.onerror=function(){
+        cIdx++;
+        if(cIdx<cands.length){
+          this.src=cands[cIdx];
+          return;
+        }
+        this.style.display="none";
+      };
+      img.src=cands[0]||c.imagen||"";
+    }
     if(th)th.classList.toggle("high-energy",esCostosa(c.valor));
     if(lupa)lupa.style.display="inline-flex";
   }else if(img){
@@ -2784,6 +2836,7 @@ var busy=false,lastMsg="empty";
 /* ===== Simulación y Apertura interactiva del Sobre en 3 partes ===== */
 function mostrarSimuladorSobre(quiet){
   if(busy)return;
+  if(quiet!==true)precargarSobre();
   if(cuota().left<=0){cerrarSimuladorSobre();if(quiet!==true)bdToast(tr("q_limit"));return}
   closeTV(true);
   var pf=$("pack-float");
@@ -2804,7 +2857,7 @@ async function ejecutarAperturaSobre(){
   lastMsg="loading";msg("loading");
   try{
     var waitAnim=new Promise(function(res){setTimeout(res,780)});
-    var resAll=await Promise.all([obtener(),waitAnim]);
+    var resAll=await Promise.all([obtenerRapido(),waitAnim]);
     var lista=resAll[0];
     lista.forEach(function(c){c._rev=false});
     est.score+=lista.reduce(function(s,c){return s+puntos(c.valor)},0);
@@ -2821,6 +2874,7 @@ async function ejecutarAperturaSobre(){
     lastMsg="err";msg("err",true);
   }
   busy=false;refrescar();
+  setTimeout(precargarSobre,1500);
 }
 
 /* ===== Selector de Avatares estilo Carrusel Cinematográfico 3D ===== */
@@ -2934,7 +2988,7 @@ function toggleAvatarDrawer(e){
 var uiOn=true;
 function applyLang(){document.querySelectorAll("[data-i18n]").forEach(function(e){e.textContent=tr(e.dataset.i18n)});
   $("search").placeholder=tr("search");$("lang-ind").textContent=L==="es"?"EN":"ES";$("hide-txt").textContent=tr(uiOn?"hide":"show");
-  if(!slots.length)msg(lastMsg,lastMsg==="err");pintarIzq();refrescar()}
+  if(!slots.length)msg(lastMsg,lastMsg==="err");pintarIzq(selIzq());refrescar()}
 function toggleLang(){L=L==="es"?"en":"es";applyLang()}
 function toggleUI(){uiOn=!uiOn;$("left-panel").classList.toggle("hid",!uiOn);$("right-panel").classList.toggle("hid",!uiOn);$("btn-hide").classList.toggle("on",!uiOn);$("hide-txt").textContent=tr(uiOn?"hide":"show")}
 
@@ -3240,10 +3294,10 @@ var _applyLang=applyLang;applyLang=function(){_applyLang();bdBadge(false);if(bdI
 
 
 /* ===== POKÉMON TV + historial de últimas cartas abiertas ===== */
-Object.assign(T.es,{tv_title:"Pokémon TV",tv_pick:"Elige temporada",tv_season:"Temporada",tv_cards:"Videos de cartas",tv_soon:"Próximamente",tv_soon_msg:"Esta lista estará disponible muy pronto.",tv_yt:"Abrir en YouTube",tv_last:"Tus últimas cartas abiertas",tv_empty:"Aún no has abierto cartas.\nAbre un sobre y aparecerán aquí.",tv_close:"Cerrar",tv_pts:"pts",tv_opened:"Abierta el",bd_points:"Puntos totales"});
-Object.assign(T.en,{tv_title:"Pokémon TV",tv_pick:"Pick a season",tv_season:"Season",tv_cards:"Card videos",tv_soon:"Coming soon",tv_soon_msg:"This playlist will be available very soon.",tv_yt:"Open on YouTube",tv_last:"Your latest opened cards",tv_empty:"You haven't opened any cards yet.\nOpen a pack and they will show up here.",tv_close:"Close",tv_pts:"pts",tv_opened:"Opened on",bd_points:"Total points"});
-Object.assign(T.es,{tv_pop:"Ampliar reproductor",tv_pop_close:"Cerrar ventana",tv_pop_fs:"Pantalla completa",tv_pop_tip:"Usa ⚙ Ajustes del reproductor para elegir Pista de audio (solo si el video tiene varios idiomas) y Subtítulos (CC).",tv_fail:"No se pudo cargar el reproductor",tv_retry:"Reintentar",tv_alt:"Probar otro método",tv_hint:"Si abres este archivo desde tu PC, súbelo a una web https (por ejemplo GitHub Pages) o ábrelo con http://localhost."});
-Object.assign(T.en,{tv_pop:"Enlarge player",tv_pop_close:"Close window",tv_pop_fs:"Full screen",tv_pop_tip:"Use ⚙ player Settings to choose Audio track (only if the video has several languages) and Subtitles (CC).",tv_fail:"The player could not be loaded",tv_retry:"Retry",tv_alt:"Try another method",tv_hint:"If you open this file from your PC, host it on an https site (e.g. GitHub Pages) or open it via http://localhost."});
+Object.assign(T.es,{tv_title:"Pokémon TV",tv_pick:"Elige temporada",tv_season:"Temporada",tv_cards:"Videos de cartas",tv_soon:"Próximamente",tv_soon_msg:"Esta lista estará disponible muy pronto.",tv_last:"Tus últimas cartas abiertas",tv_empty:"Aún no has abierto cartas.\nAbre un sobre y aparecerán aquí.",tv_close:"Cerrar",tv_pts:"pts",tv_opened:"Abierta el",bd_points:"Puntos totales"});
+Object.assign(T.en,{tv_title:"Pokémon TV",tv_pick:"Pick a season",tv_season:"Season",tv_cards:"Card videos",tv_soon:"Coming soon",tv_soon_msg:"This playlist will be available very soon.",tv_last:"Your latest opened cards",tv_empty:"You haven't opened any cards yet.\nOpen a pack and they will show up here.",tv_close:"Close",tv_pts:"pts",tv_opened:"Opened on",bd_points:"Total points"});
+Object.assign(T.es,{tv_pop:"Ampliar reproductor",tv_pop_close:"Cerrar ventana",tv_pop_fs:"Pantalla completa",tv_pop_tip:"Usa ⚙ Ajustes del reproductor para elegir Pista de audio (solo si el video tiene varios idiomas) y Subtítulos (CC).",tv_fail:"No se pudo cargar el reproductor",tv_retry:"Reintentar",tv_hint:"Si abres este archivo desde tu PC, súbelo a una web https (por ejemplo GitHub Pages) o ábrelo con http://localhost."});
+Object.assign(T.en,{tv_pop:"Enlarge player",tv_pop_close:"Close window",tv_pop_fs:"Full screen",tv_pop_tip:"Use ⚙ player Settings to choose Audio track (only if the video has several languages) and Subtitles (CC).",tv_fail:"The player could not be loaded",tv_retry:"Retry",tv_hint:"If you open this file from your PC, host it on an https site (e.g. GitHub Pages) or open it via http://localhost."});
 /* Listas de reproducción: pega aquí el ID o el enlace completo de cada playlist (vacío = "Próximamente") */
 var TV_SEASONS=[
   {n:1,title:"Indigo League",list:"PLRcHmntfmJ8CnSmj4C284-a1euH518aQa",si:"kqWj_pvxthrR0m0C"},
@@ -3278,7 +3332,7 @@ function tvBuildMenu(){
     var eq=el("span","tv-eq");eq.appendChild(el("i"));eq.appendChild(el("i"));eq.appendChild(el("i"));b.appendChild(eq);
     b.addEventListener("click",function(){tvSelect(it.id)});
     box.appendChild(b)})}
-/* Reproductor: embed oficial de YouTube ("Compartir > Insertar"). El botón ↻ prueba un método alternativo (relé https). */
+/* Reproductor: embed oficial de YouTube ("Compartir > Insertar"). */
 var tvMode=0,tvFrame=null,tvLid="",tvSi="";var tvSt={t:0,vid:"",idx:-1},tvpFrame=null,tvpSt={t:0,vid:"",idx:-1};
 function tvOrigin(){return/^https?:$/.test(location.protocol)?"&origin="+encodeURIComponent(location.origin):""}
 function tvDirectSrc(lid,si,rs,extra){
@@ -3300,24 +3354,22 @@ function tvMount(lid,mode,si,rs){
   f.referrerPolicy="strict-origin-when-cross-origin";f.allowFullscreen=true;
   if(mode===0)ytHook(f);
   tvFrame=f;$("tv-screen").appendChild(f)}
-function tvAlt(){if(!tvLid||!tvOpen)return;tvMount(tvLid,tvMode===0?1:0,tvSi)}
 function tvSelect(id,force){
   var it=tvItem(id);
   if(tvCur===id&&!force&&$("tv-screen").firstChild)return;
   tvCur=it.id;ap.tvSel=it.id;saveAp();
   document.querySelectorAll("#tv-list .tv-ss").forEach(function(b){b.classList.toggle("on",b.dataset.id===it.id)});
   var scr=$("tv-screen");tvStop();
-  var lid=tvListId(it.list),yt=$("tv-yt");
+  var lid=tvListId(it.list);
   $("tv-badge").textContent=it.n?tr("tv_season")+" "+it.n:tr(it.tkey);
   $("tv-now").textContent=tvName(it);
   if(lid){
     tvMount(lid,0,it.si);
-    yt.href="https://www.youtube.com/playlist?list="+encodeURIComponent(lid);yt.style.display="";
   }else{
     var d=el("div","tv-soon");
     d.innerHTML='<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 3l4 3 4-3"/></svg>';
     d.appendChild(el("b",null,tr("tv_soon")));d.appendChild(el("span",null,tr("tv_soon_msg")));
-    scr.appendChild(d);yt.style.display="none";yt.href="#"}}
+    scr.appendChild(d)}}
 /* Tema de Pokémon TV: rojo Pokémon temporal. Si el usuario elige otro tema mientras ve la TV, se respeta su elección. */
 var tvThemeOwn=false;
 function tvMarkTheme(){document.querySelectorAll("[data-th]").forEach(function(b){b.classList.toggle("is-active",b.dataset.th===(tvThemeOwn?"red":ap.theme))})}
@@ -3387,7 +3439,7 @@ function tvZoomClose(){$("tv-zoom").classList.remove("open")}
   st.addEventListener("click",function(e){if(st._moved){e.stopPropagation();e.preventDefault()}},true);
   st.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)&&st.scrollWidth>st.clientWidth){st.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
 })();
-function tvLang(){var al=$("tv-alt");if(al)al.title=tr("tv_alt");var pb=$("tv-pop");if(pb){pb.title=tr("tv_pop");pb.setAttribute("aria-label",tr("tv_pop"))}if(tvOpen){tvBuildMenu();var it=tvItem(tvCur);$("tv-badge").textContent=it.n?tr("tv_season")+" "+it.n:tr(it.tkey);$("tv-now").textContent=tvName(it);var so=document.querySelector("#tv-screen .tv-soon");if(so){so.lastChild.textContent=tr("tv_soon_msg");so.querySelector("b").textContent=tr("tv_soon")}}}
+function tvLang(){var pb=$("tv-pop");if(pb){pb.title=tr("tv_pop");pb.setAttribute("aria-label",tr("tv_pop"))}if(tvOpen){tvBuildMenu();var it=tvItem(tvCur);$("tv-badge").textContent=it.n?tr("tv_season")+" "+it.n:tr(it.tkey);$("tv-now").textContent=tvName(it);var so=document.querySelector("#tv-screen .tv-soon");if(so){so.lastChild.textContent=tr("tv_soon_msg");so.querySelector("b").textContent=tr("tv_soon")}}}
 var _applyLang2=applyLang;applyLang=function(){_applyLang2();tvLang()};
 
 /* ============================================================================
@@ -3663,7 +3715,7 @@ function isCardBadgeUnlocked(key){
   return !!(hpState.badges&&hpState.badges[key]&&hpState.badges[key].unlocked);
 }
 
-function desbloquearInsigniaCard(key,nombrePokemon,silencioso){
+function desbloquearInsigniaCard(key,nombrePokemon,silencioso,sinSonido){
   if(!key||key==="white"||!CARD_BADGES_CATALOG[key])return false;
   if(isCardBadgeUnlocked(key))return false;
   if(!hpState.badges)hpState.badges={};
@@ -3684,7 +3736,7 @@ function desbloquearInsigniaCard(key,nombrePokemon,silencioso){
   sincronizarSwatchesInsignias();
   if(!silencioso){
     if(key==="gold"||key==="black"){
-      sonarRara();
+      if(!sinSonido)sonarRara();
       var imgBtn=$("card-svg-img");
       if(imgBtn){
         imgBtn.classList.remove("badge-unlock-fx");
@@ -3739,11 +3791,11 @@ function evaluarDesbloqueoInsigniaPorCarta(c,silencioso){
   }
   /* BLACK: Ultra exclusiva (Special Illustration Rare / Secret Rare o valor >= $55) */
   if(cat==="sir"||cat==="secret"||cat==="hyper"||val>=55){
-    desbloquearInsigniaCard("black",nom,false);
+    desbloquearInsigniaCard("black",nom,false,silencioso);
   }
   /* GOLD: Legendaria (Hyper Rare / Gold / Rainbow o valor >= $95) */
   if(cat==="hyper"||val>=95){
-    desbloquearInsigniaCard("gold",nom,false);
+    desbloquearInsigniaCard("gold",nom,false,silencioso);
   }
 }
 
@@ -3915,7 +3967,9 @@ async function redeemCheatCode(){
 }
 
 function exportarProgresionHP(){
-  return hpState;
+  var p=JSON.parse(JSON.stringify(hpState));
+  p.sig=firmaHP(p);
+  return p;
 }
 function importarProgresionHP(p){
   if(!p||typeof p!=="object")return;
@@ -3961,7 +4015,7 @@ if(!isCardBadgeUnlocked(ap.cardVariant)){
   setCardSvgVariant(ap.cardVariant);
 }
 /* Verificación en segundo plano de los 18 idiomas de TCGdex y precarga de catálogos */
-verificarTodosLosIdiomasTCGdex().catch(function(){});
+verificarTodosLosIdiomasTCGdex().catch(function(){}).then(function(){setTimeout(precargarSobre,400)});
 if(est.pack&&est.pack.length){
   dibujar(est.pack,false);pintarIzq();
   /* Validar también las cartas guardadas de la sesión actual por si alguna URL caducó */
@@ -4037,10 +4091,19 @@ function applyCardHolo(key,src){
 var TL_OK=typeof HTMLElement!=="undefined"&&typeof HTMLElement.prototype.showPopover==="function";
 function tlPlace(pop,anchor,alignRight){
   var fr=$("frame"),m=fr&&/scale\(([\d.]+)\)/.exec(fr.style.transform||""),sc=m?parseFloat(m[1]):1,
-      r=anchor.getBoundingClientRect(),w=pop.offsetWidth*sc;
-  var left=alignRight?r.right-w:r.left;
+      r=anchor.getBoundingClientRect(),sec=$("sec-cards"),pr=sec?sec.getBoundingClientRect():null,
+      ok=!!(pr&&pr.width>0&&pr.height>0),w0=pop.offsetWidth;
+  /* Rango del recuadro «Sobre de hoy»: el panel no sale de él (ni a los lados ni por abajo) */
+  if(ok&&w0*sc>pr.width)sc=pr.width/w0;
+  var w=w0*sc,left=alignRight?r.right-w:r.left,top=r.bottom+8*sc,mh="";
   left=Math.max(4,Math.min(left,window.innerWidth-w-4));
-  pop.style.left=left+"px";pop.style.top=(r.bottom+8*sc)+"px";pop.style.right="auto";
+  pop.style.maxHeight="";pop.style.overflowY="";
+  if(ok){
+    left=Math.max(pr.left,Math.min(left,pr.right-w));
+    var avail=(pr.bottom-top)/sc;if(avail>60&&avail<pop.offsetHeight)mh=Math.floor(avail)+"px";
+  }
+  pop.style.left=left+"px";pop.style.top=top+"px";pop.style.right="auto";
+  pop.style.maxHeight=mh;pop.style.overflowY=mh?"auto":"";
   pop.style.transform=sc<1?"scale("+sc+")":"";
 }
 function tlSync(){
@@ -4054,7 +4117,7 @@ function tlSync(){
       pop.classList.add("tl");tlPlace(pop,anchor,d[2]);
     }else{
       if(isTL){try{pop.hidePopover()}catch(e){}}
-      pop.classList.remove("tl");pop.style.left=pop.style.top=pop.style.right=pop.style.transform="";
+      pop.classList.remove("tl");pop.style.left=pop.style.top=pop.style.right=pop.style.transform="";pop.style.maxHeight=pop.style.overflowY="";
     }
   });
 }
@@ -4106,6 +4169,7 @@ function tvPopOpen(){
   if(!tvOpen||!tvLid)return;
   tvPopBuild();
   var o=$("tvp");if(o.classList.contains("open"))return;
+  o.classList.remove("tvp-sat");
   var rs=tvSt.vid?{vid:tvSt.vid,t:tvSt.t}:null;
   if(tvFrame)ytPost(tvFrame,{event:"command",func:"pauseVideo",args:""});
   $("tvp-title").textContent=$("tv-now").textContent||"Pokémon TV";
@@ -4123,6 +4187,12 @@ function tvPopOpen(){
   clearTimeout(tvpTimer);o.classList.add("open");o.setAttribute("aria-hidden","false");
   void o.offsetWidth;o.classList.add("show");syncFrontState();
   setTimeout(function(){var x=$("tvp-x");if(x)x.focus()},60);
+}
+/* Ampliar con Saturno: reutiliza tvPopOpen (reanuda en el mismo punto) y solo fija el tamaño 728 × 486 */
+function tvSatOpen(){
+  var o0=$("tvp");if(o0&&o0.classList.contains("open"))return;
+  tvPopOpen();
+  var o=$("tvp");if(o&&o.classList.contains("open"))o.classList.add("tvp-sat");
 }
 function tvPopClose(noRestore){
   var o=$("tvp");if(!o||!o.classList.contains("open"))return;
@@ -4148,7 +4218,7 @@ function isUiPoint(x,y){
   var t=document.elementFromPoint(x,y);
   return !!t&&t!==document.documentElement&&t!==document.body&&t.id!=="frame"&&t.tagName!=="HEADER"&&t.tagName!=="MAIN";
 }
-var __hostFE=null,__hostPE=null,__hostPd=null;
+var __hostFE=null,__hostPE=null,__hostPd=null,__hostTL=null;
 function __hostPoint(e){ /* ratón en el documento PADRE (el iframe está en pointer-events:none) */
   var fe=__hostFE;if(!fe)return;
   var r=fe.getBoundingClientRect(),k=r.width?fe.clientWidth/r.width:1;
@@ -4158,6 +4228,47 @@ function __selfPoint(e){if(__hostFE&&e.pointerType!=="touch")setHostCapture(isUi
 function setHostCapture(on){
   var fe=__hostFE;if(!fe)return;
   var v=on?"auto":"none";if(fe.style.pointerEvents!==v)fe.style.pointerEvents=v;
+}
+/* Capa superior (top layer) del documento PADRE: el <iframe> se promueve con la Popover API, igual que MULTI/XP dentro de este
+   documento. Un elemento de la top layer se pinta por encima de cualquier z-index/transform/overflow del chatbox de xat. Sin recargar
+   el iframe: un marcador invisible conserva su hueco y se restablece todo al cerrar. */
+function __tlHostPlace(){
+  var t=__hostTL;if(!t)return;
+  try{
+    var r=t.ph.getBoundingClientRect(),ow=t.ph.offsetWidth,oh=t.ph.offsetHeight,sc=ow?r.width/ow:1,st=t.fe.style;
+    st.left=r.left+"px";st.top=r.top+"px";st.width=ow+"px";st.height=oh+"px";
+    st.transform=Math.abs(sc-1)>.001?"scale("+sc+")":"";
+  }catch(e){}
+}
+function __tlHostOn(fe){
+  try{
+    if(typeof fe.showPopover!=="function"||__hostTL)return false;
+    var d=fe.ownerDocument,w=d.defaultView,cs=w.getComputedStyle(fe),ph=d.createElement("div"),ps=ph.style,flow=cs.position==="static"||cs.position==="relative"||cs.position==="sticky";
+    ps.visibility="hidden";ps.pointerEvents="none";ps.boxSizing="border-box";ps.margin=cs.margin;ps.width=fe.offsetWidth+"px";ps.height=fe.offsetHeight+"px";
+    if(flow){ps.display=cs.display==="inline"?"inline-block":cs.display;ps.position=cs.position;ps.verticalAlign=cs.verticalAlign;ps.flex=cs.flex;ps.alignSelf=cs.alignSelf;ps.gridArea=cs.gridArea}
+    else{ps.position=cs.position;ps.left=cs.left;ps.top=cs.top;ps.transform=cs.transform==="none"?"":cs.transform;ps.transformOrigin=cs.transformOrigin}
+    fe.parentNode.insertBefore(ph,fe);
+    var bw=[cs.borderTopWidth,cs.borderRightWidth,cs.borderBottomWidth,cs.borderLeftWidth].join(" "),bs=cs.borderTopStyle,bc=cs.borderTopColor,bg=cs.backgroundColor;
+    __hostTL={fe:fe,ph:ph,css:fe.style.cssText,had:fe.hasAttribute("popover"),pv:fe.getAttribute("popover"),w:w};
+    var st=fe.style;
+    st.setProperty("position","fixed","important");st.setProperty("inset","auto","important");st.setProperty("margin","0","important");
+    st.setProperty("padding","0","important");st.setProperty("max-width","none","important");st.setProperty("max-height","none","important");
+    st.setProperty("overflow","visible","important");st.setProperty("box-sizing","border-box","important");st.setProperty("transform-origin","0 0","important");
+    st.setProperty("background",bg,"important");st.setProperty("border-style",bs,"important");st.setProperty("border-width",bw,"important");st.setProperty("border-color",bc,"important");
+    fe.setAttribute("popover","manual");
+    __tlHostPlace();
+    fe.showPopover();
+    w.addEventListener("resize",__tlHostPlace,true);w.addEventListener("scroll",__tlHostPlace,true);
+    return true;
+  }catch(e){__tlHostOff();return false}
+}
+function __tlHostOff(){
+  var t=__hostTL;if(!t)return;__hostTL=null;
+  try{t.w.removeEventListener("resize",__tlHostPlace,true);t.w.removeEventListener("scroll",__tlHostPlace,true)}catch(e){}
+  try{if(t.fe.matches(":popover-open"))t.fe.hidePopover()}catch(e){}
+  try{if(t.had)t.fe.setAttribute("popover",t.pv);else t.fe.removeAttribute("popover")}catch(e){}
+  try{t.fe.style.cssText=t.css}catch(e){}
+  try{if(t.ph.parentNode)t.ph.parentNode.removeChild(t.ph)}catch(e){}
 }
 function raiseHostFrame(on){
   try{
@@ -4172,9 +4283,11 @@ function raiseHostFrame(on){
         n.style.zIndex="2147483647";
       }
       __hostFE=fe;__hostPE=fe.style.pointerEvents;__hostPd=fe.ownerDocument;
+      __tlHostOn(fe);
       __hostPd.addEventListener("mousemove",__hostPoint,true);
       document.addEventListener("pointermove",__selfPoint,true);
     }else if(!on&&__hostSaved){
+      __tlHostOff();
       __hostSaved.forEach(function(r){r[0].style.position=r[1];r[0].style.zIndex=r[2]});__hostSaved=null;
       try{__hostPd.removeEventListener("mousemove",__hostPoint,true)}catch(e){}
       document.removeEventListener("pointermove",__selfPoint,true);
